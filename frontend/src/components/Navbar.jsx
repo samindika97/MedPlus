@@ -12,7 +12,7 @@ const navbarTabs = [
 
 const Navbar = () => {
   return (
-    <nav className="border-grey flex items-center justify-between border-b-2 p-2">
+    <nav className="flex items-center justify-between border-b-2 border-grey p-2">
       <div className="h-5">
         <img
           src={MedPlusLogo}
@@ -26,14 +26,15 @@ const Navbar = () => {
             <NavLink
               to={tab.link}
               className={({ isActive, isPending }) =>
-                isPending ? "pending" : isActive ? "text-cyan" : "text-blue"
+                isPending ? "pending" : isActive ? "text-teal" : "text-blue"
               }
+              key={tab.link}
             >
               <p className="font-semibold uppercase">{tab.name}</p>
             </NavLink>
           ))}
         </div>
-        <button className="bg-cyan rounded-3xl px-4 py-1">
+        <button className="rounded-3xl bg-teal px-10 py-1">
           <p className="font-semibold uppercase text-white">sign in</p>
         </button>
       </div>
