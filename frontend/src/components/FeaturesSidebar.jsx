@@ -5,17 +5,21 @@ import { featuresTabs } from "../data/data";
 
 const FeaturesSidebar = () => {
   return (
-    <div className="bg-lightGrey flex h-full w-full flex-col gap-3 rounded-xl p-3">
+    <div className="flex h-full w-full flex-col gap-3 rounded-xl bg-lightGrey p-3">
       {featuresTabs.map((tab) => (
         <NavLink
           to={tab.link}
           className={({ isActive, isPending }) =>
-            isPending ? "pending" : isActive ? "text-teal" : "text-blue"
+            isPending
+              ? "pending"
+              : isActive
+              ? "rounded-xl bg-teal"
+              : "rounded-xl bg-mintGreen"
           }
           key={tab.link}
         >
-          <div className="bg-mintGreen w-full rounded-xl p-3">
-            <p className="font-bold uppercase ">{tab.name}</p>
+          <div className="w-full rounded-xl p-3">
+            <p className="font-bold uppercase text-blue">{tab.name}</p>
           </div>
         </NavLink>
       ))}

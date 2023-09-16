@@ -14,8 +14,8 @@ const RootLayout = () => {
     <div className="min-h-screen">
       <Navbar />
       <div
-        className={`container mx-auto h-full`}
-        style={{ minHeight: `${bodyHeight}px` }}
+        className={`container mx-auto`}
+        style={{ minHeight: `${bodyHeight}px`, height: `${bodyHeight}px` }}
       >
         <Outlet />
       </div>
