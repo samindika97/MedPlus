@@ -12,18 +12,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-    allowedHeaders: [
-      "Origin",
-      "X-Requested-With",
-      "Content-Type",
-      "Authorization",
-    ],
-    allowedMethods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  })
-);
+app.use(cors());
 
 app.use("/api/v1/symptoms", symptomRoutes);
 
