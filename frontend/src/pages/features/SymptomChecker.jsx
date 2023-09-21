@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Combobox, Transition } from "@headlessui/react";
-import { CheckIcon, ExpandIcon, SearchIcon } from "../icons/icon";
+import { CheckIcon, ExpandIcon, SearchIcon } from "../../icons/icon";
 
-import FeaturesTitle from "../components/FeaturesTitle";
+import FeaturesTitle from "../../components/FeaturesTitle";
 
 const symptoms = [
   { id: 1, name: "fever" },
