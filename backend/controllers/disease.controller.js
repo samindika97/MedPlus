@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 
-const Symptom = require("../models/symptom.model");
+const Disease = require("../models/disease.model");
 
-exports.addSymptom = async (req, res) => {
-  var { name } = req.body;
+exports.addDisease = async (req, res) => {
+  var { name, content, symptoms } = req.body;
 
-  name = name.toLowerCase();
+  var newDisease = {
+    name: name.toLowerCase(),
+    content: content,
+    symptoms: symptoms,
+  };
 
   try {
-    await Symptom.create({ name })
+    await Disease.create(newDisease)
       .then((result) => {
         res.status(200).json({ result });
       })
@@ -20,9 +24,10 @@ exports.addSymptom = async (req, res) => {
   }
 };
 
-exports.getSymptoms = async (req, res) => {
+exports.getDiseases = async (req, res) => {
   try {
-    await Symptom.find()
+    await Disease.find()
+      .populate({ path: "symptoms", select: "name" })
       .then((result) => {
         res.status(200).json({ result });
       })
@@ -34,7 +39,7 @@ exports.getSymptoms = async (req, res) => {
   }
 };
 
-exports.getSymptom = async (req, res) => {
+exports.getDisease = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
@@ -42,44 +47,48 @@ exports.getSymptom = async (req, res) => {
   }
 
   try {
-    await Symptom.findById(id)
+    await Disease.findById(id)
+      .populate("symptoms")
       .then((result) => {
         res.status(200).json({ result });
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        res.status(404).json({ error });
       });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 };
 
-exports.updateSymptom = async (req, res) => {
+exports.updateDisease = async (req, res) => {
   const id = req.params.id;
-  const { name } = req.body;
+  var { name, content, symptoms } = req.body;
 
   if (!mongoose.isValidObjectId(id)) {
     return res.status(400).json({ error: "Invalid ID" });
   }
 
+  const updateDisease = {
+    name: name.toLowerCase(),
+    content: content,
+    symptoms: symptoms,
+  };
+
   try {
-    await Symptom.findByIdAndUpdate(
-      id,
-      { name: name.toLowerCase() },
-      { new: true }
-    )
+    await Disease.findByIdAndUpdate(id, updateDisease, { new: true })
+      .populate("symptoms")
       .then((result) => {
         res.status(200).json({ result });
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        res.status(404).json({ error });
       });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 };
 
-exports.deleteSymptom = async (req, res) => {
+exports.deleteDisease = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
@@ -87,12 +96,12 @@ exports.deleteSymptom = async (req, res) => {
   }
 
   try {
-    await Symptom.findByIdAndDelete(id)
+    await Disease.findByIdAndDelete(id)
       .then((result) => {
         res.status(200).json({ result });
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        res.status(404).json({ error });
       });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
