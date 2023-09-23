@@ -5,7 +5,7 @@ import { adminDashboardTabs } from "../data/data";
 
 const AdminDashboardTabs = () => {
   return (
-    <div className="flex w-full items-center justify-between rounded-xl">
+    <div className="flex w-full items-center justify-between rounded-xl mb-5">
       <h3 className="text-3xl font-semibold uppercase text-blue my-3">
         Admin Dashboard
       </h3>

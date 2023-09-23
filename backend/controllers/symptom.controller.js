@@ -23,6 +23,7 @@ exports.addSymptom = async (req, res) => {
 exports.getSymptoms = async (req, res) => {
   try {
     await Symptom.find()
+      .sort({ _id: -1 })
       .then((result) => {
         res.status(200).json({ result });
       })
