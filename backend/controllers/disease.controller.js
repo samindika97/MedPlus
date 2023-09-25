@@ -13,8 +13,12 @@ exports.addDisease = async (req, res) => {
 
   try {
     await Disease.create(newDisease)
-      .then((result) => {
-        res.status(200).json({ result });
+      .then(async (result) => {
+        const newDisease = await Disease.findById(result._id).populate({
+          path: "symptoms",
+          select: "name",
+        });
+        res.status(200).json({ result: newDisease });
       })
       .catch((error) => {
         res.status(400).json({ error });
@@ -28,6 +32,7 @@ exports.getDiseases = async (req, res) => {
   try {
     await Disease.find()
       .populate({ path: "symptoms", select: "name" })
+      .sort({ _id: -1 })
       .then((result) => {
         res.status(200).json({ result });
       })

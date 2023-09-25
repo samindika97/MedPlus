@@ -1,55 +1,97 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+import {
+  TextInputWithLabel as TextInput,
+  TextAreaWithLabel as TextArea,
+} from "../components/FormikElements";
+import CustomSelect from "../components/CustomSelect";
 
 import BASE_URL from "../config/ApiConfig";
 
-const EditSymptomModal = ({
+const EditDiseaseModal = ({
   isModalOpen,
   modalClose,
-  symptom,
-  setSymptoms,
+  disease,
+  setDiseases,
 }) => {
-  const [editSymptomMessage, setEditSymptomMessage] = useState(null);
+  const [editDiseaseMessage, setEditDiseaseMessage] = useState(null);
+  const [symptoms, setSymptoms] = useState([]);
+  const [symptomIds, setSymptomIds] = useState([]);
+
+  const symptomOptions = symptoms.map((item) => ({
+    label: item.name,
+    value: item._id,
+  }));
+
+  function extractSymptomsIds() {
+    setSymptomIds(disease.symptoms.map((symptom) => symptom._id));
+  }
 
   useEffect(() => {
-    setEditSymptomMessage(null);
+    extractSymptomsIds();
   }, []);
 
-  const editSymptom = (name) => {
+  const fetchSymptoms = () => {
+    // setLoading(true);
+    const axiosConfig = {
+      method: "get",
+      url: `${BASE_URL}symptoms/`,
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        setSymptoms(response.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchSymptoms();
+    setEditDiseaseMessage(null);
+  }, []);
+
+  const editDisease = (name, content, symptoms) => {
     // setLoading(true);
     const axiosConfig = {
       method: "patch",
-      url: `${BASE_URL}symptoms/${symptom._id}`,
+      url: `${BASE_URL}diseases/${disease._id}`,
       data: {
         name: name,
+        content: content,
+        symptoms: symptoms,
       },
     };
     axios(axiosConfig)
       .then((response) => {
-        setSymptoms((prev) =>
-          prev.map((prevSymptom) => {
-            if (prevSymptom._id === response.data.result._id) {
+        setDiseases((prev) =>
+          prev.map((prevDisease) => {
+            if (prevDisease._id === response.data.result._id) {
               return {
-                ...prevSymptom,
+                ...prevDisease,
                 name: response.data.result.name,
+                content: response.data.result.content,
+                symptoms: response.data.result.symptoms,
               };
             } else {
-              return prevSymptom;
+              return prevDisease;
             }
           }),
         );
         modalClose();
       })
       .catch((err) => {
-        setEditSymptomMessage(
+        setEditDiseaseMessage(
           err.response.data.error.code && err.response.data.error.code === 11000
-            ? "Sympyom with the same name exists"
-            : "Error editing symptom. Try again",
+            ? "Disease with the same name exists"
+            : "Error editing disease. Try again",
         );
       })
       .finally(() => {
@@ -83,33 +125,52 @@ const EditSymptomModal = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-blue"
                 >
-                  Edit Symptom
+                  Edit Disease
                 </Dialog.Title>
                 <div className="mt-2">
                   <Formik
                     initialValues={{
-                      name: symptom.name,
+                      name: disease && disease.name,
+                      content: disease && disease.content,
+                      symptoms: disease && symptomIds,
                     }}
                     validationSchema={Yup.object({
                       name: Yup.string().required("Required"),
+                      content: Yup.string().required("Required"),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      editSymptom(values.name);
+                      editDisease(values.name, values.content, values.symptoms);
                       setSubmitting(false);
                       resetForm({});
                     }}
                   >
                     <Form className="mt-3 flex w-full flex-col text-sm">
                       <TextInput
-                        label="Enter new symptom name"
+                        label="Enter disease name"
                         name="name"
                         type="text"
-                        placeholder="Cough"
+                        placeholder="Pneumonia"
+                      />
+
+                      <TextArea
+                        label="Enter disease content"
+                        name="content"
+                        type="text"
+                        rows="5"
+                        placeholder="Pneumonia is a common and potentially serious respiratory infection that primarily affects the lungs. It can be caused by various..."
+                      />
+
+                      <Field
+                        name="symptoms"
+                        options={symptomOptions}
+                        component={CustomSelect}
+                        placeholder="Select symptoms..."
+                        isMulti={true}
                       />
 
                       <div className="flex gap-3">
@@ -132,9 +193,9 @@ const EditSymptomModal = ({
                         </button>
                       </div>
 
-                      {editSymptomMessage && (
-                        <div className="border-red mt-3 rounded-lg border p-3">
-                          <p className="text-red">{editSymptomMessage}</p>
+                      {editDiseaseMessage && (
+                        <div className="mt-3 rounded-lg border border-red p-3">
+                          <p className="text-red">{editDiseaseMessage}</p>
                         </div>
                       )}
                     </Form>
@@ -149,4 +210,4 @@ const EditSymptomModal = ({
   );
 };
 
-export default EditSymptomModal;
+export default EditDiseaseModal;

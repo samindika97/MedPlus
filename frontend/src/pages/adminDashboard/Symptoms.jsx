@@ -29,7 +29,6 @@ const Symptoms = () => {
     };
     axios(axiosConfig)
       .then((response) => {
-        console.log(response);
         setSymptoms((prev) => [response.data.result, ...prev]);
       })
       .catch((err) => {
@@ -131,7 +130,7 @@ const Symptoms = () => {
           symptoms.map((symptom) => (
             <div
               className="flex w-full items-center justify-between rounded-xl bg-mintGreen p-3"
-              key={symptom.name}
+              key={symptom._id}
             >
               <p className="capitalize">{symptom.name}</p>
               <div className="flex gap-5">
