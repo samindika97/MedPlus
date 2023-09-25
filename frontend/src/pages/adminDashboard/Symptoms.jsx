@@ -17,6 +17,8 @@ const Symptoms = () => {
   const [editModalSymptom, setEditModalSymptom] = useState(null);
   const [deleteSymptomModalOpen, setDeleteSymptomModalOpen] = useState(false);
   const [deleteModalSymptom, setDeleteModalSymptom] = useState(null);
+  const [clickedSymptom, setClickedSymptom] = useState(null);
+  const [associatedDiseases, setAssociatedDiseases] = useState([]);
 
   const addSymptom = (name) => {
     // setLoading(true);
@@ -37,6 +39,25 @@ const Symptoms = () => {
             ? "Sympyom with the same name exists"
             : "Error adding symptom. Try again",
         );
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+  const getAssociatedDiseases = (symptom) => {
+    // setLoading(true);
+    setClickedSymptom(symptom);
+    const axiosConfig = {
+      method: "get",
+      url: `${BASE_URL}symptoms/associatedDiseases/${symptom._id}`,
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        setAssociatedDiseases(response.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
       })
       .finally(() => {
         // setLoading(false);
@@ -85,64 +106,92 @@ const Symptoms = () => {
 
   return (
     <div className="flex w-full gap-5">
-      <div className="h-full w-1/4 rounded-xl border border-grey p-3">
-        <p className="text-lg font-semibold capitalize text-blue">
-          add new symptom
-        </p>
-        <Formik
-          initialValues={{
-            name: "",
-          }}
-          validationSchema={Yup.object({
-            name: Yup.string().required("Required"),
-          })}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            setAddSymptomMessage(null)
-            addSymptom(values.name);
-            setSubmitting(false);
-            resetForm({});
-          }}
-        >
-          <Form className="mt-3 flex w-full flex-col">
-            <TextInput
-              label="Enter symptom name"
-              name="name"
-              type="text"
-              placeholder="Cough"
-            />
+      <div className="flex h-full w-1/3 flex-col gap-3">
+        <div className="w-full rounded-xl border border-grey p-3">
+          <p className="text-lg font-semibold capitalize text-blue">
+            add new symptom
+          </p>
+          <Formik
+            initialValues={{
+              name: "",
+            }}
+            validationSchema={Yup.object({
+              name: Yup.string().required("Required"),
+            })}
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              setAddSymptomMessage(null);
+              addSymptom(values.name);
+              setSubmitting(false);
+              resetForm({});
+            }}
+          >
+            <Form className="mt-3 flex w-full flex-col">
+              <TextInput
+                label="Enter symptom name"
+                name="name"
+                type="text"
+                placeholder="Cough"
+              />
 
-            <div className="flex">
-              <button className="w-full rounded-xl bg-teal p-3 outline-none border-none" type="submit">
-                <p className="font-semibold uppercase text-white">add</p>
-              </button>
-            </div>
-
-            {addSymptomMessage && (
-              <div className="border-red mt-3 rounded-lg border p-3 text-center">
-                <p className="text-red">{addSymptomMessage}</p>
+              <div className="flex">
+                <button
+                  className="w-full rounded-xl border-none bg-teal p-3 outline-none"
+                  type="submit"
+                >
+                  <p className="font-semibold uppercase text-white">add</p>
+                </button>
               </div>
-            )}
-          </Form>
-        </Formik>
+
+              {addSymptomMessage && (
+                <div className="mt-3 rounded-lg border border-red p-3 text-center">
+                  <p className="text-red">{addSymptomMessage}</p>
+                </div>
+              )}
+            </Form>
+          </Formik>
+        </div>
+        <div className="h-full w-full rounded-xl border border-grey p-3">
+          <p className="mb-3 text-lg font-semibold capitalize text-blue">
+            associated diseases
+          </p>
+          {clickedSymptom ? (
+            <>
+              <p className="font-semibold capitalize ">
+                {clickedSymptom.name} :{" "}
+              </p>
+              <ul className="list-disc ml-5">
+                {associatedDiseases &&
+                  associatedDiseases.map((disease) => (
+                    <li key={disease._id}>{disease.name}</li>
+                  ))}
+              </ul>
+            </>
+          ) : (
+            <p className="text-sm italic">
+              Click on a symptom to view it's associated diseases
+            </p>
+          )}
+        </div>
       </div>
-      <div className="flex w-full flex-col gap-3">
+      <div className="flex w-full flex-col gap-3 max-h-96 overflow-y-auto">
         {symptoms &&
           symptoms.map((symptom) => (
             <div
-              className="flex w-full items-center justify-between rounded-xl bg-mintGreen p-3"
+              className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-lightGrey p-3"
               key={symptom._id}
+              onClick={() => getAssociatedDiseases(symptom)}
             >
-              <p className="capitalize">{symptom.name}</p>
+              <p className="font-semibold capitalize">{symptom.name}</p>
               <div className="flex gap-5">
                 <button
-                  className="flex items-center gap-1 rounded-lg border-none bg-teal px-3 py-1 text-blue outline-none"
+                  className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
                   onClick={() => openEditSymptomModal(symptom)}
                 >
                   <EditIcon fontSize="small" />
                   <p className="text-sm font-semibold uppercase">edit</p>
                 </button>
                 <button
-                  className="flex items-center gap-1 rounded-lg border-none bg-teal px-3 py-1 text-blue outline-none"
+                  className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
                   onClick={() => openDeleteSymptomModal(symptom)}
                 >
                   <DeleteIcon fontSize="small" />
