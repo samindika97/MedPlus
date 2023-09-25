@@ -25,3 +25,8 @@ export const featuresTabs = [
     link: "/features/contact-doctor",
   },
 ];
+
+export const adminDashboardTabs = [
+  { name: "symptoms", link: "/admin-dashboard/symptoms" },
+  { name: "diseases", link: "/admin-dashboard/diseases" },
+];

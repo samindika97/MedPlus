@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import HeroImage from "../assets/HeroImage.png";
 
@@ -18,7 +19,7 @@ const Home = () => {
             Maecenas iaculis auctor neque eget elementum. Proin pulvinar ex est,
             eget convallis mi malesuada ac.
           </p>
-          <button className="bg-teal mt-3 rounded-3xl px-10 py-1">
+          <button className="mt-3 rounded-3xl bg-teal px-10 py-1">
             <p className="font-semibold uppercase text-white">sign in</p>
           </button>
         </div>
@@ -32,21 +33,20 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {featuresTabs.map((tab) => (
-          <div
-            className="bg-teal relative h-24 w-full rounded-xl p-5"
-            key={tab.name}
-          >
-            <img
-              src={tab.img}
-              alt="symptom checker tab image"
-              className="absolute bottom-0 left-0 h-32"
-            />
-            <div className="flex h-full w-full items-center justify-end">
-              <p className="w-1/2 text-right text-xl font-bold uppercase text-white">
-                {tab.name}
-              </p>
+          <NavLink to={tab.link} key={tab.name}>
+            <div className="relative h-24 w-full rounded-xl bg-teal p-5">
+              <img
+                src={tab.img}
+                alt="symptom checker tab image"
+                className="absolute bottom-0 left-0 h-32"
+              />
+              <div className="flex h-full w-full items-center justify-end">
+                <p className="w-1/2 text-right text-xl font-bold uppercase text-white">
+                  {tab.name}
+                </p>
+              </div>
             </div>
-          </div>
+          </NavLink>
         ))}
       </div>
     </div>

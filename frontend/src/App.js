@@ -6,10 +6,15 @@ import Home from "./pages/Home";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 
-import SymptomChecker from "./features/SymptomChecker";
-import LabReportAnalyser from "./features/LabReportAnalyzer";
-import HospitalDetails from "./features/ContactDoctor";
-import ContactDoctor from "./features/ContactDoctor";
+import SymptomChecker from "./pages/features/SymptomChecker";
+import LabReportAnalyser from "./pages/features/LabReportAnalyzer";
+import HospitalDetails from "./pages/features/HospitalDetails";
+import ContactDoctor from "./pages/features/ContactDoctor";
+
+import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
+
+import Symptoms from "./pages/adminDashboard/Symptoms";
+import Diseases from "./pages/adminDashboard/Diseases";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +65,24 @@ const router = createBrowserRouter([
           {
             path: "/features/contact-doctor",
             element: <ContactDoctor />,
+          },
+        ],
+      },
+      {
+        path: "/admin-dashboard",
+        element: <AdminDashboardLayout />,
+        children: [
+          {
+            path: "/admin-dashboard/",
+            element: <div>admin dashboard page</div>,
+          },
+          {
+            path: "/admin-dashboard/symptoms",
+            element: <Symptoms />,
+          },
+          {
+            path: "/admin-dashboard/diseases",
+            element: <Diseases />,
           },
         ],
       },
