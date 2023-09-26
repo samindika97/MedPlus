@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const { authenticateJWT } = require("../middleware/userAuth");
+
 const {
   addDisease,
   getDiseases,
@@ -8,6 +10,8 @@ const {
   updateDisease,
   deleteDisease,
 } = require("../controllers/disease.controller");
+
+router.use(authenticateJWT);
 
 router.post("/", addDisease);
 

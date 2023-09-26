@@ -11,14 +11,14 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", function (next) {
   const user = this;
 
   bcrypt.genSalt(10, function (err, salt) {
     if (err) {
       return next(err);
     }
-    bcrypt.hash(user.password, salt, null, function (err, hash) {
+    bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) {
         return next(err);
       }
@@ -28,7 +28,7 @@ UserSchema.pre("save", async function (next) {
   });
 });
 
-UserSchema.methods.isValidPassword = async function (password, callback) {
+UserSchema.methods.comparePassword = async function (password, callback) {
   const user = this;
 
   bcrypt.compare(password, this.password, function (err, isMatch) {
