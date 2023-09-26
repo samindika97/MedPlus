@@ -2,24 +2,18 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import MedPlusLogo from "../assets/MedPlusLogo.png";
-
-const navbarTabs = [
-  { name: "home", link: "/" },
-  { name: "about us", link: "/about-us" },
-  { name: "services", link: "/services" },
-  { name: "contact us", link: "/contact-us" },
-];
+import { navbarTabs } from "../data/data";
 
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between border-b-2 border-grey p-2">
-      <div className="h-5">
+      <NavLink className="h-5" to="/">
         <img
           src={MedPlusLogo}
           alt="Med Plus Logo"
           className="h-full object-cover"
         />
-      </div>
+      </NavLink>
       <div className="flex gap-10">
         <div className="flex items-center justify-between gap-10">
           {navbarTabs.map((tab) => (

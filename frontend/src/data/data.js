@@ -3,6 +3,14 @@ import LabReportAnalyzerImg from "../assets/LabReportAnalyzer.png";
 import HospitalDetailsImg from "../assets/HospitalDetails.png";
 import ContactDoctorImg from "../assets/ContactDoctor.png";
 
+export const navbarTabs = [
+  { name: "home", link: "/" },
+  { name: "about us", link: "/about-us" },
+  { name: "features", link: "/features" },
+  { name: "contact us", link: "/contact-us" },
+  { name: "admin dashboard", link: "/admin-dashboard" },
+];
+
 export const featuresTabs = [
   {
     name: "symptom checker",
