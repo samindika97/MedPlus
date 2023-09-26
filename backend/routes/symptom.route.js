@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  symptomSearch,
   addSymptom,
   getSymptoms,
   getSymptom,
@@ -9,6 +10,8 @@ const {
   deleteSymptom,
   associatedDiseases,
 } = require("../controllers/symptom.controller");
+
+router.get("/search", symptomSearch);
 
 router.post("/", addSymptom);
 
