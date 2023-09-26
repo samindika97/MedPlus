@@ -3,6 +3,40 @@ const mongoose = require("mongoose");
 const Symptom = require("../models/symptom.model");
 const Disease = require("../models/disease.model");
 
+exports.symptomSearch = async (req, res) => {
+  const symptomArray = req.query.symptomArray.map(
+    (id) => new mongoose.Types.ObjectId(id)
+  );
+
+  try {
+    await Disease.aggregate([
+      {
+        $addFields: {
+          matchingSymptoms: {
+            $size: {
+              $setIntersection: ["$symptoms", symptomArray],
+            },
+          },
+        },
+      },
+      {
+        $sort: { matchingSymptoms: -1 },
+      },
+      {
+        $match: { matchingSymptoms: { $gt: 0 } },
+      },
+    ])
+      .then((result) => {
+        res.status(200).json({ result });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 exports.addSymptom = async (req, res) => {
   var { name } = req.body;
 
