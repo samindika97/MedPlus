@@ -14,7 +14,12 @@ module.exports = {
       grey: "#B0B0B0",
       lightGrey: "#E5E9EB",
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'aboutUs': "url('assets/aboutusbg.jpeg')",
+        
+      }
+    },
   },
   plugins: [
     require("@headlessui/tailwindcss")({ prefix: "ui" }),
