@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import Register from "./pages/Register";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 
@@ -17,6 +19,14 @@ import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
 
 const router = createBrowserRouter([
+  {
+    path: "/sign-in",
+    element: <SignIn />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
   {
     path: "/",
     element: <RootLayout />,
