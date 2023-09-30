@@ -10,7 +10,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.registerUser = async (req, res) => {
   await User.create({
-    userName: req.body.userName,
+    userName: req.body.userName.toLowerCase(),
     email: req.body.email,
     password: req.body.password,
   });

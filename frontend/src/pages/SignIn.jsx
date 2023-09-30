@@ -7,16 +7,21 @@ import * as Yup from "yup";
 import doctorVector from "../assets/SignInPageVector.png";
 import medPlusLogo from "../assets/MedPlusLogo.png";
 
+import BASE_URL from "../config/ApiConfig";
+
 export const TextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
-  const inputModifiedClasses = `text-input w-full rounded-lg p-3 mb-3 outline-none bg-lightGrey placeholder:text-blue ${
+  const inputModifiedClasses = `text-input w-full rounded-lg p-2 mb-3 outline-none bg-lightGrey placeholder:text-sm ${
     meta.touched && meta.error ? "border-2 border-red" : ""
   }`;
 
   return (
     <>
-      <label className="mb-2 font-semibold" htmlFor={props.id || props.name}>
+      <label
+        className="mb-2 text-sm font-semibold"
+        htmlFor={props.id || props.name}
+      >
         {label}
       </label>
       <input className={inputModifiedClasses} {...field} {...props} />
@@ -30,84 +35,108 @@ export const TextInput = ({ label, ...props }) => {
 const SignIn = () => {
   const [message, setMessage] = useState(null);
 
+  const signIn = async (email, password) => {
+    // setLoading(true);
+    const config = {
+      method: "post",
+      url: `${BASE_URL}auth/login`,
+      data: {
+        email: email,
+        password: password,
+      },
+    };
+
+    await axios(config)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
   return (
-    <div className="flex h-screen w-screen">
-      <div className="flex w-1/2 flex-col justify-between p-5">
-        <div className="">
-          <img src={medPlusLogo} alt="MedPlus Logo" className="h-6" />
-        </div>
-        <div className="max-w-md">
-          <h3 className="mb-5 text-center text-3xl font-bold uppercase text-blue">
-            sign in
-          </h3>
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-            }}
-            validationSchema={Yup.object({
-              email: Yup.string()
-                .email("Invalid email address")
-                .required("Required"),
-              password: Yup.string().required("Required"),
-            })}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
-              //   addDisease(values.name, values.content, values.symptoms);
-              setSubmitting(false);
-              resetForm({});
-            }}
-          >
-            <Form className="mt-3 flex w-full flex-col">
-              <TextInput
-                label="Email"
-                name="email"
-                type="text"
-                placeholder="johndoe@gmail.com"
-              />
+    <div className="bg-babyBlue flex h-screen w-screen">
+      <div className="flex w-full items-center justify-center p-3 lg:w-1/2">
+        <div className="z-10 flex h-full w-full max-w-md flex-col justify-between rounded-3xl bg-white p-6">
+          <div className="">
+            <img src={medPlusLogo} alt="MedPlus Logo" className="h-6" />
+          </div>
+          <div className="w-full">
+            <Formik
+              initialValues={{
+                email: "",
+                password: "",
+              }}
+              validationSchema={Yup.object({
+                email: Yup.string()
+                  .email("Invalid email address")
+                  .required("Required"),
+                password: Yup.string().required("Required"),
+              })}
+              onSubmit={(values, { setSubmitting, resetForm }) => {
+                signIn(values.email, values.password);
+                setSubmitting(false);
+                resetForm({});
+              }}
+            >
+              <Form className="mt-3 flex w-full flex-col">
+                <TextInput
+                  label="Email"
+                  name="email"
+                  type="text"
+                  placeholder="johndoe@gmail.com"
+                />
 
-              <TextInput
-                label="Password"
-                name="password"
-                type="password"
-                placeholder="********"
-              />
+                <TextInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="********"
+                />
 
-              {message && (
-                <div className="my-3 rounded-lg border border-red p-3 text-sm">
-                  <p className="text-red">{message}</p>
+                {message && (
+                  <div className="my-3 rounded-lg border border-red p-3 text-sm">
+                    <p className="text-red">{message}</p>
+                  </div>
+                )}
+
+                <div className="mt-3 flex">
+                  <button
+                    className="w-full rounded-lg border-none bg-teal p-2 outline-none"
+                    type="submit"
+                  >
+                    <p className="text-sm font-semibold uppercase text-white">
+                      sign in
+                    </p>
+                  </button>
                 </div>
-              )}
+              </Form>
+            </Formik>
 
-              <div className="mt-3 flex">
-                <button
-                  className="w-full rounded-xl border-none bg-teal p-3 outline-none"
-                  type="submit"
-                >
-                  <p className="font-semibold uppercase text-white">sign in</p>
-                </button>
-              </div>
-            </Form>
-          </Formik>
-
-          <p className="mt-5 text-sm font-semibold">
-            New to MedPlus?{" "}
-            <Link to="/register">
-              <span className="capitalize text-teal underline">
-                create account
-              </span>
-            </Link>
+            <p className="mt-5 text-sm font-semibold">
+              New to MedPlus?{" "}
+              <Link to="/register">
+                <span className="capitalize text-teal underline">
+                  create account
+                </span>
+              </Link>
+            </p>
+          </div>
+          <p className="text-xs capitalize">
+            MedPlus&copy; - sample MERN stack project
           </p>
         </div>
-        <p className="text-xs capitalize">
-          MedPlus&copy; - sample MERN stack project
-        </p>
       </div>
-      <div className="flex w-1/2 items-center justify-center py-3">
+      <div className="hidden w-1/2 items-center justify-center py-3 lg:flex">
         <div className="bg-babyBlue h-full w-2/3 rounded-3xl"></div>
         <img
           src={doctorVector}
           alt="doctor vector"
-          className="absolute right-0 top-1/2 h-5/6  -translate-y-1/2"
+          className="absolute right-0 top-1/2 h-5/6 -translate-y-1/2"
         />
       </div>
     </div>
