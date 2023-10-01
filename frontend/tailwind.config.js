@@ -16,9 +16,8 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'aboutUs': "url('assets/aboutusbg.jpeg')",
-        
-      }
+        aboutUs: "url('assets/aboutusbg.jpeg')",
+      },
     },
   },
   plugins: [
