@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
+import {
+  loginUser,
+  clearError,
+  userSelector,
+} from "../features/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 import doctorVector from "../assets/SignInPageVector.png";
 import medPlusLogo from "../assets/MedPlusLogo.png";
-
-import BASE_URL from "../config/ApiConfig";
 
 export const TextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -33,33 +36,21 @@ export const TextInput = ({ label, ...props }) => {
 };
 
 const SignIn = () => {
-  const [message, setMessage] = useState(null);
+  const { error } = useSelector((state) => state.userReducer);
 
-  const signIn = async (email, password) => {
-    // setLoading(true);
-    const config = {
-      method: "post",
-      url: `${BASE_URL}auth/login`,
-      data: {
-        email: email,
-        password: password,
-      },
-    };
+  const dispatch = useDispatch();
 
-    await axios(config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+  useEffect(() => {
+    dispatch(clearError());
+  }, []);
+
+  const signIn = (values) => {
+    console.log(values);
+    dispatch(loginUser(values));
   };
 
   return (
-    <div className="bg-babyBlue flex h-screen w-screen">
+    <div className="flex h-screen w-screen bg-babyBlue">
       <div className="flex w-full items-center justify-center p-3 lg:w-1/2">
         <div className="z-10 flex h-full w-full max-w-md flex-col justify-between rounded-3xl bg-white p-6">
           <div className="">
@@ -78,7 +69,7 @@ const SignIn = () => {
                 password: Yup.string().required("Required"),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
-                signIn(values.email, values.password);
+                signIn(values);
                 setSubmitting(false);
                 resetForm({});
               }}
@@ -98,9 +89,9 @@ const SignIn = () => {
                   placeholder="********"
                 />
 
-                {message && (
+                {error && (
                   <div className="my-3 rounded-lg border border-red p-3 text-sm">
-                    <p className="text-red">{message}</p>
+                    <p className="text-red">{error}</p>
                   </div>
                 )}
 
@@ -132,7 +123,7 @@ const SignIn = () => {
         </div>
       </div>
       <div className="hidden w-1/2 items-center justify-center py-3 lg:flex">
-        <div className="bg-babyBlue h-full w-2/3 rounded-3xl"></div>
+        <div className="h-full w-2/3 rounded-3xl bg-babyBlue"></div>
         <img
           src={doctorVector}
           alt="doctor vector"
