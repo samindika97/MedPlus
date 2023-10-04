@@ -4,7 +4,17 @@ const Symptom = require("../models/symptom.model");
 const Disease = require("../models/disease.model");
 
 exports.symptomSearch = async (req, res) => {
-  const symptomArray = req.query.symptomArray.map(
+  const { symptomArray } = req.query;
+
+  if (!symptomArray) {
+    return res.status(400).json({ error: "symptomArray parameter is missing" });
+  }
+
+  const isArray = Array.isArray(symptomArray);
+
+  const symptomArr = isArray ? symptomArray : [symptomArray];
+
+  const symptomIdArray = symptomArr.map(
     (id) => new mongoose.Types.ObjectId(id)
   );
 
@@ -14,7 +24,7 @@ exports.symptomSearch = async (req, res) => {
         $addFields: {
           matchingSymptoms: {
             $size: {
-              $setIntersection: ["$symptoms", symptomArray],
+              $setIntersection: ["$symptoms", symptomIdArray],
             },
           },
         },
