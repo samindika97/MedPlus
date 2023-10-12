@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import AboutUs  from "./pages/Aboutus";
+import ContactUs from "./pages/Contactus";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/contact-us",
-        element: <p>contact us</p>,
+        element: <ContactUs />,
         // loader: teamLoader,
       },
       {
