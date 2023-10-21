@@ -1,6 +1,6 @@
 const Message_data = require("../models/message.model"); 
 
-const  addMessage = async(req,res,next)=>{
+exports.addMessage = async(req,res,next)=>{
     try{
       const message_data = await Message_data.create(req.body);
       res.status(200).json(message_data);
@@ -12,4 +12,8 @@ const  addMessage = async(req,res,next)=>{
     }
 };
 
-module.exports = addMessage;
+
+exports.getMessages = async(req,res,next)=>{
+  const messages = await Message_data.find().sort({createdAt:-1});
+  res.send(messages);
+};

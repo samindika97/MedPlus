@@ -17,6 +17,7 @@ import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
+import Messages from "./pages/adminDashboard/Messages";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
           {
             path: "/admin-dashboard/diseases",
             element: <Diseases />,
+          },
+          {
+            path: "/admin-dashboard/messages",
+            element: <Messages />,
           },
         ],
       },

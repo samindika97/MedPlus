@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const addMessage = require("../controllers/contactus.controller");
+const {addMessage,getMessages} = require("../controllers/contactus.controller");
 
 router.post('/', addMessage);
+router.get('/', getMessages);
 
 module.exports = router;
