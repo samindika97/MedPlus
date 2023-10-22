@@ -62,7 +62,7 @@ const Clinic = () => {
                     <input
                         type="text"
                         id="type"
-                        className={errors.type && touched.type ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
+                        className={errors.type && touched.type ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
                         value={values.type}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -74,7 +74,7 @@ const Clinic = () => {
                     <input
                         type="text"
                         id="day"
-                        className={errors.day && touched.day ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
+                        className={errors.day && touched.day ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
                         value={values.day}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -86,7 +86,7 @@ const Clinic = () => {
                     <input
                         type="text"
                         id="time"
-                        className={errors.time && touched.time ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
+                        className={errors.time && touched.time ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
                         value={values.time}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -98,7 +98,7 @@ const Clinic = () => {
                     <input
                         type="text"
                         id="doctors"
-                        className={errors.doctors && touched.doctors ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
+                        className={errors.doctors && touched.doctors ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
                         value={values.doctors}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -110,7 +110,7 @@ const Clinic = () => {
                     <input
                         type="text"
                         id="additional"
-                        className={"shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
+                        className={"shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
                         value={values.additional}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -121,13 +121,14 @@ const Clinic = () => {
                 <br />
                 <select
                     id="hospital"
-                    className="py-4"
+                    className="py-4 font-light"
                     value={values.hospital}
                     onBlur={handleBlur}
                     onChange={handleChange}
                 >
                     <option value="">Select Hospital From the List</option>
                     {hospitalData.map((dataObj) => {
+                        console.log(dataObj._id);
                         return (
                             <option value={dataObj._id} key={dataObj._id} id={dataObj._id}>{dataObj.hospital_name}</option>
                         );
@@ -141,13 +142,15 @@ const Clinic = () => {
             <div>
                 {clinicData.map((dataObj, index) => {
                     return (
-                        <div className="border-solid border-2 border-teal p-4 m-2 rounded-2xl flex flex-row gap-6 bg-mintGree" key={index}>
-
-                            <p>{dataObj.type}</p>
-                            <p>{dataObj.day}</p>
-                            <p>{dataObj.time}</p>
-                            <p>{dataObj.hospital.hospital_name}</p>
-                            <p>{dataObj.doctors}</p>
+                        <div className="border-solid border-2 border-teal p-4 m-2 rounded-2xl flex flex-col gap-6 bg-mintGree" key={index}>
+                            <div>
+                                <p>Clinc Type : {dataObj.type}</p>
+                                <p>{dataObj.day} {dataObj.time}</p>
+                            </div>
+                            <div>
+                                <p>{dataObj.doctors}</p>
+                                <p>{dataObj.hospital.hospital_name}</p>
+                            </div>
                             <p>{dataObj.additional_dsc}</p>
                         </div>
 
