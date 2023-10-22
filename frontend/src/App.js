@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
-import AboutUs  from "./pages/Aboutus";
+import AboutUs from "./pages/Aboutus";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 
@@ -21,27 +21,22 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    // loader: rootLoader,
     children: [
       {
         path: "/",
         element: <Home />,
-        // loader: teamLoader,
       },
       {
         path: "/about-us",
         element: <AboutUs />,
-        // loader: teamLoader,
       },
       {
         path: "/services",
         element: <p>services</p>,
-        // loader: teamLoader,
       },
       {
         path: "/contact-us",
         element: <p>contact us</p>,
-        // loader: teamLoader,
       },
       {
         path: "/features",
