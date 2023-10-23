@@ -16,15 +16,7 @@ const Home = () => {
             Your Gateway to <span className="text-teal">Better Health</span>
           </p>
           <p className="mt-3 w-4/5 text-sm text-blue text-justify">
-            <br/>Welcome to MedPlus, your trusted companion on the journey to
-            well-being. Our comprehensive platform is designed to empower you
-            with accurate health information, seamless access to medical
-            resources, and expert guidance, all in one place. Whether you're
-            exploring preventive measures, searching for answers to health
-            concerns, or seeking the nearest healthcare facility, MedPlus is
-            your gateway to better health. We believe that informed decisions
-            and proactive care lead to a healthier, happier life. Start your
-            wellness journey with MedPlus today. Your health, your control!
+            <br/>Welcome to MedPlus, where your well-being takes center stage. Discover accurate health information, find nearby healthcare facilities, and take control of your health journey. It's time to prioritize your health with MedPlus.
           </p>
           <button className="mt-3 rounded-3xl bg-teal px-10 py-1">
             <p className="font-semibold uppercase text-white">sign in</p>
