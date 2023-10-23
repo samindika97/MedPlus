@@ -30,3 +30,12 @@ exports.getClinic = async(req,res)=>{
         res.status(500).json({ error: "Server error" });
       } 
 };
+
+exports.deleteClinic = async(req,res)=>{
+  try{
+    const id = req.params.id
+  }
+  catch{
+
+  }
+};
