@@ -17,16 +17,7 @@ const AboutUs = () => {
         <div className="flex flex-1 flex-col items-start justify-center">
           <img src={medPlusLogo} alt="MedPlus logo" className="mb-10 h-8" />
           <p className="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            placerat, risus eu lacinia convallis, dolor risus dignissim felis,
-            quis convallis felis dui quis nulla. Nullam scelerisque a sapien ut
-            cursus. Proin volutpat est ut eros tempus, in posuere velit
-            convallis. Nam ut ligula id dolor rutrum ornare. Nullam sed bibendum
-            quam, a porttitor sem. Mauris et dui vulputate, mollis nisi commodo,
-            commodo nunc. Integer vel erat hendrerit, finibus arcu vitae,
-            tincidunt lorem. Cras finibus at augue quis dignissim. Aenean
-            accumsan at dui non convallis. Donec et mi sit amet erat sodales
-            blandit ac a ex.
+          At MedPlus, our journey is driven by a shared passion for enhancing your health and well-being. Founded with the vision to provide accurate health information, facilitate easy access to healthcare resources, and empower individuals to make informed decisions about their health, we are committed to your betterment. Our dedicated team of professionals and experts is dedicated to creating a healthier and more informed world. Discover the story behind MedPlus and the people who strive to make a positive impact on your health journey.
           </p>
         </div>
         <img src={headerimage} alt="about us header" className="flex-1" />

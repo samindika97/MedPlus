@@ -14,7 +14,7 @@ import HospitalDetails from "./pages/features/HospitalDetails";
 import ContactDoctor from "./pages/features/ContactDoctor";
 
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
-import Dashboard from "./components/Dashboard";
+import DashboardHomePage from "./pages/adminDashboard/DashboardHomePage";
 
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin-dashboard/",
-            element: <Dashboard />,
+            element: <DashboardHomePage />,
           },
           {
             path: "/admin-dashboard/symptoms",
