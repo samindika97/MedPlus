@@ -5,12 +5,13 @@ import * as Yup from "yup";
 
 import DeleteSymptomModal from "../../modals/DeleteSymptomModal";
 import EditSymptomModal from "../../modals/EditSymptomModal";
-import { DeleteIcon, EditIcon } from "../../icons/icon";
+import { DeleteIcon, EditIcon, SearchIcon } from "../../icons/icon";
 import { TextInputWithLabel as TextInput } from "../../components/FormikElements";
 
 import BASE_URL from "../../config/ApiConfig";
 
 const Symptoms = () => {
+  const [searchSymptoms, setSearchSymptoms] = useState("");
   const [symptoms, setSymptoms] = useState([]);
   const [addSymptomMessage, setAddSymptomMessage] = useState(null);
   const [editSymptomModalOpen, setEditSymptomModalOpen] = useState(false);
@@ -104,6 +105,10 @@ const Symptoms = () => {
     setDeleteSymptomModalOpen(true);
   };
 
+  const filteredSymptoms = symptoms.filter((symptom) => {
+    return symptom.name.includes(searchSymptoms);
+  });
+
   return (
     <div className="flex w-full gap-5">
       <div className="flex h-full w-1/3 flex-col gap-3">
@@ -159,7 +164,7 @@ const Symptoms = () => {
               <p className="font-semibold capitalize ">
                 {clickedSymptom.name} :{" "}
               </p>
-              <ul className="list-disc ml-5">
+              <ul className="ml-5 list-disc">
                 {associatedDiseases &&
                   associatedDiseases.map((disease) => (
                     <li key={disease._id}>{disease.name}</li>
@@ -173,49 +178,61 @@ const Symptoms = () => {
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col gap-3 max-h-96 overflow-y-auto">
-        {symptoms &&
-          symptoms.map((symptom) => (
-            <div
-              className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-lightGrey p-3"
-              key={symptom._id}
-              onClick={() => getAssociatedDiseases(symptom)}
-            >
-              <p className="font-semibold capitalize">{symptom.name}</p>
-              <div className="flex gap-5">
-                <button
-                  className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
-                  onClick={() => openEditSymptomModal(symptom)}
-                >
-                  <EditIcon fontSize="small" />
-                  <p className="text-sm font-semibold uppercase">edit</p>
-                </button>
-                <button
-                  className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
-                  onClick={() => openDeleteSymptomModal(symptom)}
-                >
-                  <DeleteIcon fontSize="small" />
-                  <p className="text-sm font-semibold uppercase">delete</p>
-                </button>
+      <div className="flex w-full flex-col items-end">
+        <div className="mb-5 flex gap-2">
+          <input
+            className="rounded-lg border border-grey p-2 outline-none"
+            onChange={(e) => setSearchSymptoms(e.target.value)}
+            value={searchSymptoms}
+          />
+          <div className="w-max rounded-lg bg-teal p-2">
+            <SearchIcon className="text-white" />
+          </div>
+        </div>
+        <div className="flex max-h-96 w-full flex-col gap-3 overflow-y-auto">
+          {symptoms &&
+            filteredSymptoms.map((symptom) => (
+              <div
+                className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-lightGrey p-3"
+                key={symptom._id}
+                onClick={() => getAssociatedDiseases(symptom)}
+              >
+                <p className="font-semibold capitalize">{symptom.name}</p>
+                <div className="flex gap-5">
+                  <button
+                    className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
+                    onClick={() => openEditSymptomModal(symptom)}
+                  >
+                    <EditIcon fontSize="small" />
+                    <p className="text-sm font-semibold uppercase">edit</p>
+                  </button>
+                  <button
+                    className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
+                    onClick={() => openDeleteSymptomModal(symptom)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                    <p className="text-sm font-semibold uppercase">delete</p>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        {editModalSymptom && (
-          <EditSymptomModal
-            isModalOpen={editSymptomModalOpen}
-            modalClose={closeEditSymptomModal}
-            symptom={editModalSymptom}
-            setSymptoms={setSymptoms}
-          />
-        )}
-        {deleteModalSymptom && (
-          <DeleteSymptomModal
-            isModalOpen={deleteSymptomModalOpen}
-            modalClose={closeDeleteSymptomModal}
-            symptom={deleteModalSymptom}
-            setSymptoms={setSymptoms}
-          />
-        )}
+            ))}
+          {editModalSymptom && (
+            <EditSymptomModal
+              isModalOpen={editSymptomModalOpen}
+              modalClose={closeEditSymptomModal}
+              symptom={editModalSymptom}
+              setSymptoms={setSymptoms}
+            />
+          )}
+          {deleteModalSymptom && (
+            <DeleteSymptomModal
+              isModalOpen={deleteSymptomModalOpen}
+              modalClose={closeDeleteSymptomModal}
+              symptom={deleteModalSymptom}
+              setSymptoms={setSymptoms}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
