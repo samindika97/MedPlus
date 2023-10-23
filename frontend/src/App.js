@@ -3,17 +3,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
-import AboutUs  from "./pages/Aboutus";
+import AboutUs from "./pages/Aboutus";
 import ContactUs from "./pages/Contactus";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
-
+import FeaturesHomePage from "./pages/features/FeaturesHomePage";
 import SymptomChecker from "./pages/features/SymptomChecker";
 import LabReportAnalyser from "./pages/features/LabReportAnalyzer";
 import HospitalDetails from "./pages/features/HospitalDetails";
 import ContactDoctor from "./pages/features/ContactDoctor";
 
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
+import Dashboard from "./components/Dashboard";
 
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
@@ -24,22 +25,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    // loader: rootLoader,
     children: [
       {
         path: "/",
         element: <Home />,
-        // loader: teamLoader,
       },
       {
         path: "/about-us",
         element: <AboutUs />,
-        // loader: teamLoader,
       },
       {
         path: "/services",
         element: <p>services</p>,
-        // loader: teamLoader,
       },
       {
         path: "/contact-us",
@@ -52,7 +49,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/features/",
-            element: <div>all features page</div>,
+            element: <FeaturesHomePage />,
           },
           {
             path: "/features/symptom-checker",
@@ -78,7 +75,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin-dashboard/",
-            element: <div>admin dashboard page</div>,
+            element: <Dashboard />,
           },
           {
             path: "/admin-dashboard/symptoms",
