@@ -11,13 +11,20 @@ const Home = () => {
       <div className="my-10 flex h-96 justify-between">
         <div className="flex w-1/2 flex-col items-start justify-center">
           <p className="text-5xl font-bold text-blue">
-            Lorem ipsum dolor sit amet,{" "}
-            <span className="text-teal">consectetur adipiscing</span> elit.
+            Unlocking Wellness:
+            <br />
+            Your Gateway to <span className="text-teal">Better Health</span>
           </p>
-          <p className="mt-3 w-4/5 text-sm text-blue">
-            Mauris lectus justo, tincidunt non ante nec, bibendum lobortis odio.
-            Maecenas iaculis auctor neque eget elementum. Proin pulvinar ex est,
-            eget convallis mi malesuada ac.
+          <p className="mt-3 w-4/5 text-sm text-blue text-justify">
+            <br/>Welcome to MedPlus, your trusted companion on the journey to
+            well-being. Our comprehensive platform is designed to empower you
+            with accurate health information, seamless access to medical
+            resources, and expert guidance, all in one place. Whether you're
+            exploring preventive measures, searching for answers to health
+            concerns, or seeking the nearest healthcare facility, MedPlus is
+            your gateway to better health. We believe that informed decisions
+            and proactive care lead to a healthier, happier life. Start your
+            wellness journey with MedPlus today. Your health, your control!
           </p>
           <button className="mt-3 rounded-3xl bg-teal px-10 py-1">
             <p className="font-semibold uppercase text-white">sign in</p>
