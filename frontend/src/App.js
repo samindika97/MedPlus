@@ -19,6 +19,7 @@ import DashboardHomePage from "./pages/adminDashboard/DashboardHomePage";
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
 import Messages from "./pages/adminDashboard/Messages";
+import Doctors from "./pages/adminDashboard/Doctors";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
             path: "/admin-dashboard/messages",
             element: <Messages />,
           },
+          {
+            path:"/admin-dashboard/doctors",
+            element: <Doctors/>
+          }
         ],
       },
     ],
