@@ -5,6 +5,7 @@ import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import AboutUs from "./pages/Aboutus";
 import ContactUs from "./pages/Contactus";
+import DoctorDetails from "./pages/DoctorDetails";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 import FeaturesHomePage from "./pages/features/FeaturesHomePage";
@@ -43,6 +44,11 @@ const router = createBrowserRouter([
         element: <ContactUs />,
         // loader: teamLoader,
       },
+      {
+        path:"/Doctor-details",
+        element: <DoctorDetails/>,
+      },
+
       {
         path: "/features",
         element: <FeaturesLayout />,
