@@ -25,7 +25,6 @@ exports.addDoctor = async (req, res) => {
   }
 };
 
-
 exports.deleteDoctor = async (req, res) => {
   const id = req.params.id;
 

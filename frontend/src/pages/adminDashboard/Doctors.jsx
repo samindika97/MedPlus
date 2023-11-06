@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { TextInputWithLabel as TextInput } from "../../components/FormikElements";
-import { DeleteIcon, EditIcon, SearchIcon } from "../../icons/icon";
-//import { toast } from "react-toastify";
+import { DeleteIcon, SearchIcon } from "../../icons/icon";
 import * as Yup from "yup";
 import DeleteDoctorModal from "../../modals/doctorModals/deleteDocotorModal";
-import EditDoctorModal from "../../modals/doctorModals/editDoctorModal";
 import axios from "axios";
 
 import BASE_URL from "../../config/ApiConfig";
@@ -13,8 +11,6 @@ const Doctors = () => {
   const [doctors, setDoctor] = useState([]);
   const [searchDoctor, setSearchDoctor] = useState("");
   const [addDoctorMessage, setAddDoctorMessage] = useState(null);
-  const [editDoctorModalOpen, setEditDoctorModalOpen] = useState(false);
-  const [editModalDoctor, setEditModalDoctor] = useState(null);
   const [deleteDoctorModalOpen, setDeleteDoctorModalOpen] = useState(false);
   const [deleteModalDoctor, setDeleteModalDoctor] = useState(null);
 
@@ -33,8 +29,6 @@ const Doctors = () => {
     axios(axiosConfig)
       .then((response) => {
         setDoctor((prev) => [response.data.result, ...prev]);
-        // Display a success toast message
-        setAddDoctorMessage("Doctor added successfully");
       })
       .catch((err) => {
         setAddDoctorMessage("Doctor with the same name exists");
@@ -62,15 +56,6 @@ const Doctors = () => {
   useEffect(() => {
     fetchDoctor();
   }, []);
-
-  const closeEditDoctorModal = () => {
-  setEditDoctorModalOpen(false);
-  };
-
-  const openEditDoctorModal = (doctor) => {
-    setEditModalDoctor(doctor);
-     setEditDoctorModalOpen(true);
-  };
 
   const closeDeleteDoctorModal = () => {
     setDeleteDoctorModalOpen(false);
@@ -168,13 +153,6 @@ const Doctors = () => {
                   <p className="font-semibold capitalize">{doctor.name}</p>
                   <div className="flex gap-5">
                     <button
-                      className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
-                      onClick={() => openEditDoctorModal(doctor)}
-                    >
-                      <EditIcon fontSize="small" />
-                      <p className="text-sm font-semibold uppercase">edit</p>
-                    </button>
-                    <button
                       className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
                       onClick={() => openDeleteDoctorModal(doctor)}
                     >
@@ -194,14 +172,6 @@ const Doctors = () => {
               </div>
             ))}
 
-          {editModalDoctor && (
-            <EditDoctorModal
-              isModalOpen={editDoctorModalOpen}
-              modalClose={closeEditDoctorModal}
-              doctor={editModalDoctor}
-              setDoctor={setDoctor}
-            />
-          )}
           {deleteModalDoctor && (
             <DeleteDoctorModal
               isModalOpen={deleteDoctorModalOpen}

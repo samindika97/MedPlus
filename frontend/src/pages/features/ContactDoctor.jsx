@@ -32,6 +32,8 @@ const ContactDoctor = () => {
     fetchDoctor();
   }, []);
 
+  console.log("Doctor:", doctors);
+
   const filteredDoctor = doctors.filter((doctor) => {
     return doctor && doctor.name && doctor.name.includes(searchDoctor);
   });
@@ -76,11 +78,11 @@ const ContactDoctor = () => {
                 <img
                   className=" rounded-xl"
                   src={DoctorImg}
-                  alt="doctor image"
+                  alt="doctor"
                 />
               </div>
 
-              <h2 className=" mt-3 text-[18px] font-[700] capitalize leading-[30px] text-teal lg:mt-1 lg:text-[26px] lg:leading-9">
+              <h2 className=" mt-3 text-[18px] font-[500] capitalize leading-[30px] text-teal lg:mt-1 lg:text-[26px] lg:leading-9">
                 {doctor.name}
               </h2>
               <div className=" item-center mt-2 flex justify-between lg:mt-4">
@@ -88,7 +90,7 @@ const ContactDoctor = () => {
                   {doctor.specialization}
                 </span>
               </div>
-              <NavLink className="h-5" to="/Doctor-details">
+              <NavLink className="h-5" to={`/doctor/${doctor._id}`}>
                 <div>
                   <button className="mt-3 w-full rounded-lg  bg-teal px-10 py-1">
                     <p className="font-[500] uppercase text-white">Contact</p>
