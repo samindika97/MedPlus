@@ -1,22 +1,31 @@
 import React from "react";
-import CustomAngleCircle from "../../assets/Custom-Angle-Circle.png";
-import GradientChart from "../../assets/Gradient-Chart.png";
-import LineColumnChart from "../../assets/Line-&-Column-Chart.png";
-import StackedColumn from "../../assets/Stacked-Column.png";
-import Dashed from "../../assets/Dashed.png";
+import Chart from "react-apexcharts";
+
+import {
+  barChartData,
+  lineChartData,
+  donutChartData,
+} from "../../data/charts/chartData";
+
 const DashboardHomePage = () => {
   return (
-    <div className="grid grid-cols-3">
+    <div className="grid grid-cols-3 gap-3">
       <div className="flex items-center justify-start">
         <p className="text-6xl font-bold text-blue">
           Welcome to Admin Dashboard
         </p>
       </div>
-      <img src={CustomAngleCircle} alt="customAngle_image" className="h-60" />
-      <img src={GradientChart} alt="gradient_image" className="h-60" />
-      <img src={LineColumnChart} alt="linecolumn_image" className="h-60" />
-      <img src={StackedColumn} alt="stackedcolumn_image" className="h-60" />
-      <img src={Dashed} alt="dashed_image" className="h-60" />
+      <Chart
+        options={barChartData.options}
+        series={barChartData.series}
+        type="bar"
+      />
+      <Chart options={lineChartData.options} series={lineChartData.series} />
+      <Chart
+        type="pie"
+        options={donutChartData.options}
+        series={donutChartData.series}
+      />
     </div>
   );
 };

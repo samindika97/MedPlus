@@ -8,7 +8,7 @@ import { featuresTabs } from "../data/data";
 const Home = () => {
   return (
     <div className="flex h-full flex-col justify-between gap-10">
-      <div className="flex h-96 justify-between">
+      <div className="flex h-96 justify-between space-y-10">
         <div className="flex w-1/2 flex-col items-start justify-center">
           <p className="text-5xl font-bold text-blue">
             Unlocking Wellness:
