@@ -34,9 +34,22 @@ export const featuresTabs = [
   },
 ];
 
+export const specialization = [
+  {
+    choices: 
+      [
+        { value: "Cardiologist", label: "Cardiologist" },
+        { value: "Dermatologist", label: "Dermatologist" },
+        // Add more options in the same format
+      ]
+    
+  }
+];
+
 export const adminDashboardTabs = [
   { name: "symptoms", link: "/admin-dashboard/symptoms" },
   { name: "diseases", link: "/admin-dashboard/diseases" },
   { name: "clinic", link: "/admin-dashboard/clinic" },
   { name: "messages", link: "/admin-dashboard/messages" },
+  { name: "doctors", link: "/admin-dashboard/doctors"}
 ];

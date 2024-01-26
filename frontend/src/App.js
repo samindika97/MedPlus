@@ -1,10 +1,12 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import AboutUs from "./pages/Aboutus";
 import ContactUs from "./pages/Contactus";
+import DoctorDetails from "./pages/doctor/DoctorDetails";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
 import FeaturesHomePage from "./pages/features/FeaturesHomePage";
@@ -13,12 +15,15 @@ import LabReportAnalyser from "./pages/features/LabReportAnalyzer";
 import HospitalDetails from "./pages/features/HospitalDetails";
 import ContactDoctor from "./pages/features/ContactDoctor";
 
+import UserChat from "./pages/ChatPage/UserChat";
+
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 import DashboardHomePage from "./pages/adminDashboard/DashboardHomePage";
 
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
 import Messages from "./pages/adminDashboard/Messages";
+import Doctors from "./pages/adminDashboard/Doctors";
 import Clinic from "./pages/adminDashboard/Clinic";
 
 const router = createBrowserRouter([
@@ -43,6 +48,17 @@ const router = createBrowserRouter([
         element: <ContactUs />,
         // loader: teamLoader,
       },
+      {
+        path: "/doctor/:id",
+        element: <DoctorDetails />,
+      },
+
+      {
+        path:"/user-chat",
+        element:<UserChat/>
+      },
+      
+      
       {
         path: "/features",
         element: <FeaturesLayout />,
@@ -88,6 +104,10 @@ const router = createBrowserRouter([
           {
             path: "/admin-dashboard/messages",
             element: <Messages />,
+          },
+          {
+            path:"/admin-dashboard/doctors",
+            element: <Doctors/>
           },
           {
             path: "/admin-dashboard/clinic",
