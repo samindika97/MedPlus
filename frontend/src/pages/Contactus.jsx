@@ -8,6 +8,7 @@ import contactUsImage from "../assets/contactUsImage.jpg";
 import BASE_URL from "../config/ApiConfig";
 
 const onSubmit = async (values) => {
+    values.preventDefault();
     const form_data = JSON.stringify(values, null, 2);
     const config = {
         headers: { "content-type": "application/json" }
