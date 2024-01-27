@@ -6,8 +6,7 @@ import { logInSchema } from "../schemas/logInSchema";
 
 import { useLoginMutation } from "../services/authService";
 
-import doctorVector from "../assets/SignInPageVector.png";
-import medPlusLogo from "../assets/MedPlusLogo.png";
+import { urlSlug } from "../utils/urlSlug";
 
 export const TextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -44,77 +43,55 @@ const SignIn = () => {
   };
 
   return (
-    <div className="bg-babyBlue flex h-screen w-screen">
-      <div className="flex w-full items-center justify-center p-3 lg:w-1/2">
-        <div className="z-10 flex h-full w-full max-w-md flex-col justify-between rounded-3xl bg-white p-6">
-          <div className="">
-            <img src={medPlusLogo} alt="MedPlus Logo" className="h-6" />
-          </div>
-          <div className="w-full">
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-              }}
-              validationSchema={logInSchema}
-              onSubmit={handleSubmit}
+    <div className="w-full">
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={logInSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form className="mt-3 flex w-full flex-col">
+          <TextInput
+            label="Email"
+            name="email"
+            type="text"
+            placeholder="johndoe@gmail.com"
+          />
+
+          <TextInput
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="********"
+          />
+
+          {error && (
+            <div className="my-3 rounded-lg border border-red p-3 text-sm">
+              <p className="text-red">{error}</p>
+            </div>
+          )}
+
+          <div className="mt-3 flex">
+            <button
+              className="w-full rounded-lg border-none bg-teal p-2 outline-none"
+              type="submit"
             >
-              <Form className="mt-3 flex w-full flex-col">
-                <TextInput
-                  label="Email"
-                  name="email"
-                  type="text"
-                  placeholder="johndoe@gmail.com"
-                />
-
-                <TextInput
-                  label="Password"
-                  name="password"
-                  type="password"
-                  placeholder="********"
-                />
-
-                {error && (
-                  <div className="my-3 rounded-lg border border-red p-3 text-sm">
-                    <p className="text-red">{error}</p>
-                  </div>
-                )}
-
-                <div className="mt-3 flex">
-                  <button
-                    className="w-full rounded-lg border-none bg-teal p-2 outline-none"
-                    type="submit"
-                  >
-                    <p className="text-sm font-semibold uppercase text-white">
-                      sign in
-                    </p>
-                  </button>
-                </div>
-              </Form>
-            </Formik>
-
-            <p className="mt-5 text-sm font-semibold">
-              New to MedPlus?{" "}
-              <Link to="/register">
-                <span className="capitalize text-teal underline">
-                  create account
-                </span>
-              </Link>
-            </p>
+              <p className="text-sm font-semibold uppercase text-white">
+                sign in
+              </p>
+            </button>
           </div>
-          <p className="text-xs capitalize">
-            MedPlus&copy; - sample MERN stack project
-          </p>
-        </div>
-      </div>
-      <div className="hidden w-1/2 items-center justify-center py-3 lg:flex">
-        <div className="bg-babyBlue h-full w-2/3 rounded-3xl"></div>
-        <img
-          src={doctorVector}
-          alt="doctor vector"
-          className="absolute right-0 top-1/2 h-5/6 -translate-y-1/2"
-        />
-      </div>
+        </Form>
+      </Formik>
+
+      <p className="mt-5 text-sm font-semibold">
+        New to MedPlus?{" "}
+        <Link to={urlSlug.REGISTER}>
+          <span className="capitalize text-teal underline">create account</span>
+        </Link>
+      </p>
     </div>
   );
 };
