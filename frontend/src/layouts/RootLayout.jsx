@@ -11,12 +11,9 @@ const bodyHeight = screenHeight - 116;
 
 const RootLayout = () => {
   return (
-    <div className="min-h-screen">
+    <div className="h-screen">
       <Navbar />
-      <div
-        className={`container mx-auto`}
-        style={{ minHeight: `${bodyHeight}px`, height: `${bodyHeight}px` }}
-      >
+      <div className={`container mx-auto h-[calc(100vh-42px)]`}>
         <Outlet />
       </div>
     </div>

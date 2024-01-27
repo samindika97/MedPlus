@@ -6,6 +6,10 @@ const dbConnect = require("./config/dbConnect");
 const authRoutes = require("./routes/auth.route");
 const symptomRoutes = require("./routes/symptom.route");
 const diseaseRoutes = require("./routes/disease.route");
+const messageRoutes = require("./routes/message.route");
+const hospitalRoutes =  require("./routes/hospital.route");
+const clinicRoutes = require("./routes/clinic.route");
+const doctorRoutes = require("./routes/doctor.route");
 
 require("dotenv").config();
 
@@ -19,6 +23,10 @@ app.use(cors());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/symptoms", symptomRoutes);
 app.use("/api/v1/diseases", diseaseRoutes);
+app.use("/api/v1/message", messageRoutes);
+app.use("/api/v1/hospital", hospitalRoutes);
+app.use("/api/v1/clinic", clinicRoutes);
+app.use("/api/v1/doctor", doctorRoutes);
 
 dbConnect();
 

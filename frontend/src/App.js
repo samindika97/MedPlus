@@ -1,22 +1,32 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
+import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/Contactus";
+import DoctorDetails from "./pages/doctor/DoctorDetails";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 
 import FeaturesLayout from "./layouts/FeaturesLayout";
-
+import FeaturesHomePage from "./pages/features/FeaturesHomePage";
 import SymptomChecker from "./pages/features/SymptomChecker";
 import LabReportAnalyser from "./pages/features/LabReportAnalyzer";
 import HospitalDetails from "./pages/features/HospitalDetails";
 import ContactDoctor from "./pages/features/ContactDoctor";
 
+import UserChat from "./pages/ChatPage/UserChat";
+
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
+import DashboardHomePage from "./pages/adminDashboard/DashboardHomePage";
 
 import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
+import Messages from "./pages/adminDashboard/Messages";
+import Doctors from "./pages/adminDashboard/Doctors";
+import Clinic from "./pages/adminDashboard/Clinic";
 
 const router = createBrowserRouter([
   {
@@ -30,35 +40,42 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    // loader: rootLoader,
     children: [
       {
         path: "/",
         element: <Home />,
-        // loader: teamLoader,
       },
       {
         path: "/about-us",
-        element: <p>about us</p>,
-        // loader: teamLoader,
+        element: <AboutUs />,
       },
       {
         path: "/services",
         element: <p>services</p>,
-        // loader: teamLoader,
       },
       {
         path: "/contact-us",
-        element: <p>contact us</p>,
+        element: <ContactUs />,
         // loader: teamLoader,
       },
+      {
+        path: "/doctor/:id",
+        element: <DoctorDetails />,
+      },
+
+      {
+        path:"/user-chat",
+        element:<UserChat/>
+      },
+      
+      
       {
         path: "/features",
         element: <FeaturesLayout />,
         children: [
           {
             path: "/features/",
-            element: <div>all features page</div>,
+            element: <FeaturesHomePage />,
           },
           {
             path: "/features/symptom-checker",
@@ -84,7 +101,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/admin-dashboard/",
-            element: <div>admin dashboard page</div>,
+            element: <DashboardHomePage />,
           },
           {
             path: "/admin-dashboard/symptoms",
@@ -93,6 +110,18 @@ const router = createBrowserRouter([
           {
             path: "/admin-dashboard/diseases",
             element: <Diseases />,
+          },
+          {
+            path: "/admin-dashboard/messages",
+            element: <Messages />,
+          },
+          {
+            path:"/admin-dashboard/doctors",
+            element: <Doctors/>
+          },
+          {
+            path: "/admin-dashboard/clinic",
+            element: <Clinic />,
           },
         ],
       },

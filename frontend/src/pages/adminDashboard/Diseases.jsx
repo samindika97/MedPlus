@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import DeleteDiseaseModal from "../../modals/DeleteDiseaseModal";
 import EditDiseaseModal from "../../modals/EditDiseaseModal";
-import { DeleteIcon, EditIcon } from "../../icons/icon";
+import { DeleteIcon, EditIcon, SearchIcon } from "../../icons/icon";
 import {
   TextInputWithLabel as TextInput,
   TextAreaWithLabel as TextArea,
@@ -15,6 +15,7 @@ import CustomSelect from "../../components/CustomSelect";
 import BASE_URL from "../../config/ApiConfig";
 
 const Diseases = () => {
+  const [searchDiseases, setSearchDiseases] = useState("");
   const [diseases, setDiseases] = useState([]);
   const [symptoms, setSymptoms] = useState([]);
   const [addDiseasesMessage, setAddDiseasesMessage] = useState(null);
@@ -116,6 +117,10 @@ const Diseases = () => {
     setDeleteDiseasesModalOpen(true);
   };
 
+  const filteredDiseases = diseases.filter((disease) => {
+    return disease.name.includes(searchDiseases);
+  });
+
   return (
     <div className="flex w-full gap-5">
       <div className="h-full w-1/3 rounded-xl border border-grey p-3">
@@ -180,62 +185,74 @@ const Diseases = () => {
           </Form>
         </Formik>
       </div>
-      <div className="flex w-full flex-col gap-3">
-        {diseases &&
-          diseases.map((disease) => (
-            <div
-              className="flex w-full flex-col rounded-xl bg-lightGrey p-3"
-              key={disease._id}
-            >
-              <div className="mb-2 flex w-full items-center justify-between">
-                <p className="font-semibold capitalize">{disease.name}</p>
-                <div className="flex gap-5">
-                  <button
-                    className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
-                    onClick={() => openEditDiseasesModal(disease)}
-                  >
-                    <EditIcon fontSize="small" />
-                    <p className="text-sm font-semibold uppercase">edit</p>
-                  </button>
-                  <button
-                    className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
-                    onClick={() => openDeleteDiseasesModal(disease)}
-                  >
-                    <DeleteIcon fontSize="small" />
-                    <p className="text-sm font-semibold uppercase">delete</p>
-                  </button>
+      <div className="flex w-full flex-col items-end">
+        <div className="mb-5 flex gap-2">
+          <input
+            className="rounded-lg border border-grey p-2 outline-none"
+            onChange={(e) => setSearchDiseases(e.target.value)}
+            value={searchDiseases}
+          />
+          <div className="w-max rounded-lg bg-teal p-2">
+            <SearchIcon className="text-white" />
+          </div>
+        </div>
+        <div className="flex max-h-96 w-full flex-col gap-3 overflow-y-auto">
+          {diseases &&
+            filteredDiseases.map((disease) => (
+              <div
+                className="flex w-full flex-col rounded-xl bg-lightGrey p-3"
+                key={disease._id}
+              >
+                <div className="mb-2 flex w-full items-center justify-between">
+                  <p className="font-semibold capitalize">{disease.name}</p>
+                  <div className="flex gap-5">
+                    <button
+                      className="flex items-center gap-1 rounded-lg border border-blue px-3 py-1 text-blue outline-none"
+                      onClick={() => openEditDiseasesModal(disease)}
+                    >
+                      <EditIcon fontSize="small" />
+                      <p className="text-sm font-semibold uppercase">edit</p>
+                    </button>
+                    <button
+                      className="flex items-center gap-1 rounded-lg border border-red px-3 py-1 text-red outline-none"
+                      onClick={() => openDeleteDiseasesModal(disease)}
+                    >
+                      <DeleteIcon fontSize="small" />
+                      <p className="text-sm font-semibold uppercase">delete</p>
+                    </button>
+                  </div>
+                </div>
+                <p className="text-sm capitalize">{disease.content}</p>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  {disease.symptoms &&
+                    disease.symptoms.map((symptom) => (
+                      <div
+                        className="rounded-lg bg-grey px-3 py-1"
+                        key={symptom.name}
+                      >
+                        <p className="text-sm font-semibold">{symptom.name}</p>
+                      </div>
+                    ))}
                 </div>
               </div>
-              <p className="text-sm capitalize">{disease.content}</p>
-              <div className="mt-3 flex flex-wrap gap-3">
-                {disease.symptoms &&
-                  disease.symptoms.map((symptom) => (
-                    <div
-                      className="rounded-lg bg-grey px-3 py-1"
-                      key={symptom.name}
-                    >
-                      <p className="text-sm font-semibold">{symptom.name}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
-        {editModalDiseases && (
-          <EditDiseaseModal
-            isModalOpen={editDiseasesModalOpen}
-            modalClose={closeEditDiseasesModal}
-            disease={editModalDiseases}
-            setDiseases={setDiseases}
-          />
-        )}
-        {deleteModalDiseases && (
-          <DeleteDiseaseModal
-            isModalOpen={deleteDiseasesModalOpen}
-            modalClose={closeDeleteDiseasesModal}
-            disease={deleteModalDiseases}
-            setDiseases={setDiseases}
-          />
-        )}
+            ))}
+          {editModalDiseases && (
+            <EditDiseaseModal
+              isModalOpen={editDiseasesModalOpen}
+              modalClose={closeEditDiseasesModal}
+              disease={editModalDiseases}
+              setDiseases={setDiseases}
+            />
+          )}
+          {deleteModalDiseases && (
+            <DeleteDiseaseModal
+              isModalOpen={deleteDiseasesModalOpen}
+              modalClose={closeDeleteDiseasesModal}
+              disease={deleteModalDiseases}
+              setDiseases={setDiseases}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
