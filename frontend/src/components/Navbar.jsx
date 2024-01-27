@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import MedPlusLogo from "../assets/MedPlusLogo.png";
 import { navbarTabs } from "../data/data";
 import { MenuIcon } from "../icons/icon";
 
 const Navbar = () => {
-  const { username, loggedIn } = useSelector((state) => state.userReducer);
   const [navBarView, setNavBarView] = useState(false);
 
   const toggleNavBar = () => {
@@ -60,26 +58,26 @@ const Navbar = () => {
             <p className="font-semibold uppercase">{tab.name}</p>
           </NavLink>
         ))}
-        {loggedIn ? (
+        {/* {loggedIn ? (
           <div className="rounded-3xl bg-blue px-10 py-1">
             <p className="font-semibold uppercase text-white">log out</p>
           </div>
-        ) : (
-          <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
-            <p className="font-semibold uppercase text-white">sign in</p>
-          </NavLink>
-        )}
+        ) : ( */}
+        <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
+          <p className="font-semibold uppercase text-white">sign in</p>
+        </NavLink>
+        {/* )} */}
       </div>
       <div className="hidden gap-10 lg:flex">
-        {loggedIn ? (
+        {/* {loggedIn ? (
           <div className="rounded-3xl bg-blue px-10 py-1">
             <p className="font-semibold uppercase text-white">log out</p>
           </div>
-        ) : (
-          <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
-            <p className="font-semibold uppercase text-white">sign in</p>
-          </NavLink>
-        )}
+        ) : ( */}
+        <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
+          <p className="font-semibold uppercase text-white">sign in</p>
+        </NavLink>
+        {/* )} */}
       </div>
     </nav>
   );

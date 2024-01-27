@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, useField } from "formik";
-import * as Yup from "yup";
-import {
-  loginUser,
-  clearError,
-  userSelector,
-} from "../features/user/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+
+import { logInSchema } from "../schemas/logInSchema";
+
+import { useLoginMutation } from "../services/authService";
 
 import doctorVector from "../assets/SignInPageVector.png";
 import medPlusLogo from "../assets/MedPlusLogo.png";
@@ -36,21 +33,18 @@ export const TextInput = ({ label, ...props }) => {
 };
 
 const SignIn = () => {
-  const { error } = useSelector((state) => state.userReducer);
+  const [login, { error = "" }] = useLoginMutation({
+    fixedCacheKey: "auth-login",
+  });
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearError());
-  }, []);
-
-  const signIn = (values) => {
-    console.log(values);
-    dispatch(loginUser(values));
+  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    // handleLogin(values, resetForm);
+    login(values);
+    setSubmitting(false);
   };
 
   return (
-    <div className="flex h-screen w-screen bg-babyBlue">
+    <div className="bg-babyBlue flex h-screen w-screen">
       <div className="flex w-full items-center justify-center p-3 lg:w-1/2">
         <div className="z-10 flex h-full w-full max-w-md flex-col justify-between rounded-3xl bg-white p-6">
           <div className="">
@@ -62,17 +56,8 @@ const SignIn = () => {
                 email: "",
                 password: "",
               }}
-              validationSchema={Yup.object({
-                email: Yup.string()
-                  .email("Invalid email address")
-                  .required("Required"),
-                password: Yup.string().required("Required"),
-              })}
-              onSubmit={(values, { setSubmitting, resetForm }) => {
-                signIn(values);
-                setSubmitting(false);
-                resetForm({});
-              }}
+              validationSchema={logInSchema}
+              onSubmit={handleSubmit}
             >
               <Form className="mt-3 flex w-full flex-col">
                 <TextInput
@@ -123,7 +108,7 @@ const SignIn = () => {
         </div>
       </div>
       <div className="hidden w-1/2 items-center justify-center py-3 lg:flex">
-        <div className="h-full w-2/3 rounded-3xl bg-babyBlue"></div>
+        <div className="bg-babyBlue h-full w-2/3 rounded-3xl"></div>
         <img
           src={doctorVector}
           alt="doctor vector"
