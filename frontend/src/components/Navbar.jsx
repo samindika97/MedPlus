@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 import MedPlusLogo from "../assets/MedPlusLogo.png";
@@ -58,14 +58,26 @@ const Navbar = () => {
             <p className="font-semibold uppercase">{tab.name}</p>
           </NavLink>
         ))}
-        <button className="flex rounded-3xl bg-teal px-10 py-1 lg:hidden">
+        {/* {loggedIn ? (
+          <div className="rounded-3xl bg-blue px-10 py-1">
+            <p className="font-semibold uppercase text-white">log out</p>
+          </div>
+        ) : ( */}
+        <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
           <p className="font-semibold uppercase text-white">sign in</p>
-        </button>
+        </NavLink>
+        {/* )} */}
       </div>
       <div className="hidden gap-10 lg:flex">
-        <button className="rounded-3xl bg-teal px-10 py-1">
+        {/* {loggedIn ? (
+          <div className="rounded-3xl bg-blue px-10 py-1">
+            <p className="font-semibold uppercase text-white">log out</p>
+          </div>
+        ) : ( */}
+        <NavLink className="rounded-3xl bg-teal px-10 py-1" to="/sign-in">
           <p className="font-semibold uppercase text-white">sign in</p>
-        </button>
+        </NavLink>
+        {/* )} */}
       </div>
     </nav>
   );
