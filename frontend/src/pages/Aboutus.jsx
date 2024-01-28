@@ -12,8 +12,8 @@ import Footer from "../components/Footer";
 
 const AboutUs = () => {
   return (
-    <div>
-      <div className="my-10 flex flex-row gap-10">
+    <div className="mt-10 flex flex-col gap-10">
+      <div className="flex flex-row gap-10">
         <div className="flex flex-1 flex-col items-start justify-center">
           <img src={medPlusLogo} alt="MedPlus logo" className="mb-10 h-8" />
           <p className="text-justify">
@@ -30,7 +30,7 @@ const AboutUs = () => {
         </div>
         <img src={headerimage} alt="about us header" className="flex-1" />
       </div>
-      <div className="my-10 flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <h2 className="mt-4 text-4xl font-bold text-blue">Meet our Team</h2>
         <div className="mt-2 text-lg font-semibold">
           <p>Meet everyone who made this possible.</p>
