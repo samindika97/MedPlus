@@ -8,7 +8,7 @@ export const urlSlug = {
   // Url
   HOME: "/",
   ABOUT_US: "/about-us",
-  SERVICES: "/services",
+  PROFILE: "/profile",
   CONTACT_US: "/contact-us",
   DOCTOR_DETAILS: "/doctor/:id",
   CHAT: "/chat",

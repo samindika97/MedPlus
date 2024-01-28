@@ -22,7 +22,7 @@ const baseQuery = async (args, api, extraOptions) => {
   let result = await query(args, api, extraOptions);
 
   if (result.meta?.response?.status === 200 && args.url === ApiSlug.LOGIN) {
-    // if ((result.data as any).data?.user?.role !== UserRole.Admin) {
+    // if (result.data.data?.user?.role !== UserRole.Admin) {
     //   const newError = {
     //     status: 404,
     //     data: {
@@ -38,20 +38,20 @@ const baseQuery = async (args, api, extraOptions) => {
     // }
   }
 
-  // if (result.error && result.error.status === 406) {
-  //   const refreshResult = await query(ApiSlug.REFRESH_TOKEN, api, extraOptions);
-  //   if (refreshResult.data) {
-  //     api.dispatch(setToken((refreshResult.data as any).data?.token));
-  //     result = await query(args, api, extraOptions);
-  //   } else {
-  //     api.dispatch(logOut());
-  //   }
-  //   api.dispatch(logOut());
-  // }
+  if (result.error && result.error.status === 406) {
+    const refreshResult = await query(ApiSlug.REFRESH_TOKEN, api, extraOptions);
+    if (refreshResult.data) {
+      api.dispatch(setToken(refreshResult.data.data?.token));
+      result = await query(args, api, extraOptions);
+    } else {
+      api.dispatch(logOut());
+    }
+    api.dispatch(logOut());
+  }
 
-  // if (result.error && result.error.status === 500) {
-  //   api.dispatch(logOut());
-  // }
+  if (result.error && result.error.status === 500) {
+    api.dispatch(logOut());
+  }
 
   return result;
 };

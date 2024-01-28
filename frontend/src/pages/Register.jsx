@@ -4,58 +4,23 @@ import axios from "axios";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
 
+import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+
+import { registerSchema } from "../schemas/registerSchema";
+
+import { useSignUpMutation } from "../services/authService";
+
 import BASE_URL from "../config/ApiConfig";
 
 import { urlSlug } from "../utils/urlSlug";
 
-export const TextInput = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
-
-  const inputModifiedClasses = `text-input w-full rounded-lg p-2 mb-3 outline-none bg-lightGrey placeholder:text-sm text-sm ${
-    meta.touched && meta.error ? "border-2 border-red" : ""
-  }`;
-
-  return (
-    <>
-      <label
-        className="mb-2 text-sm font-semibold"
-        htmlFor={props.id || props.name}
-      >
-        {label}
-      </label>
-      <input className={inputModifiedClasses} {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error -mt-2 mb-1 font-bold text-red">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
-
 const Register = () => {
-  const [message, setMessage] = useState(null);
+  const [signUp, { error = "" }] = useSignUpMutation();
 
-  const register = async (username, email, password) => {
-    // setLoading(true);
-    const config = {
-      method: "post",
-      url: `${BASE_URL}auth/register`,
-      data: {
-        userName: username,
-        email: email,
-        password: password,
-      },
-    };
-
-    await axios(config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    // handleLogin(values, resetForm);
+    signUp(values);
+    setSubmitting(false);
   };
 
   return (
@@ -63,38 +28,17 @@ const Register = () => {
       <Formik
         initialValues={{
           email: "",
-          username: "",
+          userName: "",
           password: "",
           confirmPassword: "",
         }}
-        validationSchema={Yup.object({
-          email: Yup.string()
-            .email("Invalid email address")
-            .required("Required"),
-          username: Yup.string()
-            .max(30, "Must be 30 characters or less")
-            .required("Required"),
-          password: Yup.string()
-            .required("Required")
-            .min(8, "Your password is too short.")
-            .matches(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-              "Password must contain at least one uppercase letter, one lowercase letter, one numeral, and one symbol.",
-            ),
-          confirmPassword: Yup.string()
-            .required("Required")
-            .oneOf([Yup.ref("password"), null], "Passwords must match"),
-        })}
-        onSubmit={(values, { setSubmitting, resetForm }) => {
-          register(values.username, values.email, values.password);
-          setSubmitting(false);
-          resetForm({});
-        }}
+        validationSchema={registerSchema}
+        onSubmit={handleSubmit}
       >
         <Form className="mt-3 flex w-full flex-col">
           <TextInput
             label="User Name"
-            name="username"
+            name="userName"
             type="text"
             placeholder="John Doe"
           />
@@ -119,12 +63,6 @@ const Register = () => {
             type="password"
             placeholder="********"
           />
-
-          {message && (
-            <div className="my-3 rounded-lg border border-red p-3 text-sm">
-              <p className="text-red">{message}</p>
-            </div>
-          )}
 
           <div className="mt-3 flex">
             <button
