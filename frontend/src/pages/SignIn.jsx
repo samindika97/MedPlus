@@ -6,30 +6,10 @@ import { logInSchema } from "../schemas/logInSchema";
 
 import { useLoginMutation } from "../services/authService";
 
+import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+import BackendError from "../components/backendError";
+
 import { urlSlug } from "../utils/urlSlug";
-
-export const TextInput = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
-
-  const inputModifiedClasses = `text-input w-full rounded-lg p-2 mb-3 outline-none bg-lightGrey placeholder:text-sm ${
-    meta.touched && meta.error ? "border-2 border-red" : ""
-  }`;
-
-  return (
-    <>
-      <label
-        className="mb-2 text-sm font-semibold"
-        htmlFor={props.id || props.name}
-      >
-        {label}
-      </label>
-      <input className={inputModifiedClasses} {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error -mt-2 mb-1 font-bold text-red">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
 
 const SignIn = () => {
   const [login, { error = "" }] = useLoginMutation({
@@ -37,7 +17,6 @@ const SignIn = () => {
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    // handleLogin(values, resetForm);
     login(values);
     setSubmitting(false);
   };
@@ -68,9 +47,13 @@ const SignIn = () => {
           />
 
           {error && (
-            <div className="my-3 rounded-lg border border-red p-3 text-sm">
-              <p className="text-red">{error}</p>
-            </div>
+            <BackendError
+              errorMessage={
+                error.status === 401
+                  ? "Invalid email or password. Please try again."
+                  : error.data.code
+              }
+            />
           )}
 
           <div className="mt-3 flex">
