@@ -4,6 +4,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 export {
   DoneRoundedIcon as CheckIcon,
@@ -12,4 +13,5 @@ export {
   DeleteRoundedIcon as DeleteIcon,
   EditRoundedIcon as EditIcon,
   MenuRoundedIcon as MenuIcon,
+  KeyboardArrowDownRoundedIcon as DownArrowIcon,
 };
