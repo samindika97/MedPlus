@@ -46,7 +46,7 @@ const Navbar = () => {
           <NavLink
             to={tab.link}
             className={({ isActive, isPending }) =>
-              isPending ? "pending" : isActive ? "text-teal" : "text-blue"
+              isPending ? "text-teal/50" : isActive ? "text-teal" : "text-blue"
             }
             key={tab.link}
           >

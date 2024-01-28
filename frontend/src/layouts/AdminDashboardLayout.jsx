@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import AdminDashboardTabs from "../components/AdminDashboardTabs";
+import AdminDashboardTabs from "../components/adminDashboardTabs";
 
 const AdminDashboardLayout = () => {
   return (
