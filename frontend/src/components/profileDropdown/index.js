@@ -1,9 +1,9 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState, useCallback } from "react";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import { DownArrowIcon } from "../../icons/icon";
-import { useNavigate } from "react-router";
 import { urlSlug } from "../../utils/urlSlug";
 import { logOut } from "../../store/slices/auth.slice";
 import { authServiceApi } from "../../services/authService";
@@ -18,7 +18,7 @@ const ProfileDropDown = ({ username }) => {
   }, [dispatch]);
 
   return (
-    <div className="w-40 text-right">
+    <div className="">
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="flex w-full items-center justify-center gap-1 rounded-3xl bg-teal px-10 py-1 font-medium hover:bg-teal/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
