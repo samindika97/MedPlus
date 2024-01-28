@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router";
 import { Formik, Form, useField } from "formik";
-import * as Yup from "yup";
 
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+import BackendError from "../components/backendError";
 
 import { registerSchema } from "../schemas/registerSchema";
 
 import { useSignUpMutation } from "../services/authService";
 
-import BASE_URL from "../config/ApiConfig";
-
 import { urlSlug } from "../utils/urlSlug";
 
 const Register = () => {
-  const [signUp, { error = "" }] = useSignUpMutation();
+  const navigate = useNavigate();
+  const [signUp, { isError, isSuccess, error }] = useSignUpMutation();
+
+  useEffect(() => {
+    isSuccess && navigate(urlSlug.LOGIN);
+  }, [isSuccess]);
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     // handleLogin(values, resetForm);
@@ -74,6 +77,7 @@ const Register = () => {
               </p>
             </button>
           </div>
+          {isError && <BackendError errorMessage={error.data.error} />}
         </Form>
       </Formik>
 

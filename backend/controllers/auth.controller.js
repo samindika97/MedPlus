@@ -9,18 +9,23 @@ require("../auth/passportHandler");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.registerUser = async (req, res) => {
-  console.log(req.body);
-
-  await User.create({
+  User.create({
     userName: req.body.userName.toLowerCase(),
     email: req.body.email,
     password: req.body.password,
-  });
-
-  const token = jwt.sign({ email: req.body.email }, SECRET_KEY, {
-    expiresIn: "24h",
-  });
-  res.status(200).send({ token: token, username: req.body.userName });
+  })
+    .then((results) =>
+      res.status(200).json({ message: "Successsfully Registered" })
+    )
+    .catch((error) => {
+      if (error.code == 11000) {
+        res
+          .status(500)
+          .json({ error: "User already exists for the above email" });
+      } else {
+        res.status(500).json({ error: "Error registering user. Try again" });
+      }
+    });
 };
 
 exports.authenticateUser = (req, res, next) => {
