@@ -1,81 +1,69 @@
-import React, { useEffect, useState } from "react";
+import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useState } from 'react'
 import { useFormik } from "formik";
-import axios from "axios";
+import axios from 'axios';
 
-import BASE_URL from "../../config/ApiConfig";
-import DeleteClinicModel from "../../modals/DeleteClinicModel";
-import UpdateClinicModel from "../../modals/UpdateClinicModel";
+import BASE_URL from "../config/ApiConfig";
 
-
-
-const Clinic = () => {
-    const [isDeleteModelOpen, setIsDeleteModelOpen] = useState(false);
-    const [isUpdateModelOpen, setIsUpdateModelOpen] = useState(false);
-    const [clinicData, setClinicData] = useState([]);
-    const [hospitalData, setHospitalData] = useState([]);
-    const [deleteClinic, setdeleteClinic] = useState([]);
-    const [updateClinic, setUpdateClinic] = useState([]);
-
-    const closeDeleteModal = () => {
-        setIsDeleteModelOpen(false);
-    };
-    const openDeleteModal = () => {
-        setIsDeleteModelOpen(true);
-    };
-    const closeUpdateModal = () => {
-        setIsUpdateModelOpen(false);
-    };
-    const openUpdateModal = () => {
-        setIsUpdateModelOpen(true);
-    };
-    const fetchInfo = () => {
-        return axios.all([
-            axios.get(`${BASE_URL}clinic`)
-                .then((response) => {
-                    setClinicData(response.data)
-                })
-                .catch((err) => {
-                    console.log(err);
-                }),
-            axios.get(`${BASE_URL}hospital`)
-                .then((response) => {
-                    setHospitalData(response.data)
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        ]);
+export default function UpdateClinicModel({deleteClinic, isOpen, closeModal, openModal , fetchInfo, hospitalData}) {
+  const onSubmit = (values) => {
+    const form_data = JSON.stringify(values, null, 2);
+    console.log(form_data);
+    const config = {
+        headers: { "content-type": "application/json" }
     }
-    const onSubmit = (values) => {
-        const form_data = JSON.stringify(values, null, 2);
-        console.log(form_data);
-        const config = {
-            headers: { "content-type": "application/json" }
-        }
-        axios.post(`${BASE_URL}clinic`, form_data, config);
-        fetchInfo();
-        console.log('submitted');
-    };
-    useEffect(() => {
-        fetchInfo();
-    }, []);
+    axios.post(`${BASE_URL}clinic`, form_data, config);
+    fetchInfo();
+    console.log('submitted');
+};
 
-    const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
-        initialValues: {
-            type: "",
-            day: "",
-            time: "",
-            doctors: "",
-            additional: "",
-            hospital: "",
-        },
-        onSubmit
-    });
-    return (
-        <div className="flex flex-row flex-1 ">
+  const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
+    initialValues: {
+        type: "",
+        day: "",
+        time: "",
+        doctors: "",
+        additional: "",
+        hospital: "",
+    },
+    onSubmit
+});
+  return (
+    <>
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
 
-            <div className="">
-                <form onSubmit={handleSubmit} className="p-5 pt-1 font-semibold border-2 border-teal rounded-md origin-top-right  bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Edit Clinic
+                  </Dialog.Title>
+                  <div className="mt-2">
+                  <form onSubmit={handleSubmit} className="p-5 pt-1 font-semibold border-2 border-teal rounded-md origin-top-right  bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-2">
                         <p className="text-lg font-semibold capitalize text-blue pb-2">
                             add new clinic
@@ -160,46 +148,23 @@ const Clinic = () => {
                     <input type="submit" className="bg-blueDefault-500 hover:bg-blueDefault-700 text-white font-bold py-2 px-4 my-8 rounded focus:outline-none focus:shadow-outline" value="Submit" />
 
                 </form>
+                  </div>
+
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeModal}
+                    >
+                      Got it, thanks!
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
             </div>
-
-            <div className="flex-1">
-                {clinicData.map((dataObj, index) => {
-                    const handleDeleteClick = () => {
-                        openDeleteModal();
-                        setdeleteClinic(dataObj._id);
-                    };
-                    const handleUpdateClick = ()=>{
-                        openUpdateModal();
-                        setUpdateClinic(dataObj._id)
-                    };
-                    return (
-                        <div className="border-solid border-2 border-teal p-4 m-2 rounded-2xl flex flex-col gap-6 bg-mintGree" key={index}>
-                            <div>
-                                <p>Clinc Type : {dataObj.type}</p>
-                                <p>{dataObj.day} {dataObj.time}</p>
-                            </div>
-                            <div>
-                                <p>{dataObj.doctors}</p>
-                                <p>{dataObj.hospital.hospital_name}</p>
-                            </div>
-                            <p>{dataObj.additional_dsc}</p>
-
-                            <div>
-                                <button className="text-white bg-blueDefault-700 hover:bg-blueDefault-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5" onClick={handleDeleteClick}>Delete</button>
-                                <button className="text-white bg-blueDefault-700 hover:bg-blueDefault-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5" onClick={handleUpdateClick}>Update</button>
-
-                            </div>
-                        </div>
-
-
-                    );
-                })}
-
-            </div>
-            <DeleteClinicModel deleteClinic={deleteClinic} isOpen={isDeleteModelOpen} closeModal={closeDeleteModal} openModal={openDeleteModal} fetchInfo={fetchInfo}/>
-            <UpdateClinicModel updateClinic={updateClinic} isOpen={isUpdateModelOpen} closeModal={closeUpdateModal} openModal={openUpdateModal} fetchInfo={fetchInfo} hospitalData={hospitalData}/>
-        </div >
-    );
-};
-
-export default Clinic;
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  )
+}

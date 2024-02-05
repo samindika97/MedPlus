@@ -8,6 +8,7 @@ const diseaseRoutes = require("./routes/disease.route");
 const messageRoutes = require("./routes/message.route");
 const hospitalRoutes =  require("./routes/hospital.route");
 const clinicRoutes = require("./routes/clinic.route");
+const morgan = require("morgan");
 
 require("dotenv").config();
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
+app.use(morgan("dev"))
 
 app.use("/api/v1/symptoms", symptomRoutes);
 app.use("/api/v1/diseases", diseaseRoutes);

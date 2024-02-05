@@ -13,6 +13,7 @@ import LabReportAnalyser from "./pages/features/LabReportAnalyzer";
 import HospitalDetails from "./pages/features/HospitalDetails";
 import ContactDoctor from "./pages/features/ContactDoctor";
 
+
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 import Dashboard from "./components/Dashboard";
 
@@ -20,6 +21,7 @@ import Symptoms from "./pages/adminDashboard/Symptoms";
 import Diseases from "./pages/adminDashboard/Diseases";
 import Messages from "./pages/adminDashboard/Messages";
 import Clinic from "./pages/adminDashboard/Clinic";
+import Hospital from "./pages/adminDashboard/Hospital";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +95,10 @@ const router = createBrowserRouter([
             path: "/admin-dashboard/clinic",
             element: <Clinic />,
           },
+          {
+            path: "/admin-dashboard/hospital",
+            element: <Hospital />,
+          }
         ],
       },
     ],
