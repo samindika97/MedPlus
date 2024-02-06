@@ -40,4 +40,5 @@ export const adminDashboardTabs = [
   { name: "clinic", link: "/admin-dashboard/clinic" },
   { name: "messages", link: "/admin-dashboard/messages" },
   { name: "hospitals", link: "/admin-dashboard/hospital" },
+  { name: "Health report", link: "/admin-dashboard/HealthReport" },
 ];
