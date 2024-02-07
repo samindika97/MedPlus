@@ -65,9 +65,11 @@ const Clinic = () => {
     }, []);
 
     return (
-        <div className="flex flex-row flex-1 ">
-
-            <div className="basis-1/3">
+        <div className="flex w-full gap-5">
+      <div className="h-full w-1/3 rounded-xl border border-grey p-3">
+        <p className="text-lg font-semibold capitalize text-blue">
+          add new disease
+        </p>
                 <Formik
                     initialValues={{
                         type: "",
