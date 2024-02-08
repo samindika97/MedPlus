@@ -9,7 +9,7 @@ const DoctorSidePannel = () => {
         <img src={DoctorIMG} alt="doctor" />
       </div>
 
-      <NavLink className="h-5" to="/user-chat">
+      <NavLink className="h-5" to="/CHAT">
         <div>
           <button className="mt-3 w-full rounded-lg h-[40px] bg-teal px-10 py-1">
             <p className="font-[500] uppercase text-white">Contact</p>
