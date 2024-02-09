@@ -37,7 +37,9 @@ exports.authenticateUser = (req, res, next) => {
       const token = jwt.sign({ email: user.email }, SECRET_KEY, {
         expiresIn: "24h",
       });
-      res.status(200).send({ token: token, username: user.userName });
+      res
+        .status(200)
+        .send({ token: token, username: user.userName, role: user.role });
     }
   })(req, res, next);
 };

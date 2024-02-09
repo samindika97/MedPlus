@@ -2,17 +2,24 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import DeleteSymptomModal from "../../modals/DeleteSymptomModal";
 import EditSymptomModal from "../../modals/EditSymptomModal";
 import { DeleteIcon, EditIcon, SearchIcon } from "../../icons/icon";
 import { TextInputWithLabel as TextInput } from "../../components/FormikElements";
 
+import {
+  useLazyGetSymptomsQuery,
+  useAddSymptomMutation,
+  useEditSymptomMutation,
+  useDeleteSymptomMutation,
+} from "../../services/symptomsService";
+
 import BASE_URL from "../../config/ApiConfig";
 
 const Symptoms = () => {
   const [searchSymptoms, setSearchSymptoms] = useState("");
-  const [symptoms, setSymptoms] = useState([]);
   const [addSymptomMessage, setAddSymptomMessage] = useState(null);
   const [editSymptomModalOpen, setEditSymptomModalOpen] = useState(false);
   const [editModalSymptom, setEditModalSymptom] = useState(null);
@@ -21,71 +28,100 @@ const Symptoms = () => {
   const [clickedSymptom, setClickedSymptom] = useState(null);
   const [associatedDiseases, setAssociatedDiseases] = useState([]);
 
-  const addSymptom = (name) => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "post",
-      url: `${BASE_URL}symptoms/`,
-      data: {
-        name: name,
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms((prev) => [response.data.result, ...prev]);
-      })
-      .catch((err) => {
-        setAddSymptomMessage(
-          err.response.data.error.code && err.response.data.error.code === 11000
-            ? "Sympyom with the same name exists"
-            : "Error adding symptom. Try again",
-        );
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+  const [
+    fetchSymptoms,
+    {
+      isSuccess: isSuccessSymptoms,
+      data: symptomsData,
+      isError: isErrorSymptoms,
+      error: symptomError,
+      isFetching: isFetchingSymptoms,
+    },
+  ] = useLazyGetSymptomsQuery();
+
+  const [
+    addSymptom,
+    { error: addSymptomError, isLoading: isLoadingAddSymptom },
+  ] = useAddSymptomMutation();
+
+  const [
+    editSympton,
+    { error: editSymptomError, isLoading: isLoadingEditSymptom },
+  ] = useEditSymptomMutation();
+
+  const handleAddSymptom = async (data) => {
+    const res = await addSymptom(data);
+
+    if (res?.data?.status) {
+      toast.success("Symptom added successfully");
+    }
   };
 
-  const getAssociatedDiseases = (symptom) => {
-    // setLoading(true);
-    setClickedSymptom(symptom);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}symptoms/associatedDiseases/${symptom._id}`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setAssociatedDiseases(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
-  };
+  // const addSymptom = (name) => {
+  //   // setLoading(true);
+  //   const axiosConfig = {
+  //     method: "post",
+  //     url: `${BASE_URL}symptoms/`,
+  //     data: {
+  //       name: name,
+  //     },
+  //   };
+  //   axios(axiosConfig)
+  //     .then((response) => {
+  //       setSymptoms((prev) => [response.data.result, ...prev]);
+  //     })
+  //     .catch((err) => {
+  //       setAddSymptomMessage(
+  //         err.response.data.error.code && err.response.data.error.code === 11000
+  //           ? "Sympyom with the same name exists"
+  //           : "Error adding symptom. Try again",
+  //       );
+  //     })
+  //     .finally(() => {
+  //       // setLoading(false);
+  //     });
+  // };
 
-  const fetchSymptoms = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}symptoms/`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
-  };
+  // const getAssociatedDiseases = (symptom) => {
+  //   // setLoading(true);
+  //   setClickedSymptom(symptom);
+  //   const axiosConfig = {
+  //     method: "get",
+  //     url: `${BASE_URL}symptoms/associatedDiseases/${symptom._id}`,
+  //   };
+  //   axios(axiosConfig)
+  //     .then((response) => {
+  //       setAssociatedDiseases(response.data.result);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       // setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchSymptoms();
-  }, []);
+  // const fetchSymptoms = () => {
+  //   // setLoading(true);
+  //   const axiosConfig = {
+  //     method: "get",
+  //     url: `${BASE_URL}symptoms/`,
+  //   };
+  //   axios(axiosConfig)
+  //     .then((response) => {
+  //       setSymptoms(response.data.result);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       // setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   fetchSymptoms();
+  // }, []);
 
   const closeEditSymptomModal = () => {
     setEditSymptomModalOpen(false);
@@ -105,9 +141,17 @@ const Symptoms = () => {
     setDeleteSymptomModalOpen(true);
   };
 
-  const filteredSymptoms = symptoms.filter((symptom) => {
-    return symptom.name.includes(searchSymptoms);
-  });
+  useEffect(() => {
+    fetchSymptoms({
+      fixedCacheKey: "symptoms",
+    });
+  }, [fetchSymptoms]);
+
+  const filteredSymptoms =
+    isSuccessSymptoms &&
+    symptomsData.data.filter((symptom) => {
+      return symptom.name.includes(searchSymptoms);
+    });
 
   return (
     <div className="flex w-full gap-5">
@@ -125,7 +169,7 @@ const Symptoms = () => {
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
               setAddSymptomMessage(null);
-              addSymptom(values.name);
+              handleAddSymptom(values);
               setSubmitting(false);
               resetForm({});
             }}
@@ -190,12 +234,12 @@ const Symptoms = () => {
           </div>
         </div>
         <div className="flex max-h-96 w-full flex-col gap-3 overflow-y-auto">
-          {symptoms &&
+          {isSuccessSymptoms &&
             filteredSymptoms.map((symptom) => (
               <div
                 className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-lightGrey p-3"
                 key={symptom._id}
-                onClick={() => getAssociatedDiseases(symptom)}
+                // onClick={() => getAssociatedDiseases(symptom)}
               >
                 <p className="font-semibold capitalize">{symptom.name}</p>
                 <div className="flex gap-5">
@@ -221,7 +265,6 @@ const Symptoms = () => {
               isModalOpen={editSymptomModalOpen}
               modalClose={closeEditSymptomModal}
               symptom={editModalSymptom}
-              setSymptoms={setSymptoms}
             />
           )}
           {deleteModalSymptom && (
@@ -229,7 +272,6 @@ const Symptoms = () => {
               isModalOpen={deleteSymptomModalOpen}
               modalClose={closeDeleteSymptomModal}
               symptom={deleteModalSymptom}
-              setSymptoms={setSymptoms}
             />
           )}
         </div>

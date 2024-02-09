@@ -1,40 +1,19 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import { toast } from "react-toastify";
 
-import BASE_URL from "../config/ApiConfig";
+import { useDeleteSymptomMutation } from "../services/symptomsService";
 
-const DeleteSymptomModal = ({
-  isModalOpen,
-  modalClose,
-  symptom,
-  setSymptoms,
-}) => {
-  const [deleteSymptomMessage, setDeleteSymptomMessage] = useState(null);
+const DeleteSymptomModal = ({ isModalOpen, modalClose, symptom }) => {
+  const [deleteSymptom, { error, isLoading }] = useDeleteSymptomMutation();
 
-  useEffect(() => {
-    setDeleteSymptomMessage(null);
-  }, []);
+  const handleDeleteSymptom = async () => {
+    const res = await deleteSymptom({ id: symptom._id });
 
-  const deleteSymptom = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "delete",
-      url: `${BASE_URL}symptoms/${symptom._id}`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms((prev) =>
-          prev.filter((item) => item._id !== response.data.result._id),
-        );
-        modalClose();
-      })
-      .catch((err) => {
-        setDeleteSymptomMessage(err.response.data.error);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      modalClose();
+    }
   };
 
   return (
@@ -71,11 +50,11 @@ const DeleteSymptomModal = ({
                   Alert !
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-blue">
+                  <p className="text-justify text-sm text-blue">
                     Are you sure want to delete symptom : "{symptom.name}" from
                     the system?
                   </p>
-                  <p className="mt-3 text-xs italic text-blue">
+                  <p className="mt-3 text-justify text-xs italic text-blue">
                     Once deleted, it will be removed from all diseases that it
                     has been added
                   </p>
@@ -84,10 +63,14 @@ const DeleteSymptomModal = ({
                 <div className="mt-4 flex gap-3">
                   <button
                     type="button"
-                    className="bg-red inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white"
-                    onClick={deleteSymptom}
+                    className="flex items-center justify-center rounded-md border border-transparent bg-red px-4 py-2 text-sm font-medium text-white"
+                    onClick={handleDeleteSymptom}
                   >
-                    <p className="capitalize">delete</p>
+                    {!isLoading ? (
+                      <p className="capitalize">delete</p>
+                    ) : (
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-grey border-t-white" />
+                    )}
                   </button>
                   <button
                     type="button"
@@ -97,9 +80,9 @@ const DeleteSymptomModal = ({
                     <p className="capitalize">cancel</p>
                   </button>
                 </div>
-                {deleteSymptomMessage && (
-                  <div className="border-red mt-3 rounded-lg border p-3">
-                    <p className="text-red">{deleteSymptomMessage}</p>
+                {error && (
+                  <div className="mt-3 rounded-lg border border-red p-3">
+                    <p className="text-red">{error}</p>
                   </div>
                 )}
               </Dialog.Panel>

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const { authenticateJWT } = require("../middleware/userAuth");
+
 const {
   symptomSearch,
   addSymptom,
@@ -10,6 +12,8 @@ const {
   deleteSymptom,
   associatedDiseases,
 } = require("../controllers/symptom.controller");
+
+router.use(authenticateJWT);
 
 router.get("/search", symptomSearch);
 
