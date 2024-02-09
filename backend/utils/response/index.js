@@ -35,7 +35,7 @@ exports.forbidden = (response) => {
 exports.unauthorized = (response, message) => {
   return response.status(401).json({
     code: 401,
-    message: message ? message : "Token not provided!",
+    message: message ? message : "Authorization required",
     status: false,
   });
 };
