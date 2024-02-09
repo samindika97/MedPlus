@@ -21,17 +21,16 @@ export const symptomServiceApi = createApi({
     }),
     editSymptom: builder.mutation({
       query: (data) => ({
-        url: ApiSlug.SYMPTOMS,
-        method: "PUT",
-        body: data,
+        url: `${ApiSlug.SYMPTOMS}/${data.id}`,
+        method: "PATCH",
+        body: data.data,
       }),
       invalidatesTags: ["symptoms"],
     }),
     deleteSymptom: builder.mutation({
       query: (data) => ({
-        url: ApiSlug.SYMPTOMS,
+        url: `${ApiSlug.SYMPTOMS}/${data.id}`,
         method: "DELETE",
-        body: data,
       }),
       invalidatesTags: ["symptoms"],
     }),

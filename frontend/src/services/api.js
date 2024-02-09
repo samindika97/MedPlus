@@ -5,15 +5,6 @@ import { UserRole } from "../utils/apiSlug";
 
 import BASE_URL from "../config/ApiConfig";
 
-// const query = fetchBaseQuery({
-//   baseUrl: `http://localhost:8080/api/v1`,
-//   // credentials: "include",
-//   // prepareHeaders: (headers, { getState }) => {
-//   //   const token = (getState() as any).auth.token;
-//   //   token && headers.set("authorization", `Bearer ${token}`);
-//   //   return headers;
-//   // },
-// });
 
 const query = fetchBaseQuery({
   baseUrl: BASE_URL,

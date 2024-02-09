@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import DeleteSymptomModal from "../../modals/DeleteSymptomModal";
 import EditSymptomModal from "../../modals/EditSymptomModal";
@@ -19,7 +20,6 @@ import BASE_URL from "../../config/ApiConfig";
 
 const Symptoms = () => {
   const [searchSymptoms, setSearchSymptoms] = useState("");
-  const [symptoms, setSymptoms] = useState([]);
   const [addSymptomMessage, setAddSymptomMessage] = useState(null);
   const [editSymptomModalOpen, setEditSymptomModalOpen] = useState(false);
   const [editModalSymptom, setEditModalSymptom] = useState(null);
@@ -32,12 +32,30 @@ const Symptoms = () => {
     fetchSymptoms,
     {
       isSuccess: isSuccessSymptoms,
-      data: SymptomData,
-      isError,
-      error,
-      isFetching,
+      data: symptomsData,
+      isError: isErrorSymptoms,
+      error: symptomError,
+      isFetching: isFetchingSymptoms,
     },
   ] = useLazyGetSymptomsQuery();
+
+  const [
+    addSymptom,
+    { error: addSymptomError, isLoading: isLoadingAddSymptom },
+  ] = useAddSymptomMutation();
+
+  const [
+    editSympton,
+    { error: editSymptomError, isLoading: isLoadingEditSymptom },
+  ] = useEditSymptomMutation();
+
+  const handleAddSymptom = async (data) => {
+    const res = await addSymptom(data);
+
+    if (res?.data?.status) {
+      toast.success("Symptom added successfully");
+    }
+  };
 
   // const addSymptom = (name) => {
   //   // setLoading(true);
@@ -131,7 +149,7 @@ const Symptoms = () => {
 
   const filteredSymptoms =
     isSuccessSymptoms &&
-    SymptomData.result.filter((symptom) => {
+    symptomsData.data.filter((symptom) => {
       return symptom.name.includes(searchSymptoms);
     });
 
@@ -151,7 +169,7 @@ const Symptoms = () => {
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
               setAddSymptomMessage(null);
-              // addSymptom(values.name);
+              handleAddSymptom(values);
               setSubmitting(false);
               resetForm({});
             }}
@@ -247,7 +265,6 @@ const Symptoms = () => {
               isModalOpen={editSymptomModalOpen}
               modalClose={closeEditSymptomModal}
               symptom={editModalSymptom}
-              setSymptoms={setSymptoms}
             />
           )}
           {deleteModalSymptom && (
@@ -255,7 +272,6 @@ const Symptoms = () => {
               isModalOpen={deleteSymptomModalOpen}
               modalClose={closeDeleteSymptomModal}
               symptom={deleteModalSymptom}
-              setSymptoms={setSymptoms}
             />
           )}
         </div>
