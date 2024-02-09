@@ -11,7 +11,7 @@ const {
   deleteDisease,
 } = require("../controllers/disease.controller");
 
-router.use(authenticateJWT);
+// router.use(authenticateJWT);
 
 router.post("/", addDisease);
 
