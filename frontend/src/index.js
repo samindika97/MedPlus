@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistedStore } from "./store";
 
-import Splash from "./components/splash"
+import Splash from "./components/splash";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,9 +19,10 @@ root.render(
       <PersistGate loading={null} persistor={persistedStore}>
         <React.Suspense fallback={<Splash />}>
           <ToastContainer
-            theme="dark"
-            position="top-right"
+            position="top-center"
             autoClose={3000}
+            hideProgressBar
+            theme="light"
             closeOnClick
             pauseOnHover={false}
           />
