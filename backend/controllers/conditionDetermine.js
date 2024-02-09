@@ -2,6 +2,7 @@ const Guideline = require("../models/guidline.model");
 
 const conditionDetermine = async (req, res, next) => {
   try {
+    console.log(req.body);
     const reportType = req.body.type;
     const userValue = req.body.value;
     const guidlines = await Guideline.find({ type: reportType });

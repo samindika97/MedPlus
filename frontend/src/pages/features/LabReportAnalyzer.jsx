@@ -14,10 +14,12 @@ import BASE_URL from "../../config/ApiConfig";
 
 const LabReportAnalyzer = () => {
   const [reportTypes, setReportTypes] = useState([]);
+  const [noResultMessage, setNoResultMessage] = useState(null);
+  const [guidline, setGuidline] = useState(null);
 
   const reportOptions = reportTypes.map((item, index) => ({
     label: item,
-    value: index,
+    value: item,
   }));
 
   const fetchLabReportTypes = () => {
@@ -47,16 +49,35 @@ const LabReportAnalyzer = () => {
       <FeaturesTitle title="Lab Report Analyzer" />
       <div className="w-full rounded-xl bg-lightGrey p-3">
         <Formik
-          initialValues={{
-            symptoms: [],
+          initialValues={
+            {
+              type: "",
+              value: ""
+            }
+          }
+          // validationSchema={Yup.object({
+          // })}
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            try {
+              const form_data = JSON.stringify(values, null, 2);
+              console.log(form_data);
+              const config = {
+                headers: { "content-type": "application/json" }
+              }
+              await axios.post(`${BASE_URL}guidline/condition`, form_data, config).then((response) => {
+                setNoResultMessage(false);
+                setGuidline(response.data);
+                //console.log(response.data);
+              });
+              setSubmitting(false);
+              fetchLabReportTypes();
+              resetForm({});
+            } catch (error) {
+              setNoResultMessage(true);
+              console.log(error);
+
+            }
           }}
-        // validationSchema={Yup.object({
-        // })}
-        // onSubmit={(values, { setSubmitting, resetForm }) => {
-        //   hospitalSearch(values.selectedHospital);
-        //   setSubmitting(false);
-        //   resetForm({});
-        // }}
         >
           <Form className="mt-3 flex w-full flex-col">
             <Field
@@ -86,20 +107,19 @@ const LabReportAnalyzer = () => {
         </Formik>
       </div>
       <p className="my-3 font-semibold">Search Results...</p>
-      {/* <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         {noResultMessage && (<div className="font-semibold"> Sorry No result Found</div>)}
-        {clinics.map((clinic) => (
-          <div className="rounded-xl bg-mintGreen p-3" key={clinic._id}>
+        {guidline != null &&
+          <div className="rounded-xl bg-mintGreen p-3" key={guidline._id}>
             <p className="mb-2 text-lg font-semibold capitalize text-blue">
-              {clinic.type} clinic
+              {guidline.condition}
             </p>
-            <p className="line-clamp-3 text-blue">Day : {clinic.day}</p>
-            <p className="line-clamp-3 text-blue">Time : {clinic.time}</p>
-            <p className="line-clamp-3 text-blue">Doctors : {clinic.doctors}</p>
-          </div>
-        ))}
-      </div> */}
-    </div>
+            <p className="mb-2">{guidline.description}</p>
+            <p className="mb-2 font-semibold">Recommendation</p>
+            <p>{guidline.recommendations}</p>
+          </div>}
+      </div>
+    </div >
   );
 };
 
