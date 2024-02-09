@@ -11,9 +11,9 @@ const AdminDashboardLayout = React.lazy(() =>
 
 // pages
 const HomePage = React.lazy(() => import("../pages/Home"));
-const AboutUsPage = React.lazy(() => import("../pages/AboutUs"));
+const AboutUsPage = React.lazy(() => import("../pages/Aboutus"));
 const ProfilePage = React.lazy(() => import("../pages/Profile"));
-const ContactUsPage = React.lazy(() => import("../pages/ContactUs"));
+const ContactUsPage = React.lazy(() => import("../pages/Contactus"));
 const DoctorDetailsPage = React.lazy(() =>
   import("../pages/doctor/DoctorDetails"),
 );
