@@ -1,19 +1,22 @@
-import React from 'react'
-import Message from './Message'
+import React from "react";
+import Message from "./Message";
+import useGetMessages from "../hooks/useGetMessages";
 
 const Messages = () => {
+  const { messages } = useGetMessages();
   return (
-    <div className='px-4 flex-1 overflow-hidden'>
-      <Message/>
-      <Message/>
-      <Message/>
-      <Message/>
-      <Message/>
-      
-      
-      
-      </div>
-  )
-}
+    <div className="flex-1 overflow-hidden px-4">
+      {
+        messages.length>0 && messages.map((message)=>(
+          <Message key={message._id} message={message}/>
+        ))
+      }
 
-export default Messages
+      {messages.length === 0 && (
+        <p className="text-center">Send message to start conversation</p>
+      )}
+    </div>
+  );
+};
+
+export default Messages;

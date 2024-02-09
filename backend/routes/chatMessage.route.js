@@ -5,7 +5,7 @@ const {authenticateJWT} = require("../middleware/userAuth");
 
 const router = express.Router();
 
-router.post("/send/:id", authenticateJWT,sendMessage)
+router.post("/send/:id",authenticateJWT,sendMessage)
 router.get("/:id", authenticateJWT,getMessage)
 
 

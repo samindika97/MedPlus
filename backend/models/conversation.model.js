@@ -11,7 +11,7 @@ const conservationShema = new mongoose.Schema({
     message:[
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref:'Message',
+            ref:'ChatMessage',
             default:[],
         }
     ]

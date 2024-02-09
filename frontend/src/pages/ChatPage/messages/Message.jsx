@@ -1,8 +1,11 @@
 import React from 'react'
+import useGetMessages from '../hooks/useGetMessages'
 
-const Message = () => {
+const Message = ({message}) => {
+
+  
   return (
-    <div>message</div>
+    <div>{message.message}</div>
   )
 }
 
