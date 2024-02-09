@@ -1,9 +1,21 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from '../ChatPage/sidebar/Sidebar';
+import MessageContainer from './messages/MessageContainer';
 
-const UserChat = () => {
+const ChatPage = () => {
+  
+
   return (
-    <div>UserChat</div>
-  )
-}
+    <div className='flex w-ful'>
+      <Sidebar/>
 
-export default UserChat
+      <div className=' w-full'>
+            <MessageContainer/>
+        </div>
+        
+      
+    </div>
+  );
+};
+
+export default ChatPage;

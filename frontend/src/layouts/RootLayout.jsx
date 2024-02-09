@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar/index.jsx";
 
 const navbarHeight = 42;
 
@@ -11,10 +11,12 @@ const bodyHeight = screenHeight - 116;
 
 const RootLayout = () => {
   return (
-    <div className="h-screen">
+    <div className="h-screen w-screen">
       <Navbar />
-      <div className={`container mx-auto h-[calc(100vh-42px)]`}>
-        <Outlet />
+      <div className={`h-[calc(100vh-50px)] overflow-auto`}>
+        <div className="container mx-auto h-full">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

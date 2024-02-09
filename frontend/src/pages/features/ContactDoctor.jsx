@@ -73,7 +73,7 @@ const ContactDoctor = () => {
       <div className=" mb-[20px] mt-[10px] grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mt-[30px] lg:grid-cols-4 lg:gap-[30px]">
         {doctors &&
           filteredDoctor.map((doctor) => (
-            <div className=" rounded-xl bg-lightGrey p-3 lg:p-2 ">
+            <div className=" rounded-xl bg-lightGrey p-3 lg:p-2 " key={doctor._id}>
               <div>
                 <img
                   className=" rounded-xl"

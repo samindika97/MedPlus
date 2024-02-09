@@ -8,7 +8,7 @@ exports.authenticateJWT = (req, res, next) => {
     }
     if (!user) {
       return res.status(401).json({ status: "error", code: "unauthorized" });
-    } else {
+    } else { 
       req.user = user;
       return next();
     }
