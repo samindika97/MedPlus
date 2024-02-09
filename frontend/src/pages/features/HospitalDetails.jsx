@@ -42,7 +42,7 @@ const HospitalDetails = () => {
   }
 
   const fetchHospitals = () => {
-    // setLoading(true);
+
     const axiosConfig = {
       method: "get",
       url: `${BASE_URL}hospital/`,

@@ -1,11 +1,13 @@
 const express = require("express");
-const { addGuidline, getAllGuideline, updateGuideline, getGuideline, deleteGuideline } = require("../controllers/labreport.controller");
+const { addGuidline, getAllGuideline, updateGuideline, getGuideline, deleteGuideline, getReportTypes } = require("../controllers/labreport.controller");
 const conditionDetermine = require("../controllers/conditionDetermine");
 
 const router = express.Router();
 
 
 router.post('/condition',conditionDetermine);
+
+router.get('/ReportTypes',getReportTypes);
 
 router.post('/',addGuidline);
 
