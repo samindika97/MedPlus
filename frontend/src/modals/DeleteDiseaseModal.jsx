@@ -1,40 +1,19 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import { toast } from "react-toastify";
 
-import BASE_URL from "../config/ApiConfig";
+import { useDeleteDiseaseMutation } from "../services/diseaseService";
 
-const DeleteDiseaseModal = ({
-  isModalOpen,
-  modalClose,
-  disease,
-  setDiseases,
-}) => {
-  const [deleteDiseaseMessage, setDeleteDiseaseMessage] = useState(null);
+const DeleteDiseaseModal = ({ isModalOpen, modalClose, disease }) => {
+  const [deleteDisease, { error, isLoading }] = useDeleteDiseaseMutation();
 
-  useEffect(() => {
-    setDeleteDiseaseMessage(null);
-  }, []);
+  const handleDeleteDisease = async () => {
+    const res = await deleteDisease({ id: disease._id });
 
-  const deleteDisease = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "delete",
-      url: `${BASE_URL}diseases/${disease._id}`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setDiseases((prev) =>
-          prev.filter((item) => item._id !== response.data.result._id),
-        );
-        modalClose();
-      })
-      .catch((err) => {
-        setDeleteDiseaseMessage(err.response.data.error);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      modalClose();
+    }
   };
 
   return (
@@ -81,7 +60,7 @@ const DeleteDiseaseModal = ({
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-red px-4 py-2 text-sm font-medium text-white"
-                    onClick={deleteDisease}
+                    onClick={handleDeleteDisease}
                   >
                     <p className="capitalize">delete</p>
                   </button>
@@ -93,11 +72,11 @@ const DeleteDiseaseModal = ({
                     <p className="capitalize">cancel</p>
                   </button>
                 </div>
-                {deleteDiseaseMessage && (
+                {/* {deleteDiseaseMessage && (
                   <div className="mt-3 rounded-lg border border-red p-3">
                     <p className="text-red">{deleteDiseaseMessage}</p>
                   </div>
-                )}
+                )} */}
               </Dialog.Panel>
             </Transition.Child>
           </div>

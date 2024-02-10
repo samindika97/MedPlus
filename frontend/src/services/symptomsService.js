@@ -34,6 +34,12 @@ export const symptomServiceApi = createApi({
       }),
       invalidatesTags: ["symptoms"],
     }),
+    getAssociatedDiseases: builder.query({
+      query: (data) => `${ApiSlug.SYMPTOMS_ASSOCIATED_DISEASES}/${data.id}`,
+    }),
+    symptomSearch: builder.query({
+      query: (data) => `${ApiSlug.SYMPTOMS_SEARCH}?${data.string}`,
+    }),
   }),
 });
 
@@ -42,4 +48,6 @@ export const {
   useAddSymptomMutation,
   useDeleteSymptomMutation,
   useEditSymptomMutation,
+  useLazyGetAssociatedDiseasesQuery,
+  useLazySymptomSearchQuery,
 } = symptomServiceApi;
