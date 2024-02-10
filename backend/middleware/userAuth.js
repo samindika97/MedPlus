@@ -16,3 +16,18 @@ exports.authenticateJWT = (req, res, next) => {
     }
   })(req, res, next);
 };
+
+exports.checkPermission = (allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return responseHandler.unauthorized(res);
+    } else {
+      const role = req.user.role;
+      if (allowedRoles.includes(role)) {
+        return next();
+      } else {
+        return responseHandler.forbidden(res);
+      }
+    }
+  };
+};
