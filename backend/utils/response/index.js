@@ -7,11 +7,11 @@ exports.success = (response, data, message) => {
   });
 };
 
-exports.frontError = (response, errors) => {
+exports.frontError = (response, error) => {
   return response.status(300).json({
     code: 300,
     data: "none",
-    message: errors,
+    message: error,
     status: false,
   });
 };
@@ -53,5 +53,6 @@ exports.serverError = (response) => {
     code: 500,
     data: "none",
     errors: "none",
+    status: false,
   });
 };

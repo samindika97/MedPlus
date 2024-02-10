@@ -7,5 +7,7 @@ export const ApiSlug = {
   RESET_PASSWORD: "auth/password-reset",
 
   // symptoms
-  SYMPTOMS: "/symptoms",
+  SYMPTOMS: "symptoms",
+  SYMPTOMS_ASSOCIATED_DISEASES: "symptoms/associatedDiseases",
+  SYMPTOMS_SEARCH: "symptoms/search",
 };

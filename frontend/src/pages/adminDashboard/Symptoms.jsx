@@ -12,8 +12,7 @@ import { TextInputWithLabel as TextInput } from "../../components/FormikElements
 import {
   useLazyGetSymptomsQuery,
   useAddSymptomMutation,
-  useEditSymptomMutation,
-  useDeleteSymptomMutation,
+  useLazyGetAssociatedDiseasesQuery,
 } from "../../services/symptomsService";
 
 import BASE_URL from "../../config/ApiConfig";
@@ -26,7 +25,6 @@ const Symptoms = () => {
   const [deleteSymptomModalOpen, setDeleteSymptomModalOpen] = useState(false);
   const [deleteModalSymptom, setDeleteModalSymptom] = useState(null);
   const [clickedSymptom, setClickedSymptom] = useState(null);
-  const [associatedDiseases, setAssociatedDiseases] = useState([]);
 
   const [
     fetchSymptoms,
@@ -40,14 +38,20 @@ const Symptoms = () => {
   ] = useLazyGetSymptomsQuery();
 
   const [
+    fetchAssociatedDiseases,
+    {
+      isSuccess: isSuccesAssociatedDiseases,
+      data: associatedDiseasesData,
+      isError: isErrorAssociatedDiseases,
+      error: associatedDiseasesError,
+      isFetching: isFetchingAssociatedDiseases,
+    },
+  ] = useLazyGetAssociatedDiseasesQuery();
+
+  const [
     addSymptom,
     { error: addSymptomError, isLoading: isLoadingAddSymptom },
   ] = useAddSymptomMutation();
-
-  const [
-    editSympton,
-    { error: editSymptomError, isLoading: isLoadingEditSymptom },
-  ] = useEditSymptomMutation();
 
   const handleAddSymptom = async (data) => {
     const res = await addSymptom(data);
@@ -56,25 +60,6 @@ const Symptoms = () => {
       toast.success("Symptom added successfully");
     }
   };
-
-  // const getAssociatedDiseases = (symptom) => {
-  //   // setLoading(true);
-  //   setClickedSymptom(symptom);
-  //   const axiosConfig = {
-  //     method: "get",
-  //     url: `${BASE_URL}symptoms/associatedDiseases/${symptom._id}`,
-  //   };
-  //   axios(axiosConfig)
-  //     .then((response) => {
-  //       setAssociatedDiseases(response.data.result);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //       // setLoading(false);
-  //     });
-  // };
 
   const closeEditSymptomModal = () => {
     setEditSymptomModalOpen(false);
@@ -93,6 +78,10 @@ const Symptoms = () => {
     setDeleteModalSymptom(symptom);
     setDeleteSymptomModalOpen(true);
   };
+
+  useEffect(() => {
+    clickedSymptom && fetchAssociatedDiseases({ id: clickedSymptom._id });
+  }, [clickedSymptom]);
 
   useEffect(() => {
     fetchSymptoms({
@@ -162,8 +151,8 @@ const Symptoms = () => {
                 {clickedSymptom.name} :{" "}
               </p>
               <ul className="ml-5 list-disc">
-                {associatedDiseases &&
-                  associatedDiseases.map((disease) => (
+                {isSuccesAssociatedDiseases &&
+                  associatedDiseasesData.data.map((disease) => (
                     <li key={disease._id}>{disease.name}</li>
                   ))}
               </ul>
@@ -192,7 +181,7 @@ const Symptoms = () => {
               <div
                 className="flex w-full cursor-pointer items-center justify-between rounded-xl bg-lightGrey p-3"
                 key={symptom._id}
-                // onClick={() => getAssociatedDiseases(symptom)}
+                onClick={() => setClickedSymptom(symptom)}
               >
                 <p className="font-semibold capitalize">{symptom.name}</p>
                 <div className="flex gap-5">
