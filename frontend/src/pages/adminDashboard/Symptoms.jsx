@@ -57,31 +57,6 @@ const Symptoms = () => {
     }
   };
 
-  // const addSymptom = (name) => {
-  //   // setLoading(true);
-  //   const axiosConfig = {
-  //     method: "post",
-  //     url: `${BASE_URL}symptoms/`,
-  //     data: {
-  //       name: name,
-  //     },
-  //   };
-  //   axios(axiosConfig)
-  //     .then((response) => {
-  //       setSymptoms((prev) => [response.data.result, ...prev]);
-  //     })
-  //     .catch((err) => {
-  //       setAddSymptomMessage(
-  //         err.response.data.error.code && err.response.data.error.code === 11000
-  //           ? "Sympyom with the same name exists"
-  //           : "Error adding symptom. Try again",
-  //       );
-  //     })
-  //     .finally(() => {
-  //       // setLoading(false);
-  //     });
-  // };
-
   // const getAssociatedDiseases = (symptom) => {
   //   // setLoading(true);
   //   setClickedSymptom(symptom);
@@ -100,28 +75,6 @@ const Symptoms = () => {
   //       // setLoading(false);
   //     });
   // };
-
-  // const fetchSymptoms = () => {
-  //   // setLoading(true);
-  //   const axiosConfig = {
-  //     method: "get",
-  //     url: `${BASE_URL}symptoms/`,
-  //   };
-  //   axios(axiosConfig)
-  //     .then((response) => {
-  //       setSymptoms(response.data.result);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //       // setLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchSymptoms();
-  // }, []);
 
   const closeEditSymptomModal = () => {
     setEditSymptomModalOpen(false);
