@@ -1,8 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import {
   TextInputWithLabel as TextInput,
@@ -10,94 +10,44 @@ import {
 } from "../components/FormikElements";
 import CustomSelect from "../components/CustomSelect";
 
-import BASE_URL from "../config/ApiConfig";
+import { useEditDiseaseMutation } from "../services/diseaseService";
+import { useLazyGetSymptomsQuery } from "../services/symptomsService";
 
-const EditDiseaseModal = ({
-  isModalOpen,
-  modalClose,
-  disease,
-  setDiseases,
-}) => {
-  const [editDiseaseMessage, setEditDiseaseMessage] = useState(null);
-  const [symptoms, setSymptoms] = useState([]);
-  const [symptomIds, setSymptomIds] = useState([]);
+const EditDiseaseModal = ({ isModalOpen, modalClose, disease }) => {
+  const [editDisease, { error, isLoading }] = useEditDiseaseMutation();
 
-  const symptomOptions = symptoms.map((item) => ({
-    label: item.name,
-    value: item._id,
-  }));
+  const handleEditDisease = async (data) => {
+    const res = await editDisease({ id: disease._id, data: data });
 
-  function extractSymptomsIds() {
-    setSymptomIds(disease.symptoms.map((symptom) => symptom._id));
-  }
-
-  useEffect(() => {
-    extractSymptomsIds();
-  }, []);
-
-  const fetchSymptoms = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}symptoms/`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      modalClose();
+    }
   };
 
-  useEffect(() => {
-    fetchSymptoms();
-    setEditDiseaseMessage(null);
-  }, []);
+  const [
+    fetchSymptoms,
+    {
+      isSuccess: isSuccessSymptoms,
+      data: symptomsData,
+      isError: isErrorSymptoms,
+      error: symptomError,
+      isFetching: isFetchingSymptoms,
+    },
+  ] = useLazyGetSymptomsQuery();
 
-  const editDisease = (name, content, symptoms) => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "patch",
-      url: `${BASE_URL}diseases/${disease._id}`,
-      data: {
-        name: name,
-        content: content,
-        symptoms: symptoms,
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setDiseases((prev) =>
-          prev.map((prevDisease) => {
-            if (prevDisease._id === response.data.result._id) {
-              return {
-                ...prevDisease,
-                name: response.data.result.name,
-                content: response.data.result.content,
-                symptoms: response.data.result.symptoms,
-              };
-            } else {
-              return prevDisease;
-            }
-          }),
-        );
-        modalClose();
-      })
-      .catch((err) => {
-        setEditDiseaseMessage(
-          err.response.data.error.code && err.response.data.error.code === 11000
-            ? "Disease with the same name exists"
-            : "Error editing disease. Try again",
-        );
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
-  };
+  const symptomOptions =
+    isSuccessSymptoms &&
+    symptomsData.data.map((item) => ({
+      label: item.name,
+      value: item._id,
+    }));
+
+  useEffect(() => {
+    fetchSymptoms({
+      fixedCacheKey: "symptoms",
+    });
+  }, [fetchSymptoms]);
 
   return (
     <Transition appear show={isModalOpen} as={Fragment}>
@@ -125,7 +75,7 @@ const EditDiseaseModal = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-blue"
@@ -137,14 +87,16 @@ const EditDiseaseModal = ({
                     initialValues={{
                       name: disease && disease.name,
                       content: disease && disease.content,
-                      symptoms: disease && symptomIds,
+                      symptoms:
+                        disease &&
+                        disease.symptoms.map((symptom) => symptom._id),
                     }}
                     validationSchema={Yup.object({
                       name: Yup.string().required("Required"),
                       content: Yup.string().required("Required"),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      editDisease(values.name, values.content, values.symptoms);
+                      handleEditDisease(values);
                       setSubmitting(false);
                       resetForm({});
                     }}
@@ -193,11 +145,11 @@ const EditDiseaseModal = ({
                         </button>
                       </div>
 
-                      {editDiseaseMessage && (
+                      {/* {editDiseaseMessage && (
                         <div className="mt-3 rounded-lg border border-red p-3">
                           <p className="text-red">{editDiseaseMessage}</p>
                         </div>
-                      )}
+                      )} */}
                     </Form>
                   </Formik>
                 </div>

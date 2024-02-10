@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const Disease = require("../models/disease.model");
 
+const responseHandler = require("../utils/response");
+
 exports.addDisease = async (req, res) => {
   var { name, content, symptoms } = req.body;
 
@@ -18,13 +20,17 @@ exports.addDisease = async (req, res) => {
           path: "symptoms",
           select: "name",
         });
-        res.status(200).json({ result: newDisease });
+        return responseHandler.success(
+          res,
+          newDisease,
+          "New disease added successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -34,13 +40,17 @@ exports.getDiseases = async (req, res) => {
       .populate({ path: "symptoms", select: "name" })
       .sort({ _id: -1 })
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Diseases retrieved successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -48,20 +58,24 @@ exports.getDisease = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid disease ID");
   }
 
   try {
     await Disease.findById(id)
       .populate("symptoms")
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Disease retrieved successfully"
+        );
       })
       .catch((error) => {
-        res.status(404).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -70,7 +84,7 @@ exports.updateDisease = async (req, res) => {
   var { name, content, symptoms } = req.body;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid disease ID");
   }
 
   const updateDisease = {
@@ -83,13 +97,17 @@ exports.updateDisease = async (req, res) => {
     await Disease.findByIdAndUpdate(id, updateDisease, { new: true })
       .populate("symptoms")
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Diseases updated successfully"
+        );
       })
       .catch((error) => {
-        res.status(404).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -97,18 +115,22 @@ exports.deleteDisease = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid disease ID");
   }
 
   try {
     await Disease.findByIdAndDelete(id)
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Diseases deleted successfully"
+        );
       })
       .catch((error) => {
-        res.status(404).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };

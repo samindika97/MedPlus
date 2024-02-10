@@ -9,7 +9,7 @@ exports.symptomSearch = async (req, res) => {
   const { symptomArray } = req.query;
 
   if (!symptomArray) {
-    return res.status(400).json({ error: "symptomArray parameter is missing" });
+    return responseHandler.error(res, "Symptoms are note passed to the server");
   }
 
   const isArray = Array.isArray(symptomArray);
@@ -39,13 +39,13 @@ exports.symptomSearch = async (req, res) => {
       },
     ])
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(res, result);
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.error(res, error);
   }
 };
 
@@ -67,7 +67,7 @@ exports.addSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -86,7 +86,7 @@ exports.getSymptoms = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -110,7 +110,7 @@ exports.getSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -139,7 +139,7 @@ exports.updateSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -173,7 +173,7 @@ exports.deleteSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -198,6 +198,6 @@ exports.associatedDiseases = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };

@@ -23,11 +23,7 @@ router.get(
   symptomSearch
 );
 
-router.post(
-  "/",
-  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR])],
-  addSymptom
-);
+router.post("/", [checkPermission([userRoles.ADMIN])], addSymptom);
 
 router.get(
   "/",
@@ -41,17 +37,9 @@ router.get(
   getSymptom
 );
 
-router.patch(
-  "/:id",
-  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR])],
-  updateSymptom
-);
+router.patch("/:id", [checkPermission([userRoles.ADMIN])], updateSymptom);
 
-router.delete(
-  "/:id",
-  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR])],
-  deleteSymptom
-);
+router.delete("/:id", [checkPermission([userRoles.ADMIN])], deleteSymptom);
 
 router.get(
   "/associatedDiseases/:id",

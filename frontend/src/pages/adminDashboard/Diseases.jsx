@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import DeleteDiseaseModal from "../../modals/DeleteDiseaseModal";
 import EditDiseaseModal from "../../modals/EditDiseaseModal";
@@ -12,92 +12,73 @@ import {
 } from "../../components/FormikElements";
 import CustomSelect from "../../components/CustomSelect";
 
-import BASE_URL from "../../config/ApiConfig";
+import {
+  useLazyGetDiseasesQuery,
+  useAddDiseaseMutation,
+} from "../../services/diseaseService";
+
+import { useLazyGetSymptomsQuery } from "../../services/symptomsService";
 
 const Diseases = () => {
   const [searchDiseases, setSearchDiseases] = useState("");
-  const [diseases, setDiseases] = useState([]);
-  const [symptoms, setSymptoms] = useState([]);
-  const [addDiseasesMessage, setAddDiseasesMessage] = useState(null);
   const [editDiseasesModalOpen, setEditDiseasesModalOpen] = useState(false);
   const [editModalDiseases, setEditModalDiseases] = useState(null);
   const [deleteDiseasesModalOpen, setDeleteDiseasesModalOpen] = useState(false);
   const [deleteModalDiseases, setDeleteModalDiseases] = useState(null);
 
-  const symptomOptions = symptoms.map((item) => ({
-    label: item.name,
-    value: item._id,
-  }));
+  const [
+    fetchDiseases,
+    {
+      isSuccess: isSuccessDiseases,
+      data: diseasesData,
+      isError: isErrorDiseases,
+      error: diseaseError,
+      isFetching: isFetchingDiseases,
+    },
+  ] = useLazyGetDiseasesQuery();
 
-  const addDisease = (name, content, symptoms) => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "post",
-      url: `${BASE_URL}diseases/`,
-      data: {
-        name: name,
-        content: content,
-        symptoms: symptoms,
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setDiseases((prev) => [response.data.result, ...prev]);
-      })
-      .catch((err) => {
-        setAddDiseasesMessage(
-          err.response.data.error.code
-            ? err.response.data.error.code === 11000 &&
-                "Sympyom with the same name exists"
-            : err.response.data.error.message &&
-                err.response.data.error.message,
-        );
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
-  };
+  const [
+    fetchSymptoms,
+    {
+      isSuccess: isSuccessSymptoms,
+      data: symptomsData,
+      isError: isErrorSymptoms,
+      error: symptomError,
+      isFetching: isFetchingSymptoms,
+    },
+  ] = useLazyGetSymptomsQuery();
 
-  const fetchDiseases = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}diseases/`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setDiseases(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
-  };
+  const [
+    addDisease,
+    { error: addDiseaseError, isLoading: isLoadingAddDisease },
+  ] = useAddDiseaseMutation();
 
-  const fetchSymptoms = () => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}symptoms/`,
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+  const handleAddDisease = async (data) => {
+    const res = await addDisease(data);
+
+    if (res?.data?.status) {
+      toast.success("Disease added successfully");
+    }
   };
 
   useEffect(() => {
-    fetchSymptoms();
-    fetchDiseases();
-  }, []);
+    fetchDiseases({
+      fixedCacheKey: "diseases",
+    });
+  }, [fetchDiseases]);
+
+  useEffect(() => {
+    fetchSymptoms({
+      fixedCacheKey: "symptoms",
+    });
+  }, [fetchSymptoms]);
+
+  const symptomOptions =
+    isSuccessSymptoms &&
+    symptomsData.data.map((item) => ({
+      label: item.name,
+      value: item._id,
+    }));
 
   const closeEditDiseasesModal = () => {
     setEditDiseasesModalOpen(false);
@@ -117,9 +98,11 @@ const Diseases = () => {
     setDeleteDiseasesModalOpen(true);
   };
 
-  const filteredDiseases = diseases.filter((disease) => {
-    return disease.name.includes(searchDiseases);
-  });
+  const filteredDiseases =
+    isSuccessDiseases &&
+    diseasesData.data.filter((disease) => {
+      return disease.name.includes(searchDiseases);
+    });
 
   return (
     <div className="flex w-full gap-5">
@@ -138,8 +121,7 @@ const Diseases = () => {
             content: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            setAddDiseasesMessage(null);
-            addDisease(values.name, values.content, values.symptoms);
+            handleAddDisease(values);
             setSubmitting(false);
             resetForm({});
           }}
@@ -177,11 +159,11 @@ const Diseases = () => {
               </button>
             </div>
 
-            {addDiseasesMessage && (
+            {/* {addDiseasesMessage && (
               <div className="mt-3 rounded-lg border border-red p-3 text-center">
                 <p className="text-red">{addDiseasesMessage}</p>
               </div>
-            )}
+            )} */}
           </Form>
         </Formik>
       </div>
@@ -197,7 +179,7 @@ const Diseases = () => {
           </div>
         </div>
         <div className="flex max-h-96 w-full flex-col gap-3 overflow-y-auto">
-          {diseases &&
+          {isSuccessDiseases &&
             filteredDiseases.map((disease) => (
               <div
                 className="flex w-full flex-col rounded-xl bg-lightGrey p-3"
@@ -241,7 +223,6 @@ const Diseases = () => {
               isModalOpen={editDiseasesModalOpen}
               modalClose={closeEditDiseasesModal}
               disease={editModalDiseases}
-              setDiseases={setDiseases}
             />
           )}
           {deleteModalDiseases && (
@@ -249,7 +230,6 @@ const Diseases = () => {
               isModalOpen={deleteDiseasesModalOpen}
               modalClose={closeDeleteDiseasesModal}
               disease={deleteModalDiseases}
-              setDiseases={setDiseases}
             />
           )}
         </div>
