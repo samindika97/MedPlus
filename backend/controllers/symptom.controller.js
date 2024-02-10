@@ -67,7 +67,7 @@ exports.addSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -86,7 +86,7 @@ exports.getSymptoms = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -110,7 +110,7 @@ exports.getSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -139,7 +139,7 @@ exports.updateSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -173,7 +173,7 @@ exports.deleteSymptom = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };
 
@@ -198,6 +198,6 @@ exports.associatedDiseases = async (req, res) => {
         return responseHandler.error(res, error);
       });
   } catch (error) {
-    return responseHandler.error(res, error);
+    return responseHandler.serverError(res);
   }
 };

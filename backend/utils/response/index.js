@@ -51,8 +51,8 @@ exports.tokenExpired = (response) => {
 exports.serverError = (response) => {
   return response.status(500).json({
     code: 500,
-    data: "none",
-    errors: "none",
+    data: "",
+    errors: "Server Error",
     status: false,
   });
 };

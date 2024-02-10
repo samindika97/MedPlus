@@ -10,4 +10,7 @@ export const ApiSlug = {
   SYMPTOMS: "symptoms",
   SYMPTOMS_ASSOCIATED_DISEASES: "symptoms/associatedDiseases",
   SYMPTOMS_SEARCH: "symptoms/search",
+
+  // diseases
+  DISEASES: "diseases",
 };

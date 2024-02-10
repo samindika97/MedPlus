@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -15,11 +14,8 @@ import {
   useLazyGetAssociatedDiseasesQuery,
 } from "../../services/symptomsService";
 
-import BASE_URL from "../../config/ApiConfig";
-
 const Symptoms = () => {
   const [searchSymptoms, setSearchSymptoms] = useState("");
-  const [addSymptomMessage, setAddSymptomMessage] = useState(null);
   const [editSymptomModalOpen, setEditSymptomModalOpen] = useState(false);
   const [editModalSymptom, setEditModalSymptom] = useState(null);
   const [deleteSymptomModalOpen, setDeleteSymptomModalOpen] = useState(false);
@@ -110,7 +106,6 @@ const Symptoms = () => {
               name: Yup.string().required("Required"),
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-              setAddSymptomMessage(null);
               handleAddSymptom(values);
               setSubmitting(false);
               resetForm({});
@@ -133,11 +128,11 @@ const Symptoms = () => {
                 </button>
               </div>
 
-              {addSymptomMessage && (
+              {/* {addSymptomMessage && (
                 <div className="mt-3 rounded-lg border border-red p-3 text-center">
                   <p className="text-red">{addSymptomMessage}</p>
                 </div>
-              )}
+              )} */}
             </Form>
           </Formik>
         </div>
