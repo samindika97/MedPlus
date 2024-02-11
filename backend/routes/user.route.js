@@ -6,3 +6,6 @@ const {getUsersForSidebar} = require("../controllers/user.controller");
 router.get("/", getUsersForSidebar);
 
 module.exports = router;
+
+
+
