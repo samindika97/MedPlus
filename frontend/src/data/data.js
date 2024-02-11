@@ -4,13 +4,34 @@ import HospitalDetailsImg from "../assets/HospitalDetails.png";
 import ContactDoctorImg from "../assets/ContactDoctor.png";
 
 import { urlSlug } from "../utils/urlSlug";
+import { userRoles } from "../utils/userRoles";
 
 export const navbarTabs = [
-  { name: "home", link: urlSlug.HOME },
-  { name: "about us", link: urlSlug.ABOUT_US },
-  { name: "features", link: urlSlug.FEATURE.BASE },
-  { name: "contact us", link: urlSlug.CONTACT_US },
-  { name: "admin dashboard", link: urlSlug.ADMIN_DASHBOARD.BASE },
+  {
+    name: "home",
+    link: urlSlug.HOME,
+    users: [userRoles.USER, userRoles.DOCTOR, userRoles.ADMIN],
+  },
+  {
+    name: "about us",
+    link: urlSlug.ABOUT_US,
+    users: [userRoles.USER, userRoles.DOCTOR, userRoles.ADMIN],
+  },
+  {
+    name: "features",
+    link: urlSlug.FEATURE.BASE,
+    users: [userRoles.USER, userRoles.DOCTOR, userRoles.ADMIN],
+  },
+  {
+    name: "contact us",
+    link: urlSlug.CONTACT_US,
+    users: [userRoles.USER, userRoles.DOCTOR, userRoles.ADMIN],
+  },
+  {
+    name: "admin dashboard",
+    link: urlSlug.ADMIN_DASHBOARD.BASE,
+    users: [userRoles.ADMIN],
+  },
 ];
 
 export const featuresTabs = [
@@ -49,7 +70,9 @@ export const specialization = [
 export const adminDashboardTabs = [
   { name: "symptoms", link: urlSlug.ADMIN_DASHBOARD.SYMPTOMS },
   { name: "diseases", link: urlSlug.ADMIN_DASHBOARD.DISEASES },
+  { name: "health reports", link: urlSlug.ADMIN_DASHBOARD.HEALTH_REPORTS },
   { name: "clinic", link: urlSlug.ADMIN_DASHBOARD.CLINIC },
-  { name: "messages", link: urlSlug.ADMIN_DASHBOARD.MESSAGES },
+  { name: "hospitals", link: urlSlug.ADMIN_DASHBOARD.HOSPITAL },
   { name: "doctors", link: urlSlug.ADMIN_DASHBOARD.DOCTORS },
+  { name: "messages", link: urlSlug.ADMIN_DASHBOARD.MESSAGES },
 ];

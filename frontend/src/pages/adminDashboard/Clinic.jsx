@@ -1,36 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { useFormik, Formik, Form, Field } from "formik";
 import axios from "axios";
+import * as Yup from "yup";
 
 import BASE_URL from "../../config/ApiConfig";
+import DeleteClinicModel from "../../modals/DeleteClinicModel";
+import UpdateClinicModel from "../../modals/UpdateClinicModel";
+import CustomSelect from "../../components/CustomSelect";
+import { DeleteIcon, EditIcon } from "../../icons/icon";
 
-const onSubmit = (values) => {
-    const form_data = JSON.stringify(values, null, 2);
-    console.log(form_data);
-    const config = {
-        headers: { "content-type": "application/json" }
-    }
-    axios.post(`${BASE_URL}clinic`, form_data, config);
-    console.log('submitted');
-};
+import {
+    TextInputWithLabel as TextInput,
+    TextAreaWithLabel as TextArea,
+} from "../../components/FormikElements";
 
 const Clinic = () => {
+    const [isDeleteModelOpen, setIsDeleteModelOpen] = useState(false);
+    const [isUpdateModelOpen, setIsUpdateModelOpen] = useState(false);
     const [clinicData, setClinicData] = useState([]);
     const [hospitalData, setHospitalData] = useState([]);
+    const [deleteClinic, setdeleteClinic] = useState(null);
+    const [updateClinic, setUpdateClinic] = useState([]);
+    const [addClinicMessage, setAddClinicMessage] = useState(null);
+
+    const closeDeleteModal = () => {
+        setIsDeleteModelOpen(false);
+    };
+    const openDeleteModal = () => {
+        setIsDeleteModelOpen(true);
+    };
+    const closeUpdateModal = () => {
+        setIsUpdateModelOpen(false);
+    };
+    const openUpdateModal = () => {
+        setIsUpdateModelOpen(true);
+    };
 
     const fetchInfo = () => {
         return axios.all([
             axios.get(`${BASE_URL}clinic`)
                 .then((response) => {
-                    console.log(response.data);
                     setClinicData(response.data)
                 })
                 .catch((err) => {
                     console.log(err);
                 }),
-            axios.get(`${BASE_URL}hospital`)
+            axios.get(`${BASE_URL}hospital/`)
                 .then((response) => {
-                    console.log(response.data);
                     setHospitalData(response.data)
                 })
                 .catch((err) => {
@@ -38,127 +54,155 @@ const Clinic = () => {
                 })
         ]);
     }
+
+    const hospitalOptions = hospitalData.map((item) => ({
+        label: item.hospital_name,
+        value: item._id,
+    }));
+
     useEffect(() => {
         fetchInfo();
     }, []);
 
-    const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
-        initialValues: {
-            type: "",
-            day: "",
-            time: "",
-            doctors: "",
-            additional: "",
-            hospital: "",
-        },
-        onSubmit
-    });
-
     return (
-        <div className="flex flex-row ">
-            <form onSubmit={handleSubmit} className="p-5 font-semibold border-2 border-teal rounded-md origin-top-right  bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-4">
-                    <label htmlFor="type">Clinic Type</label>
-                    <input
-                        type="text"
-                        id="type"
-                        className={errors.type && touched.type ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                        value={values.type}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                    {errors.type && touched.type && <p className="text-redDefault-500 text-xs italic">{errors.type}</p>}
-                </div>
-                <div className="py-4">
-                    <label htmlFor="day">Day</label>
-                    <input
-                        type="text"
-                        id="day"
-                        className={errors.day && touched.day ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                        value={values.day}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                    {errors.day && touched.day && <p className="text-redDefault-500 text-xs italic">{errors.day}</p>}
-                </div>
-                <div className="py-4">
-                    <label htmlFor="time">Time</label>
-                    <input
-                        type="text"
-                        id="time"
-                        className={errors.time && touched.time ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                        value={values.time}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                    {errors.time && touched.time && <p className="text-redDefault-500 text-xs italic">{errors.time}</p>}
-                </div>
-                <div className="py-4">
-                    <label htmlFor="doctors">Doctors</label>
-                    <input
-                        type="text"
-                        id="doctors"
-                        className={errors.doctors && touched.doctors ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                        value={values.doctors}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                    {errors.doctors && touched.doctors && <p className="text-redDefault-500 text-xs italic">{errors.doctors}</p>}
-                </div>
-                <div className="py-4">
-                    <label htmlFor="additional">Additional data</label>
-                    <input
-                        type="text"
-                        id="additional"
-                        className={"shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                        value={values.additional}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                    {errors.additional && touched.additional && <p className="text-redDefault-500 text-xs italic">{errors.doctors}</p>}
-                </div>
-                <label htmlFor="hospital">Hospital</label>
-                <br />
-                <select
-                    id="hospital"
-                    className="py-4 font-light"
-                    value={values.hospital}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
+        <div className="flex w-full gap-5">
+      <div className="h-full w-1/3 rounded-xl border border-grey p-3">
+        <p className="text-lg font-semibold capitalize text-blue">
+          add new clinic infomation
+        </p>
+                <Formik
+                    initialValues={{
+                        type: "",
+                        day: "",
+                        time: "",
+                        doctors: "",
+                        additional: "",
+                        hospital: "",
+                    }}
+                    validationSchema={Yup.object({
+                        type: Yup.string().required("Required"),
+                        day: Yup.string().required("Required"),
+                        time: Yup.string().required("Required"),
+                        doctors: Yup.string().required("Required"),
+                        hospital: Yup.string().required("Required"),
+                    })}
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        try {
+                            const form_data = JSON.stringify(values, null, 2);
+                            const config = {
+                                headers: { "content-type": "application/json" }
+                            }
+                            await axios.post(`${BASE_URL}clinic`, form_data, config);
+                            setSubmitting(false);
+                            fetchInfo();
+                            resetForm({});
+                        } catch (err) {
+                            console.log(err);
+                            setAddClinicMessage(
+                                err.response.data.error.code === 11000
+                                    ? "Guideline with the same condition exists"
+                                    : err.response.data.error.message || "An error occurred during submission.",
+                            );
+                        }
+                    }}
                 >
-                    <option value="">Select Hospital From the List</option>
-                    {hospitalData.map((dataObj) => {
-                        console.log(dataObj._id);
-                        return (
-                            <option value={dataObj._id} key={dataObj._id} id={dataObj._id}>{dataObj.hospital_name}</option>
-                        );
-                    })
-                    }
-                </select>
-                <br ></br>
-                <input type="submit" className="bg-blueDefault-500 hover:bg-blueDefault-700 text-white font-bold py-2 px-4 my-8 rounded focus:outline-none focus:shadow-outline" value="Contact Us" />
+                    <Form className="mt-3 flex w-full flex-col">
+                        <TextInput
+                            label="Enter Clinic Type"
+                            name="type"
+                            type="text"
+                            placeholder=""
+                        />
+                        <TextInput
+                            label="Enter day "
+                            name="day"
+                            type="text"
+                            placeholder=""
+                        />
+                        <TextInput
+                            label="Enter Time"
+                            name="time"
+                            type="text"
+                            placeholder=""
+                        />
+                        <TextInput
+                            label="Enter doctor names"
+                            name="doctors"
+                            type="text"
+                            placeholder=""
+                        />
+                        <TextInput
+                            label="Enter any additional details"
+                            name="additional_dsc"
+                            type="text"
+                            placeholder=""
+                        />
+                        <Field
+                            label="Select hospital from the list"
+                            name="hospital"
+                            options={hospitalOptions}
+                            component={CustomSelect}
+                            placeholder="Select hospital"
+                            isMulti={false}
+                        />
+                        <div className="flex">
+                            <button
+                                className="w-full rounded-xl border-none bg-teal p-3 outline-none"
+                                type="submit"
+                            >
+                                <p className="font-semibold uppercase text-white">add</p>
+                            </button>
+                        </div>
 
-            </form>
-            <div>
+                        {addClinicMessage && (
+                            <div className="mt-3 rounded-lg border border-red p-3 text-center">
+                                <p className="text-red">{addClinicMessage}</p>
+                            </div>
+                        )}
+                    </Form>
+                </Formik>
+
+            </div>
+
+            <div className="flex-1">
                 {clinicData.map((dataObj, index) => {
+                    const handleDeleteClick = () => {
+                        openDeleteModal();
+                        setdeleteClinic(dataObj._id);
+                    };
+                    const handleUpdateClick = () => {
+                        openUpdateModal();
+                        setUpdateClinic(dataObj)
+                        console.log(updateClinic);
+                    };
                     return (
                         <div className="border-solid border-2 border-teal p-4 m-2 rounded-2xl flex flex-col gap-6 bg-mintGree" key={index}>
-                            <div>
-                                <p>Clinc Type : {dataObj.type}</p>
+                            <div className="flex flex-row  justify-between">
+                                <p className="font-semibold capitalize">{dataObj.type} Clinic</p>
                                 <p>{dataObj.day} {dataObj.time}</p>
                             </div>
-                            <div>
-                                <p>{dataObj.doctors}</p>
-                                <p>{dataObj.hospital.hospital_name}</p>
+                            <div className="flex justify-between">
+                                <div>
+                                    <p>{dataObj.doctors}</p>
+                                    <p>{dataObj.hospital.hospital_name}</p>
+                                    <p>{dataObj.additional_dsc}</p>
+                                </div>
+                                <div>
+                                    <button className="text-white bg-redDefault-700 hover:bg-redDefault-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5" onClick={handleDeleteClick}><DeleteIcon fontSize="small" /></button>
+                                    <button className="text-white bg-blueDefault-700 hover:bg-blueDefault-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5" onClick={handleUpdateClick}> <EditIcon fontSize="small" /></button>
+                                </div>
+
                             </div>
-                            <p>{dataObj.additional_dsc}</p>
                         </div>
+
 
                     );
                 })}
 
             </div>
-        </div>
+            <DeleteClinicModel deleteClinic={deleteClinic} isOpen={isDeleteModelOpen} closeModal={closeDeleteModal} openModal={openDeleteModal} fetchInfo={fetchInfo} />
+            <UpdateClinicModel updateClinic={updateClinic} isOpen={isUpdateModelOpen} closeModal={closeUpdateModal} openModal={openUpdateModal} fetchInfo={fetchInfo} hospitalOptions={hospitalOptions} />
+        </div >
     );
 };
 

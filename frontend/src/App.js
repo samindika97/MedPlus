@@ -1,12 +1,17 @@
 import React, { useMemo, useEffect } from "react";
-import "./App.css";
-
 import { BrowserRouter } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "./store/slices/auth.slice";
+import { useLoginMutation } from "./services/authService";
+
 import AuthRoutes from "./routes/AuthRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
-import { useLoginMutation } from "./services/authService";
+import UserRoutes from "./routes/UserRoutes";
+
+import { userRoles } from "./utils/userRoles";
+
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -15,11 +20,12 @@ function App() {
   })[1];
 
   const token = useSelector((state) => state.auth.token);
-  // const user = useSelector((state) => state.auth.user);
+  const role = useSelector((state) => state.auth.role);
 
   const Routes = useMemo(() => {
     if (!token) return <AuthRoutes />;
-    return <AdminRoutes />;
+    if (role === userRoles.ADMIN) return <AdminRoutes />;
+    return <UserRoutes />;
   }, [token]);
 
   useEffect(() => {

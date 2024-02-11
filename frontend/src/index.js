@@ -19,16 +19,15 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistedStore}>
         <React.Suspense fallback={<Splash />}>
-          <AuthContextProvider>
-            <ToastContainer
-              theme="dark"
-              position="top-right"
-              autoClose={3000}
-              closeOnClick
-              pauseOnHover={false}
-            />
-            <App />
-          </AuthContextProvider>
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar
+            theme="light"
+            closeOnClick
+            pauseOnHover={false}
+          />
+          <App />
         </React.Suspense>
       </PersistGate>
     </Provider>

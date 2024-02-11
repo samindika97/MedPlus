@@ -15,6 +15,8 @@ import authReducer from "./slices/auth.slice";
 
 // Api's
 import { authServiceApi } from "../services/authService";
+import { symptomServiceApi } from "../services/symptomsService";
+import { diseaseServiceApi } from "../services/diseaseService";
 
 const rootConfig = {
   key: "medplus_web_v1",
@@ -27,6 +29,8 @@ const persistedReducer = persistReducer(
   combineReducers({
     auth: authReducer,
     [authServiceApi.reducerPath]: authServiceApi.reducer,
+    [symptomServiceApi.reducerPath]: symptomServiceApi.reducer,
+    [diseaseServiceApi.reducerPath]: diseaseServiceApi.reducer,
   }),
 );
 
@@ -37,7 +41,11 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([authServiceApi.middleware]),
+    }).concat([
+      authServiceApi.middleware,
+      symptomServiceApi.middleware,
+      diseaseServiceApi.middleware,
+    ]),
 });
 
 setupListeners(store.dispatch);

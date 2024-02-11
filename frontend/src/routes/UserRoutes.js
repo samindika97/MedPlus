@@ -36,33 +36,7 @@ const ContactDoctorPage = React.lazy(() =>
   import("../pages/features/ContactDoctor"),
 );
 
-// Admin Dashboard
-const AdminDashboardHomePage = React.lazy(() =>
-  import("../pages/adminDashboard/DashboardHomePage"),
-);
-const AdminDashboardSymptomsPage = React.lazy(() =>
-  import("../pages/adminDashboard/Symptoms"),
-);
-const AdminDashboardDiseasesPage = React.lazy(() =>
-  import("../pages/adminDashboard/Diseases"),
-);
-const AdminDashboardMessagesPage = React.lazy(() =>
-  import("../pages/adminDashboard/Messages"),
-);
-const AdminDashboardDoctorsPage = React.lazy(() =>
-  import("../pages/adminDashboard/Doctors"),
-);
-const AdminDashboardClinicPage = React.lazy(() =>
-  import("../pages/adminDashboard/Clinic"),
-);
-const AdminDashboardHospitalPage = React.lazy(() =>
-  import("../pages/adminDashboard/Hospital"),
-);
-const AdminDashboardHealthReportsPage = React.lazy(() =>
-  import("../pages/adminDashboard/HealthReport"),
-);
-
-const AdminRoutes = () =>
+const UserRoutes = () =>
   useRoutes([
     {
       element: <RootLayout />,
@@ -119,47 +93,9 @@ const AdminRoutes = () =>
             },
           ],
         },
-        {
-          path: urlSlug.ADMIN_DASHBOARD.BASE,
-          element: <AdminDashboardLayout />,
-          children: [
-            {
-              path: urlSlug.ADMIN_DASHBOARD.BASE,
-              element: <AdminDashboardHomePage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.SYMPTOMS,
-              element: <AdminDashboardSymptomsPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.DISEASES,
-              element: <AdminDashboardDiseasesPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.MESSAGES,
-              element: <AdminDashboardMessagesPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.DOCTORS,
-              element: <AdminDashboardDoctorsPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.CLINIC,
-              element: <AdminDashboardClinicPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.HOSPITAL,
-              element: <AdminDashboardHospitalPage />,
-            },
-            {
-              path: urlSlug.ADMIN_DASHBOARD.HEALTH_REPORTS,
-              element: <AdminDashboardHealthReportsPage />,
-            },
-          ],
-        },
       ],
     },
     { path: "*", element: <Navigate to={urlSlug.HOME} /> },
   ]);
 
-export default AdminRoutes;
+export default UserRoutes;

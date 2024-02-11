@@ -1,22 +1,20 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-// import type {
-//   BaseQueryFn,
-//   FetchArgs,
-//   FetchBaseQueryError,
-// } from "@reduxjs/toolkit/query";
 import { ApiSlug } from "../utils/apiSlug";
 import { logOut, setToken } from "../store/slices/auth.slice";
 import { UserRole } from "../utils/apiSlug";
 
+import BASE_URL from "../config/ApiConfig";
+
+
 const query = fetchBaseQuery({
-  baseUrl: `http://localhost:8080/api/v1`,
+  baseUrl: BASE_URL,
   // credentials: "include",
-  // prepareHeaders: (headers, { getState }) => {
-  //   const token = (getState() as any).auth.token;
-  //   token && headers.set("authorization", `Bearer ${token}`);
-  //   return headers;
-  // },
-});
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState()).auth.token
+    token && headers.set("authorization", `Bearer ${token}`)
+    return headers
+  },
+})
 
 const baseQuery = async (args, api, extraOptions) => {
   let result = await query(args, api, extraOptions);

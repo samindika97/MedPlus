@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import Navbar from "../components/Navbar/index.jsx";
+import Navbar from "../components/navbar/index.jsx";
 
 const navbarHeight = 42;
 

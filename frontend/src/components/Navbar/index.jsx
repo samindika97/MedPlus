@@ -13,7 +13,9 @@ import { authServiceApi } from "../../services/authService";
 const Navbar = () => {
   const dispatch = useDispatch();
   const [navBarView, setNavBarView] = useState(false);
+
   const username = useSelector((state) => state.auth.username);
+  const role = useSelector((state) => state.auth.role);
 
   const toggleNavBar = () => {
     setNavBarView((prev) => !prev);
@@ -42,17 +44,23 @@ const Navbar = () => {
         className={`hidden items-center justify-center gap-2 lg:flex lg:justify-between
         lg:gap-10`}
       >
-        {navbarTabs.map((tab) => (
-          <NavLink
-            to={tab.link}
-            className={({ isActive, isPending }) =>
-              isPending ? "text-teal/50" : isActive ? "text-teal" : "text-blue"
-            }
-            key={tab.link}
-          >
-            <p className="font-semibold uppercase">{tab.name}</p>
-          </NavLink>
-        ))}
+        {navbarTabs
+          .filter((tab) => tab.users.some((u) => u === role))
+          .map((tab) => (
+            <NavLink
+              to={tab.link}
+              className={({ isActive, isPending }) =>
+                isPending
+                  ? "text-teal/50"
+                  : isActive
+                  ? "text-teal"
+                  : "text-blue"
+              }
+              key={tab.link}
+            >
+              <p className="font-semibold uppercase">{tab.name}</p>
+            </NavLink>
+          ))}
       </div>
       <div
         className={`flex  items-center justify-center gap-2 lg:flex-row lg:justify-between lg:gap-10 ${

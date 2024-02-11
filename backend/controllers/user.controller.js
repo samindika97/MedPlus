@@ -3,7 +3,7 @@ const User = require("../models/user.model");
 
 exports.getDoctorsForSidebar = async (req, res) => {
   try {
-    await User.find({role:'doctor'})
+    await User.find({ role: "doctor" })
       .select("-password")
       .sort({ _id: -1 })
       .then((result) => {
@@ -55,4 +55,3 @@ exports.getUsersForSidebar = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };*/
-
