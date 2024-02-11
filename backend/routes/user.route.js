@@ -1,8 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const { authenticateJWT } = require("../middleware/userAuth");
 
-const {getUsersForSidebar} = require("../controllers/user.controller");
+const {getDoctorsForSidebar,getUserRole,getUsersForSidebar} = require("../controllers/user.controller");
 
-router.get("/", getUsersForSidebar);
+router.get("/getDoctors", getDoctorsForSidebar);
+
+router.get("/getUsers", getUsersForSidebar);
+
+router.get("/getRole",authenticateJWT, getUserRole);
 
 module.exports = router;
