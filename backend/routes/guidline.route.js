@@ -1,22 +1,29 @@
 const express = require("express");
-const { addGuidline, getAllGuideline, updateGuideline, getGuideline, deleteGuideline, getReportTypes } = require("../controllers/labreport.controller");
-const conditionDetermine = require("../controllers/conditionDetermine");
-
 const router = express.Router();
 
+const {
+  addGuidline,
+  getAllGuideline,
+  updateGuideline,
+  getGuideline,
+  deleteGuideline,
+  getReportTypes,
+} = require("../controllers/labreport.controller");
 
-router.post('/condition',conditionDetermine);
+const conditionDetermine = require("../controllers/conditionDetermine");
 
-router.get('/ReportTypes',getReportTypes);
+router.post("/condition", conditionDetermine);
 
-router.post('/',addGuidline);
+// router.get("/ReportTypes", getReportTypes);
 
-router.get('/',getAllGuideline);
+router.post("/", addGuidline);
 
-router.get('/:id',getGuideline);
+router.get("/", getAllGuideline);
 
-router.put('/:id',updateGuideline);
+router.get("/:id", getGuideline);
 
-router.delete('/:id',deleteGuideline);
+router.put("/:id", updateGuideline);
+
+router.delete("/:id", deleteGuideline);
 
 module.exports = router;

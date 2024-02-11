@@ -70,8 +70,9 @@ export const specialization = [
 export const adminDashboardTabs = [
   { name: "symptoms", link: urlSlug.ADMIN_DASHBOARD.SYMPTOMS },
   { name: "diseases", link: urlSlug.ADMIN_DASHBOARD.DISEASES },
-  { name: "clinic", link: urlSlug.ADMIN_DASHBOARD.CLINIC },
-  { name: "messages", link: urlSlug.ADMIN_DASHBOARD.MESSAGES },
-  { name: "doctors", link: urlSlug.ADMIN_DASHBOARD.DOCTORS },
   { name: "health reports", link: urlSlug.ADMIN_DASHBOARD.HEALTH_REPORTS },
+  { name: "clinic", link: urlSlug.ADMIN_DASHBOARD.CLINIC },
+  { name: "hospitals", link: urlSlug.ADMIN_DASHBOARD.HOSPITAL },
+  { name: "doctors", link: urlSlug.ADMIN_DASHBOARD.DOCTORS },
+  { name: "messages", link: urlSlug.ADMIN_DASHBOARD.MESSAGES },
 ];
