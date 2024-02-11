@@ -5,9 +5,6 @@ import { urlSlug } from "../utils/urlSlug";
 // Layout
 const RootLayout = React.lazy(() => import("../layouts/RootLayout"));
 const FeaturesLayout = React.lazy(() => import("../layouts/FeaturesLayout"));
-const AdminDashboardLayout = React.lazy(() =>
-  import("../layouts/AdminDashboardLayout"),
-);
 
 // pages
 const HomePage = React.lazy(() => import("../pages/Home"));
@@ -25,6 +22,12 @@ const FeaturesHomePage = React.lazy(() =>
 );
 const SymptomCheckerPage = React.lazy(() =>
   import("../pages/features/SymptomChecker"),
+);
+const HealthDirectoryPage = React.lazy(() =>
+  import("../pages/features/HealthDirectory"),
+);
+const HealthConditionDetailsPage = React.lazy(() =>
+  import("../pages/features/HealthConditionDetails"),
 );
 const LabReportAnalyzerPage = React.lazy(() =>
   import("../pages/features/LabReportAnalyzer"),
@@ -78,6 +81,14 @@ const UserRoutes = () =>
             {
               path: urlSlug.FEATURE.SYMPTOM_CHECKER,
               element: <SymptomCheckerPage />,
+            },
+            {
+              path: urlSlug.FEATURE.HEALTH_DIRECTORY,
+              element: <HealthDirectoryPage />,
+            },
+            {
+              path: urlSlug.FEATURE.HEALTH_CONDITION_DETAILS,
+              element: <HealthConditionDetailsPage />,
             },
             {
               path: urlSlug.FEATURE.LAB_REPORT_ANALYSER,

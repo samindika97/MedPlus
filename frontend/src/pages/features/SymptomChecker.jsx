@@ -2,11 +2,14 @@ import React, { useState, useEffect, Fragment } from "react";
 import queryString from "query-string";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 import { CheckIcon, ExpandIcon, SearchIcon } from "../../icons/icon";
 
 import FeaturesTitle from "../../components/FeaturesTitle";
 import CustomSelect from "../../components/CustomSelect";
+
+import { urlSlug } from "../../utils/urlSlug";
 
 import {
   useLazyGetSymptomsQuery,
@@ -14,6 +17,8 @@ import {
 } from "../../services/symptomsService";
 
 const SymptomChecker = () => {
+  const navigate = useNavigate();
+
   const [
     fetchSymptoms,
     {
@@ -97,7 +102,13 @@ const SymptomChecker = () => {
       <div className="flex flex-col gap-3">
         {isSuccessSymptomSearch &&
           symptomSearchData.data.map((disease) => (
-            <div className="rounded-xl bg-mintGreen p-3" key={disease._id}>
+            <div
+              className="rounded-xl bg-mintGreen p-3 cursor-pointer"
+              key={disease._id}
+              onClick={() =>
+                navigate(`${urlSlug.FEATURE.HEALTH_DIRECTORY}/${disease._id}`)
+              }
+            >
               <p className="mb-2 text-lg font-semibold capitalize text-blue">
                 {disease.name}
               </p>

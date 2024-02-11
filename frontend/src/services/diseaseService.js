@@ -11,6 +11,13 @@ export const diseaseServiceApi = createApi({
       query: () => ApiSlug.DISEASES,
       providesTags: ["diseases"],
     }),
+    getDisease: builder.mutation({
+      query: (data) => ({
+        url: `${ApiSlug.DISEASES}/${data.id}`,
+        method: "GET",
+      }),
+      invalidatesTags: ["diseases"],
+    }),
     addDisease: builder.mutation({
       query: (data) => ({
         url: ApiSlug.DISEASES,
@@ -39,6 +46,7 @@ export const diseaseServiceApi = createApi({
 
 export const {
   useLazyGetDiseasesQuery,
+  useGetDiseaseMutation,
   useAddDiseaseMutation,
   useDeleteDiseaseMutation,
   useEditDiseaseMutation,

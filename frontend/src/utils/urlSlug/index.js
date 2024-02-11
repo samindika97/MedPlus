@@ -17,6 +17,8 @@ export const urlSlug = {
   FEATURE: {
     BASE: "/features",
     SYMPTOM_CHECKER: "/features/symptom-checker",
+    HEALTH_DIRECTORY: "/features/health-directory",
+    HEALTH_CONDITION_DETAILS: "/features/health-directory/:id",
     LAB_REPORT_ANALYSER: "/features/lab-report-analyser",
     HOSPITAL_DETAILS: "/features/hospital-details",
     CONTACT_DOCTOR: "/features/contact-doctor",
