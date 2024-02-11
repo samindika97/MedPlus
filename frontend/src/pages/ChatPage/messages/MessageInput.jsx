@@ -12,8 +12,8 @@ const MessageInput = () => {
     setMessage(" ");
   };
   return (
-    <form className="my-3 px-4" onSubmit={handleSubmit}>
-      <div className="flex w-full">
+    <form className="my-3 px-4 " onSubmit={handleSubmit}>
+      <div className="flex w-full gap-2 ">
         <input
           type="text"
           className="block w-full rounded-lg border p-2.5 text-sm"
@@ -21,8 +21,8 @@ const MessageInput = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit" className=" bg-mintGreen">
-          send
+        <button type="submit" className=" bg-mintGreen px-2 mx-2rounded-md">
+          {loading ? <div>sending</div> : <div>SEND</div>}
         </button>
       </div>
     </form>

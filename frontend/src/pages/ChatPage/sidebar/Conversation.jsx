@@ -11,12 +11,12 @@ const Conversation = ({conversation}) => {
       onClick={() => setSelectedConversation(conversation)}
     >
         <div className=' avatar online'>
-            <div className='w-10 rounded-full'> 
-                <img src={doctorImg} alt="user avatar" />
+            <div> 
+                <img className='w-10 rounded-full'   src={doctorImg} alt="user avatar" />
             </div>
         </div>
 
-       <p className='font-bold text-teal'>{conversation.userName}</p>
+       <p className='font-bold text-teal capitalize'>Dr.{conversation.userName}</p>
     </div>
   )
 }

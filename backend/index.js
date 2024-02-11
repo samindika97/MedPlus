@@ -3,6 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const dbConnect = require("./config/dbConnect");
+const {app, server} = require("./socket/socket")
 
 const authRoutes = require("./routes/auth.route");
 const symptomRoutes = require("./routes/symptom.route");
@@ -17,7 +18,7 @@ const guidlineRoutes = require("./routes/guidline.route");
 
 require("dotenv").config();
 
-const app = express();
+//const app = express();
 
 const PORT = process.env.PORT;
 
@@ -38,6 +39,7 @@ app.use("/api/v1/guidline", guidlineRoutes);
 
 dbConnect();
 
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
+
