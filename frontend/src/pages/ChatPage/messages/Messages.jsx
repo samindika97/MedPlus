@@ -4,7 +4,7 @@ import useGetMessages from "../hooks/useGetMessages";
 
 const Messages = () => {
   const { messages, loading } = useGetMessages();
-  console.log("Messages:",messages)
+ // console.log("Messages:",messages)
   return (
     <div className="flex-1 overflow-hidden px-4">
       {
