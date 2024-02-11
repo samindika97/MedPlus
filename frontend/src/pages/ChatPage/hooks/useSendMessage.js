@@ -23,7 +23,26 @@ const useSendMessage = () => {
 
     axios(axiosConfig)
       .then((response) => {
-        setMessages((prevMessages) => [response.data, ...prevMessages]);
+        const axiosConfig = {
+          method: "get",
+          url: `${BASE_URL}chatMessage/${selectedConversation._id}`,
+    
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            "Content-Type": "application/json",
+          },
+        };
+        axios(axiosConfig)
+          .then((response) => {
+            setLoading(true);
+            setMessages(response.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+             setLoading(false);
+          });
       })
       .catch((error) => {
         //toast.error(error.message);

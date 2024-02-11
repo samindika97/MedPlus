@@ -32,7 +32,7 @@ const useGetConversations = () => {
       });
   };
 
-  console.log(role);
+  //console.log(role);
 
   const fetchUser = async() => {
     let axiosConfig;
@@ -66,7 +66,7 @@ const useGetConversations = () => {
     });
   },[role]);
 
-  console.log("user:", users);
+  //console.log("user:", users);
 
   const filteredUsers = users.filter((user) => {
     return user && user.name && user.name.includes(searchUser);

@@ -22,10 +22,10 @@ const Message = ({ message }) => {
   }, [token]);
 
   const fromMe = message.senderId === authUserId;
-  console.log("sender Id:" ,fromMe);
+ // console.log("sender Id:" ,fromMe);
   const chatColor = fromMe ? 'bg-teal' : 'bg-mintGreen';
   const mar = fromMe ? 'ml-[350px]' : '';
-  console.log("User Id:", authUserId);
+  //console.log("User Id:", authUserId);
   //console.log("user role:", authUserId.role)
 
   return (
