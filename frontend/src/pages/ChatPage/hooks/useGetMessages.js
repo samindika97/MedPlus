@@ -4,41 +4,6 @@ import BASE_URL from "../../../config/ApiConfig";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-/*const useGetMessages = () => {
-  const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } = useCoversation();
-  const token = useSelector((state) => state.auth.token);
-
-  const fetchMessage = () => {
-    setLoading(true);
-    const axiosConfig = {
-      method: "get",
-      url: `${BASE_URL}chatMessage/${selectedConversation._id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setMessages(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        // handle error if needed
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (selectedConversation?._id) fetchMessage();
-  }, [selectedConversation?._id, setMessages]);
-
-  return { messages, loading };
-};*/
-
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
@@ -59,7 +24,15 @@ const useGetMessages = () => {
     axios(axiosConfig)
       .then((response) => {
         setLoading(true);
-        setMessages(response.data);
+        const extractedFields = response.data.map((obj) => {
+          const newObj = Object.create(null);
+          newObj.senderId = obj.senderId;
+          newObj.message = obj.message;
+          return newObj;
+        });
+        console.log(extractedFields);
+        setMessages(extractedFields);
+        console.log(messages);
       })
       .catch((err) => {
         console.log(err);
