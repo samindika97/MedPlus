@@ -5,9 +5,45 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const useSendMessage = () => {
+  const token = useSelector((state) => state.auth.token);
+  const [loading, setLoading] = useState(false);
+  const { messages, setMessages, selectedConversation } = useCoversation();
+
+  const sendMessage = (message) => {
+    setLoading(true);
+    const axiosConfig = {
+      method: "post",
+      url: `${BASE_URL}chatMessage/send/${selectedConversation._id}`,
+      data: { message },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios(axiosConfig)
+      .then((response) => {
+        setMessages((prevMessages) => [response.data, ...prevMessages]);
+      })
+      .catch((error) => {
+        //toast.error(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return { sendMessage, loading };
+};
+
+export default useSendMessage;
+
+/*const useSendMessage = () => {
   // Access the token from the Redux state
   const token = useSelector((state) => state.auth.token);
+  const [loading, setLoading] = useState(false);
 
+  
   const { messages, setMessages, selectedConversation } = useCoversation();
   const sendMessage = (message) => {
     const axiosConfig = {
@@ -24,13 +60,17 @@ const useSendMessage = () => {
 
     axios(axiosConfig)
       .then((response) => {
+        setLoading(true);
         setMessages((prev) => [response.data.result, ...prev]);
       })
       .catch((error) => {
         console.log("Error sending message:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-  return { sendMessage };
+  return { sendMessage, loading };
 };
 
-export default useSendMessage;
+export default useSendMessage;*/

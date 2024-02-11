@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const dbConnect = require("./config/dbConnect");
+const {app, server} = require("./socket/socket")
 
 const authRoutes = require("./routes/auth.route");
 const symptomRoutes = require("./routes/symptom.route");
@@ -15,7 +16,7 @@ const userRoutes = require("./routes/user.route");
 
 require("dotenv").config();
 
-const app = express();
+//const app = express();
 
 const PORT = process.env.PORT;
 
@@ -34,6 +35,7 @@ app.use("/api/v1/chatMessage",chatMessageRoutes);
 
 dbConnect();
 
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
+
