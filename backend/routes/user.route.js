@@ -11,3 +11,6 @@ router.get("/getUsers", getUsersForSidebar);
 router.get("/getRole",authenticateJWT, getUserRole);
 
 module.exports = router;
+
+
+

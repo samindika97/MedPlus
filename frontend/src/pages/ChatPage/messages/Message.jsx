@@ -26,6 +26,7 @@ const Message = ({ message }) => {
   const chatColor = fromMe ? 'bg-teal' : 'bg-mintGreen';
   const mar = fromMe ? 'ml-[350px]' : '';
   console.log("User Id:", authUserId);
+  //console.log("user role:", authUserId.role)
 
   return (
     <div className={`my-2  w-1/2 rounded-md p-2 ${chatColor} ${mar}`}>
