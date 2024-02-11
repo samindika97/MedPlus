@@ -26,6 +26,12 @@ const FeaturesHomePage = React.lazy(() =>
 const SymptomCheckerPage = React.lazy(() =>
   import("../pages/features/SymptomChecker"),
 );
+const HealthDirectoryPage = React.lazy(() =>
+  import("../pages/features/HealthDirectory"),
+);
+const HealthConditionDetailsPage = React.lazy(() =>
+  import("../pages/features/HealthConditionDetails"),
+);
 const LabReportAnalyzerPage = React.lazy(() =>
   import("../pages/features/LabReportAnalyzer"),
 );
@@ -104,6 +110,14 @@ const AdminRoutes = () =>
             {
               path: urlSlug.FEATURE.SYMPTOM_CHECKER,
               element: <SymptomCheckerPage />,
+            },
+            {
+              path: urlSlug.FEATURE.HEALTH_DIRECTORY,
+              element: <HealthDirectoryPage />,
+            },
+            {
+              path: urlSlug.FEATURE.HEALTH_CONDITION_DETAILS,
+              element: <HealthConditionDetailsPage />,
             },
             {
               path: urlSlug.FEATURE.LAB_REPORT_ANALYSER,

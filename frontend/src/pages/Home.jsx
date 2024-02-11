@@ -22,9 +22,9 @@ const Home = () => {
             facilities, and take control of your health journey. It's time to
             prioritize your health with MedPlus.
           </p>
-          <button className="mt-3 rounded-3xl bg-teal px-10 py-1">
+          {/* <button className="mt-3 rounded-3xl bg-teal px-10 py-1">
             <p className="font-semibold uppercase text-white">sign in</p>
-          </button>
+          </button> */}
         </div>
         <div className="h-full">
           <img
@@ -34,14 +34,14 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="mb-2 grid grid-cols-5 gap-3">
         {featuresTabs.map((tab) => (
           <NavLink to={tab.link} key={tab.name}>
             <div className="relative h-24 w-full rounded-xl bg-teal p-5">
               <img
                 src={tab.img}
                 alt="symptom checker tab image"
-                className="absolute bottom-0 left-0 h-32"
+                className="absolute bottom-0 left-0 h-28"
               />
               <div className="flex h-full w-full items-center justify-end">
                 <p className="w-1/2 text-right text-xl font-bold uppercase text-white">
