@@ -13,13 +13,13 @@ const FeaturesSidebar = () => {
             isPending
               ? "pending"
               : isActive
-              ? "rounded-xl bg-teal"
-              : "rounded-xl bg-mintGreen"
+              ? "rounded-xl bg-teal text-white"
+              : "rounded-xl bg-mintGreen text-blue"
           }
           key={tab.link}
         >
           <div className="w-full rounded-xl p-3">
-            <p className="font-bold uppercase text-blue">{tab.name}</p>
+            <p className="font-bold uppercase ">{tab.name}</p>
           </div>
         </NavLink>
       ))}

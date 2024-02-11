@@ -1,4 +1,5 @@
 import SymptomCheckerImg from "../assets/SymptomChecker.png";
+import HealthDirectoryImg from "../assets/directory.png";
 import LabReportAnalyzerImg from "../assets/LabReportAnalyzer.png";
 import HospitalDetailsImg from "../assets/HospitalDetails.png";
 import ContactDoctorImg from "../assets/ContactDoctor.png";
@@ -35,6 +36,11 @@ export const navbarTabs = [
 ];
 
 export const featuresTabs = [
+  {
+    name: "health directory",
+    img: HealthDirectoryImg,
+    link: urlSlug.FEATURE.HEALTH_DIRECTORY,
+  },
   {
     name: "symptom checker",
     img: SymptomCheckerImg,
