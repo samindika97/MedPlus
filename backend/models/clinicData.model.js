@@ -19,6 +19,7 @@ const clinicSchema = new mongoose.Schema({
         required:true,
     },
     doctors:[String],
+    
     additional_dsc:String,
 });
 

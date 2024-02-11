@@ -34,7 +34,7 @@ exports.authenticateUser = (req, res, next) => {
     if (!user) {
       return res.status(401).json({ status: "error", code: "unauthorized" });
     } else {
-      const token = jwt.sign({ email: user.email }, SECRET_KEY, {
+      const token = jwt.sign({userId: user._id, email: user.email }, SECRET_KEY, {
         expiresIn: "24h",
       });
       res

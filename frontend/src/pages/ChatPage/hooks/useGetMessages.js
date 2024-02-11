@@ -4,6 +4,7 @@ import BASE_URL from "../../../config/ApiConfig";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useCoversation();
@@ -22,13 +23,22 @@ const useGetMessages = () => {
     };
     axios(axiosConfig)
       .then((response) => {
-        setMessages(response.data);
+        setLoading(true);
+        const extractedFields = response.data.map((obj) => {
+          const newObj = Object.create(null);
+          newObj.senderId = obj.senderId;
+          newObj.message = obj.message;
+          return newObj;
+        });
+        console.log(extractedFields);
+        setMessages(extractedFields);
+        console.log(messages);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        // setLoading(false);
+         setLoading(false);
       });
   };
 
@@ -36,7 +46,7 @@ const useGetMessages = () => {
     if (selectedConversation?._id) fetchMessage();
   }, [selectedConversation?._id, setMessages]);
 
-  return { messages };
+  return { messages, loading };
 };
 
 export default useGetMessages;
