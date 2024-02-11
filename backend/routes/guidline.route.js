@@ -8,7 +8,7 @@ const {
   getGuideline,
   deleteGuideline,
   getReportTypes,
-} = require("../controllers/labreport.controller");
+} = require("../controllers/labReportNew.controller");
 
 const conditionDetermine = require("../controllers/conditionDetermine");
 
