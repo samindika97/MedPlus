@@ -73,4 +73,5 @@ export const adminDashboardTabs = [
   { name: "clinic", link: urlSlug.ADMIN_DASHBOARD.CLINIC },
   { name: "messages", link: urlSlug.ADMIN_DASHBOARD.MESSAGES },
   { name: "doctors", link: urlSlug.ADMIN_DASHBOARD.DOCTORS },
+  { name: "health reports", link: urlSlug.ADMIN_DASHBOARD.HEALTH_REPORTS },
 ];

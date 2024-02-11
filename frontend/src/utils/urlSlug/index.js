@@ -30,5 +30,6 @@ export const urlSlug = {
     MESSAGES: "/admin-dashboard/messages",
     DOCTORS: "/admin-dashboard/doctors",
     CLINIC: "/admin-dashboard/clinic",
+    HEALTH_REPORTS: "/admin-dashboard/HealthReport",
   },
 };

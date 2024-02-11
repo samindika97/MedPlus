@@ -55,6 +55,9 @@ const AdminDashboardDoctorsPage = React.lazy(() =>
 const AdminDashboardClinicPage = React.lazy(() =>
   import("../pages/adminDashboard/Clinic"),
 );
+const AdminDashboardHealthReportsPage = React.lazy(() =>
+  import("../pages/adminDashboard/HealthReport"),
+);
 
 const AdminRoutes = () =>
   useRoutes([
@@ -140,6 +143,10 @@ const AdminRoutes = () =>
             {
               path: urlSlug.ADMIN_DASHBOARD.CLINIC,
               element: <AdminDashboardClinicPage />,
+            },
+            {
+              path: urlSlug.ADMIN_DASHBOARD.HEALTH_REPORTS,
+              element: <AdminDashboardHealthReportsPage />,
             },
           ],
         },
