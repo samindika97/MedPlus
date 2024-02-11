@@ -9,3 +9,7 @@
     font-family: Inter, system-ui, sans-serif;
   }
 }
+
+* {
+  scrollbar-width: thin;
+}

@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const Symptom = require("../models/symptom.model");
 const Disease = require("../models/disease.model");
 
+const responseHandler = require("../utils/response");
+
 exports.symptomSearch = async (req, res) => {
   const { symptomArray } = req.query;
 
   if (!symptomArray) {
-    return res.status(400).json({ error: "symptomArray parameter is missing" });
+    return responseHandler.error(res, "Symptoms are note passed to the server");
   }
 
   const isArray = Array.isArray(symptomArray);
@@ -37,13 +39,13 @@ exports.symptomSearch = async (req, res) => {
       },
     ])
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(res, result);
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.error(res, error);
   }
 };
 
@@ -55,13 +57,17 @@ exports.addSymptom = async (req, res) => {
   try {
     await Symptom.create({ name })
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Symptom added Successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -70,13 +76,17 @@ exports.getSymptoms = async (req, res) => {
     await Symptom.find()
       .sort({ _id: -1 })
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Symptoms fetched successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -84,19 +94,23 @@ exports.getSymptom = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid symptom ID");
   }
 
   try {
     await Symptom.findById(id)
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Symptom fetched successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -105,7 +119,7 @@ exports.updateSymptom = async (req, res) => {
   const { name } = req.body;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid symptom ID");
   }
 
   try {
@@ -115,13 +129,17 @@ exports.updateSymptom = async (req, res) => {
       { new: true }
     )
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Symptom updated Successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -129,7 +147,7 @@ exports.deleteSymptom = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid symptom ID");
   }
 
   try {
@@ -145,13 +163,17 @@ exports.deleteSymptom = async (req, res) => {
               symptoms: newSymptoms,
             });
           });
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Symptom deleted Successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };
 
@@ -159,19 +181,23 @@ exports.associatedDiseases = async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: "Invalid ID" });
+    return responseHandler.error(res, "Invalid symptom ID");
   }
 
   try {
     await Disease.find({ symptoms: id })
       .select("name")
       .then((result) => {
-        res.status(200).json({ result });
+        return responseHandler.success(
+          res,
+          result,
+          "Associated diseases retrieved Successfully"
+        );
       })
       .catch((error) => {
-        res.status(400).json({ error });
+        return responseHandler.error(res, error);
       });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return responseHandler.serverError(res);
   }
 };

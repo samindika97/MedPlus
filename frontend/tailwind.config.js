@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors');
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -10,6 +10,7 @@ module.exports = {
       white: "#ffffff",
       black: "#000000",
       blue: "#002333",
+      babyBlue: "#E2E9FF",
       teal: "#559E8D",
       mintGreen: "#ACE8B5",
       red: "#8B0000",
@@ -20,13 +21,12 @@ module.exports = {
       indigo: colors.indigo,
       yellow: colors.yellow,
       blueDefault: colors.blue,
-      redDefault:colors.red,
+      redDefault: colors.red,
     },
     extend: {
       backgroundImage: {
-        'aboutUs': "url('assets/aboutusbg.jpeg')",
-        
-      }
+        // aboutUs: "url('assets/aboutusbg.jpeg')",
+      },
     },
   },
   plugins: [

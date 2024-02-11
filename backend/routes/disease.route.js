@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const { authenticateJWT, checkPermission } = require("../middleware/userAuth");
+
+const userRoles = require("../utils/userRoles");
+
 const {
   addDisease,
   getDiseases,
@@ -9,14 +13,36 @@ const {
   deleteDisease,
 } = require("../controllers/disease.controller");
 
-router.post("/", addDisease);
+router.use(authenticateJWT);
 
-router.get("/", getDiseases);
+router.post(
+  "/",
+  [checkPermission([userRoles.ADMIN])],
+  addDisease
+);
 
-router.get("/:id", getDisease);
+router.get(
+  "/",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  getDiseases
+);
 
-router.patch("/:id", updateDisease);
+router.get(
+  "/:id",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  getDisease
+);
 
-router.delete("/:id", deleteDisease);
+router.patch(
+  "/:id",
+  [checkPermission([userRoles.ADMIN])],
+  updateDisease
+);
+
+router.delete(
+  "/:id",
+  [checkPermission([userRoles.ADMIN])],
+  deleteDisease
+);
 
 module.exports = router;

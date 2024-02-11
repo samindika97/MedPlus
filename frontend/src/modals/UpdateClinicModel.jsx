@@ -1,33 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { useFormik } from "formik";
+import { useFormik, Formik, Form, Field } from "formik";
 import axios from 'axios';
+import * as Yup from "yup";
+
+import CustomSelect from "../components/CustomSelect";
+
+import {
+  TextInputWithLabel as TextInput,
+  TextAreaWithLabel as TextArea,
+} from "../components/FormikElements";
+
 
 import BASE_URL from "../config/ApiConfig";
 
-export default function UpdateClinicModel({deleteClinic, isOpen, closeModal, openModal , fetchInfo, hospitalData}) {
-  const onSubmit = (values) => {
-    const form_data = JSON.stringify(values, null, 2);
-    console.log(form_data);
-    const config = {
-        headers: { "content-type": "application/json" }
-    }
-    axios.post(`${BASE_URL}clinic`, form_data, config);
-    fetchInfo();
-    console.log('submitted');
-};
+export default function UpdateClinicModel({ updateClinic, isOpen, closeModal, openModal, fetchInfo, hospitalOptions }) {
 
-  const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
-    initialValues: {
-        type: "",
-        day: "",
-        time: "",
-        doctors: "",
-        additional: "",
-        hospital: "",
-    },
-    onSubmit
-});
+  const [addClinicMessage, setAddClinicMessage] = useState(null);
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -63,102 +53,100 @@ export default function UpdateClinicModel({deleteClinic, isOpen, closeModal, ope
                     Edit Clinic
                   </Dialog.Title>
                   <div className="mt-2">
-                  <form onSubmit={handleSubmit} className="p-5 pt-1 font-semibold border-2 border-teal rounded-md origin-top-right  bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-2">
-                        <p className="text-lg font-semibold capitalize text-blue pb-2">
-                            add new clinic
-                        </p>
-                        <label htmlFor="type">Clinic Type</label>
-                        <input
-                            type="text"
-                            id="type"
-                            className={errors.type && touched.type ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                            value={values.type}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.type && touched.type && <p className="text-redDefault-500 text-xs italic">{errors.type}</p>}
-                    </div>
-                    <div className="py-4">
-                        <label htmlFor="day">Day</label>
-                        <input
-                            type="text"
-                            id="day"
-                            className={errors.day && touched.day ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                            value={values.day}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.day && touched.day && <p className="text-redDefault-500 text-xs italic">{errors.day}</p>}
-                    </div>
-                    <div className="py-4">
-                        <label htmlFor="time">Time</label>
-                        <input
-                            type="text"
-                            id="time"
-                            className={errors.time && touched.time ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                            value={values.time}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.time && touched.time && <p className="text-redDefault-500 text-xs italic">{errors.time}</p>}
-                    </div>
-                    <div className="py-4">
-                        <label htmlFor="doctors">Doctors</label>
-                        <input
-                            type="text"
-                            id="doctors"
-                            className={errors.doctors && touched.doctors ? "shadow appearance-none border border-redDefault-500 rounded w-full py-4 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" : "shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                            value={values.doctors}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.doctors && touched.doctors && <p className="text-redDefault-500 text-xs italic">{errors.doctors}</p>}
-                    </div>
-                    <div className="py-4">
-                        <label htmlFor="additional">Additional data</label>
-                        <input
-                            type="text"
-                            id="additional"
-                            className={"shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-teal"}
-                            value={values.additional}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.additional && touched.additional && <p className="text-redDefault-500 text-xs italic">{errors.doctors}</p>}
-                    </div>
-                    <label htmlFor="hospital">Hospital</label>
-                    <br />
-                    <select
-                        id="hospital"
-                        className="py-4 font-light"
-                        value={values.hospital}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select Hospital From the List</option>
-                        {hospitalData.map((dataObj) => {
-                            return (
-                                <option value={dataObj._id} key={dataObj._id} id={dataObj._id}>{dataObj.hospital_name}</option>
-                            );
-                        })
+                    <Formik
+                      initialValues={{
+                        type: updateClinic && updateClinic.type,
+                        day: updateClinic && updateClinic.day,
+                        time: updateClinic && updateClinic.time,
+                        doctors: updateClinic && updateClinic.doctors,
+                        additional: updateClinic && updateClinic.additional,
+                        hospital: updateClinic && updateClinic.hospital,
+                      }}
+                      validationSchema={Yup.object({
+                        type: Yup.string().required("Required"),
+                        day: Yup.string().required("Required"),
+                        time: Yup.string().required("Required"),
+                        doctors: Yup.string().required("Required"),
+                        hospital: Yup.string().required("Required"),
+                      })}
+                      onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        try {
+                          const form_data = JSON.stringify(values, null, 2);
+                          const config = {
+                            headers: { "content-type": "application/json" }
+                          }
+                          await axios.post(`${BASE_URL}clinic`, form_data, config);
+                          setSubmitting(false);
+                          fetchInfo();
+                          resetForm({});
+                        } catch (err) {
+                          console.log(err);
+                          setAddClinicMessage(
+                            err.response.data.error.code === 11000
+                              ? "Guideline with the same condition exists"
+                              : err.response.data.error.message || "An error occurred during submission.",
+                          );
                         }
-                    </select>
-                    <br ></br>
-                    <input type="submit" className="bg-blueDefault-500 hover:bg-blueDefault-700 text-white font-bold py-2 px-4 my-8 rounded focus:outline-none focus:shadow-outline" value="Submit" />
-
-                </form>
-                  </div>
-
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      }}
                     >
-                      Got it, thanks!
-                    </button>
+                      <Form className="mt-3 flex w-full flex-col">
+                        <TextInput
+                          label="Enter Clinic Type"
+                          name="type"
+                          type="text"
+                          placeholder=""
+                        />
+                        <TextInput
+                          label="Enter day "
+                          name="day"
+                          type="text"
+                          placeholder=""
+                        />
+                        <TextInput
+                          label="Enter Time"
+                          name="time"
+                          type="text"
+                          placeholder=""
+                        />
+                        <TextInput
+                          label="Enter doctor names"
+                          name="doctors"
+                          type="text"
+                          placeholder=""
+                        />
+                        <TextInput
+                          label="Enter any additional details"
+                          name="additional"
+                          type="text"
+                          placeholder=""
+                        />
+                        <Field
+                          label="Select hospital from the list"
+                          name="hospital"
+                          options={hospitalOptions}
+                          component={CustomSelect}
+                          placeholder="Select hospital"
+                          isMulti={false}
+                        />
+                        <div className="flex">
+                          <button
+                            className="w-full rounded-xl border-none bg-teal p-3 outline-none"
+                            type="submit"
+                          >
+                            <p className="font-semibold uppercase text-white">add</p>
+                          </button>
+                        </div>
+
+                        {addClinicMessage && (
+                          <div className="mt-3 rounded-lg border border-red p-3 text-center">
+                            <p className="text-red">{addClinicMessage}</p>
+                          </div>
+                        )}
+                      </Form>
+                    </Formik>
+
                   </div>
+
                 </Dialog.Panel>
               </Transition.Child>
             </div>
