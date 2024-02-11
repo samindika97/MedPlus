@@ -1,60 +1,23 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
 
-import BASE_URL from "../config/ApiConfig";
+import { useEditSymptomMutation } from "../services/symptomsService";
 
-const EditSymptomModal = ({
-  isModalOpen,
-  modalClose,
-  symptom,
-  setSymptoms,
-}) => {
-  const [editSymptomMessage, setEditSymptomMessage] = useState(null);
+const EditSymptomModal = ({ isModalOpen, modalClose, symptom }) => {
+  const [editSymptom, { error, isLoading }] = useEditSymptomMutation();
 
-  useEffect(() => {
-    setEditSymptomMessage(null);
-  }, []);
+  const handleEditSymptom = async (data) => {
+    const res = await editSymptom({ id: symptom._id, data: data });
 
-  const editSymptom = (name) => {
-    // setLoading(true);
-    const axiosConfig = {
-      method: "patch",
-      url: `${BASE_URL}symptoms/${symptom._id}`,
-      data: {
-        name: name,
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setSymptoms((prev) =>
-          prev.map((prevSymptom) => {
-            if (prevSymptom._id === response.data.result._id) {
-              return {
-                ...prevSymptom,
-                name: response.data.result.name,
-              };
-            } else {
-              return prevSymptom;
-            }
-          }),
-        );
-        modalClose();
-      })
-      .catch((err) => {
-        setEditSymptomMessage(
-          err.response.data.error.code && err.response.data.error.code === 11000
-            ? "Sympyom with the same name exists"
-            : "Error editing symptom. Try again",
-        );
-      })
-      .finally(() => {
-        // setLoading(false);
-      });
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      modalClose();
+    }
   };
 
   return (
@@ -99,7 +62,7 @@ const EditSymptomModal = ({
                       name: Yup.string().required("Required"),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      editSymptom(values.name);
+                      handleEditSymptom(values);
                       setSubmitting(false);
                       resetForm({});
                     }}
@@ -117,9 +80,13 @@ const EditSymptomModal = ({
                           className="w-max rounded-md bg-teal px-4 py-2 capitalize"
                           type="submit"
                         >
-                          <p className="text-sm font-medium text-white">
-                            confirm change
-                          </p>
+                          {!isLoading ? (
+                            <p className="text-sm font-medium text-white">
+                              confirm change
+                            </p>
+                          ) : (
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-grey border-t-white" />
+                          )}
                         </button>
                         <button
                           className="w-max rounded-md bg-grey px-4 py-2 capitalize"
@@ -132,9 +99,9 @@ const EditSymptomModal = ({
                         </button>
                       </div>
 
-                      {editSymptomMessage && (
-                        <div className="border-red mt-3 rounded-lg border p-3">
-                          <p className="text-red">{editSymptomMessage}</p>
+                      {error && (
+                        <div className="mt-3 rounded-lg border border-red p-3">
+                          <p className="text-red">{error}</p>
                         </div>
                       )}
                     </Form>

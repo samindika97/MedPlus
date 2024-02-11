@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const { authenticateJWT, checkPermission } = require("../middleware/userAuth");
+
+const userRoles = require("../utils/userRoles");
+
 const {
   symptomSearch,
   addSymptom,
@@ -11,18 +15,36 @@ const {
   associatedDiseases,
 } = require("../controllers/symptom.controller");
 
-router.get("/search", symptomSearch);
+router.use(authenticateJWT);
 
-router.post("/", addSymptom);
+router.get(
+  "/search",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  symptomSearch
+);
 
-router.get("/", getSymptoms);
+router.post("/", [checkPermission([userRoles.ADMIN])], addSymptom);
 
-router.get("/:id", getSymptom);
+router.get(
+  "/",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  getSymptoms
+);
 
-router.patch("/:id", updateSymptom);
+router.get(
+  "/:id",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  getSymptom
+);
 
-router.delete("/:id", deleteSymptom);
+router.patch("/:id", [checkPermission([userRoles.ADMIN])], updateSymptom);
 
-router.get("/associatedDiseases/:id", associatedDiseases);
+router.delete("/:id", [checkPermission([userRoles.ADMIN])], deleteSymptom);
+
+router.get(
+  "/associatedDiseases/:id",
+  [checkPermission([userRoles.ADMIN, userRoles.DOCTOR, userRoles.USER])],
+  associatedDiseases
+);
 
 module.exports = router;

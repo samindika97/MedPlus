@@ -12,32 +12,31 @@ import Footer from "../components/Footer";
 
 const AboutUs = () => {
   return (
-    <div>
-      <div className="my-10 flex flex-row gap-10">
+    <div className="mt-10 flex flex-col gap-10">
+      <div className="flex flex-row gap-10">
         <div className="flex flex-1 flex-col items-start justify-center">
           <img src={medPlusLogo} alt="MedPlus logo" className="mb-10 h-8" />
           <p className="text-justify">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            placerat, risus eu lacinia convallis, dolor risus dignissim felis,
-            quis convallis felis dui quis nulla. Nullam scelerisque a sapien ut
-            cursus. Proin volutpat est ut eros tempus, in posuere velit
-            convallis. Nam ut ligula id dolor rutrum ornare. Nullam sed bibendum
-            quam, a porttitor sem. Mauris et dui vulputate, mollis nisi commodo,
-            commodo nunc. Integer vel erat hendrerit, finibus arcu vitae,
-            tincidunt lorem. Cras finibus at augue quis dignissim. Aenean
-            accumsan at dui non convallis. Donec et mi sit amet erat sodales
-            blandit ac a ex.
+            At MedPlus, our journey is driven by a shared passion for enhancing
+            your health and well-being. Founded with the vision to provide
+            accurate health information, facilitate easy access to healthcare
+            resources, and empower individuals to make informed decisions about
+            their health, we are committed to your betterment. Our dedicated
+            team of professionals and experts is dedicated to creating a
+            healthier and more informed world. Discover the story behind MedPlus
+            and the people who strive to make a positive impact on your health
+            journey.
           </p>
         </div>
         <img src={headerimage} alt="about us header" className="flex-1" />
       </div>
-      <div className="my-10 flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <h2 className="mt-4 text-4xl font-bold text-blue">Meet our Team</h2>
         <div className="mt-2 text-lg font-semibold">
           <p>Meet everyone who made this possible.</p>
         </div>
         <div>
-          <div className="grid grid-cols-4 gap-10 my-5">
+          <div className="my-5 grid grid-cols-4 gap-10">
             <People personimage={peopleimage1} name="Samindika Dalanindu" />
             <People personimage={peopleimage2} name="Holin Ariyawansa" />
             <People personimage={peopleimage3} name="Rashmi Senevirathna" />

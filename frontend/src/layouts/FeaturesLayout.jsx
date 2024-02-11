@@ -5,11 +5,13 @@ import FeaturesSidebar from "../components/FeaturesSidebar";
 
 const FeaturesLayout = () => {
   return (
-    <div className="flex mt-5 gap-5 h-full">
-      <div className="w-1/4 h-full max-w-xs">
+    <div className="grid h-[calc(100vh-50px)] grid-cols-5 gap-5 py-5">
+      <div className="h-full">
         <FeaturesSidebar />
       </div>
-      <Outlet />
+      <div className="col-span-4 h-full overflow-auto">
+        <Outlet />
+      </div>
     </div>
   );
 };
