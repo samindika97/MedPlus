@@ -20,6 +20,7 @@ exports.getGuideline = async (req, res) => {
 exports.getReportTypes = async(req,res)=>{
     try {
         const reportTypes = await GuidlineModel.find().distinct('type');
+       // console.log(reportTypes);
         if (!reportTypes) {
             return res.status(404).json({ error: "Guideline not found" });
         }
