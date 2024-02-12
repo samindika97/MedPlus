@@ -5,35 +5,32 @@ import axios from "axios";
 
 import BASE_URL from "../config/ApiConfig";
 
-const DeleteGuidlineModal = ({
-    isModalOpen,
+const DeleteHospital = (
+    {isModalOpen,
     modalClose,
-    guidline,
-    fetchInfo,
-}) => {
+    hospital,
+    fetchInfo,}) => {
 
-const [deleteGuidlineMessage, setDeleteGuidlineMessage] = useState(null);
+        const [deleteHospitalMessage,setDeleteHospitalMessage] = useState(null);
 
-    const deleteCondition = () => {
-        // setLoading(true);
-        const axiosConfig = {
-            method: "delete",
-            url: `${BASE_URL}guidline/${guidline._id}`,
+        const deleteCondition = () => {
+            // setLoading(true);
+            const axiosConfig = {
+                method: "delete",
+                url: `${BASE_URL}hospital/${hospital._id}`,
+            };
+            axios(axiosConfig)
+                .then(
+                    fetchInfo(),
+                    modalClose())
+                .catch((err) => {
+                   setDeleteHospitalMessage(err.response.data.error);
+                })
+                .finally(() => {
+                    fetchInfo()
+                    // setLoading(false);
+                });
         };
-        axios(axiosConfig)
-            .then(
-                fetchInfo(),
-                modalClose())
-            .catch((err) => {
-                setDeleteGuidlineMessage(err.response.data.error);
-            })
-            .finally(() => {
-                fetchInfo()
-                // setLoading(false);
-            });
-    };
-
-
     return (
         <Transition appear show={isModalOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={modalClose}>
@@ -69,7 +66,7 @@ const [deleteGuidlineMessage, setDeleteGuidlineMessage] = useState(null);
                                 </Dialog.Title>
                                 <div className="mt-2">
                                     <p className="text-sm text-blue">
-                                        Are you sure want to delete condition : "{guidline.condition}" from
+                                        Are you sure want to delete hospital : "{hospital.hospital_name}" from
                                         the system?
                                     </p>
                                     <p className="mt-3 text-xs italic text-blue">
@@ -93,9 +90,9 @@ const [deleteGuidlineMessage, setDeleteGuidlineMessage] = useState(null);
                                         <p className="capitalize">cancel</p>
                                     </button>
                                 </div>
-                                {deleteGuidlineMessage && (
+                                {deleteHospitalMessage && (
                                     <div className="border-red mt-3 rounded-lg border p-3">
-                                        <p className="text-red">{deleteGuidlineMessage}</p>
+                                        <p className="text-red">{deleteHospitalMessage}</p>
                                     </div>
                                 )}
                             </Dialog.Panel>
@@ -105,6 +102,7 @@ const [deleteGuidlineMessage, setDeleteGuidlineMessage] = useState(null);
             </Dialog>
         </Transition>
     );
-}
 
-export default DeleteGuidlineModal;
+};
+
+export default DeleteHospital;

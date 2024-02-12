@@ -5,6 +5,9 @@ import { TextInputWithLabel as TextInput } from "../../components/FormikElements
 import * as Yup from 'yup';
 import { DeleteIcon, EditIcon } from "../../icons/icon";
 
+import DeleteHospital from "../../modals/DeleteHospitalModel";
+import EditHospital from "../../modals/EditHospitalModel";
+
 import BASE_URL from "../../config/ApiConfig";
 
 const Hospital = () => {
@@ -79,11 +82,11 @@ const Hospital = () => {
                                 } catch (err) {
                                     setAddHospitalMessage(
                                         err.response.data.error.code
-                                          ? err.response.data.error.code === 11000 &&
-                                              "Hospital with the same name exists"
-                                          : err.response.data.error.message &&
-                                              err.response.data.error.message,
-                                      );
+                                            ? err.response.data.error.code === 11000 &&
+                                            "Hospital with the same name exists"
+                                            : err.response.data.error.message &&
+                                            err.response.data.error.message,
+                                    );
                                 }
                             }}
                         >
@@ -144,24 +147,22 @@ const Hospital = () => {
 
             {/* Edit Hospital Modal */}
             {showEditModal && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-4 rounded-lg">
-                        <p>Edit Hospital Modal</p>
-
-                        <button onClick={closeEditModal}>Close</button>
-                    </div>
-                </div>
+                <EditHospital
+                    isModalOpen={showEditModal}
+                    modalClose={closeEditModal}
+                    hospital={selectedHospital}
+                    fetchInfo={fetchInfo}
+                />
             )}
 
             {/* Delete Hospital Modal */}
             {showDeleteModal && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-4 rounded-lg">
-                        <p>Delete Hospital Modal</p>
-
-                        <button onClick={closeDeleteModal}>Close</button>
-                    </div>
-                </div>
+                <DeleteHospital
+                    isModalOpen={showDeleteModal}
+                    modalClose={closeDeleteModal}
+                    hospital={selectedHospital}
+                    fetchInfo={fetchInfo}
+                />
             )}
         </div>
     );

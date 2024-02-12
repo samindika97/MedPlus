@@ -8,13 +8,13 @@ const {
   getGuideline,
   deleteGuideline,
   getReportTypes,
-} = require("../controllers/labReportNew.controller");
+} = require("../controllers/labReport.controller");
 
 const conditionDetermine = require("../controllers/conditionDetermine");
 
 router.post("/condition", conditionDetermine);
 
-// router.get("/ReportTypes", getReportTypes);
+router.get("/ReportTypes", getReportTypes);
 
 router.post("/", addGuidline);
 
