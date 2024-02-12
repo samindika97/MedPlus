@@ -24,7 +24,7 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
-// app.use(morgan("dev"))
+app.use(morgan("dev"))
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
